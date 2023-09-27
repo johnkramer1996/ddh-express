@@ -11,7 +11,7 @@ export abstract class BaseController {
     try {
       return await this.executeImpl(req, res)
     } catch (err) {
-      if (!envCongig.isTest) {
+      if (envCongig.isDevelopment) {
         console.log(`[BaseController]: Uncaught controller error`)
         console.log(err)
       }
@@ -23,15 +23,17 @@ export abstract class BaseController {
     return res.status(code).json({ message })
   }
 
-  public ok<T>(res: express.Response, dto?: T) {
-    if (!dto) return res.sendStatus(200)
-    return res.status(200).json(dto)
+  public static dtoResponse<T extends object>(res: express.Response, code: number, dto?: T) {
+    if (!dto) return res.sendStatus(code)
+    return res.status(code).json(dto)
   }
 
-  public created<T>(res: express.Response, dto?: T) {
-    console.log('created')
-    if (!dto) return res.sendStatus(201)
-    return res.status(201).json(dto)
+  public ok<T extends object>(res: express.Response, dto?: T) {
+    return BaseController.dtoResponse(res, 200, dto)
+  }
+
+  public created<T extends object>(res: express.Response, dto?: T) {
+    return BaseController.dtoResponse(res, 201, dto)
   }
 
   public clientError(res: express.Response, message?: string) {
@@ -67,7 +69,7 @@ export abstract class BaseController {
   }
 
   public fail(res: express.Response, error: Error | string) {
-    console.log(error)
+    if (envCongig.isDevelopment) console.log(error)
     return res.status(500).json({ message: getStringFromUnknown(error) })
   }
 }

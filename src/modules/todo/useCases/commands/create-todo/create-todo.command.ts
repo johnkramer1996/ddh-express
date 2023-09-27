@@ -1,8 +1,8 @@
-export class CreateUserCommand {
+export class CreateTodoCommand {
   readonly text: string
   readonly completed?: boolean
 
-  constructor(props: CreateUserCommand) {
+  constructor(props: CreateTodoCommand) {
     this.text = props.text
     this.completed = props.completed
   }

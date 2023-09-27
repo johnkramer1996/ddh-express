@@ -1,9 +1,10 @@
 import { ModelDefined } from 'sequelize'
 import { AggregateRoot } from '../../../domain/aggregate-root.base'
 import { Mapper } from '../../../domain/mapper.interface'
-import { Paginated, PaginatedQueryParams, RepositoryPort } from '../../../domain/repository.port'
+import { Paginated, QueryParams, RepositoryPort } from '../../../domain/repository.port'
 import { injectable } from 'inversify'
 import { getStringFromUnknown } from '../../../utils/get-error'
+import { ObjectLiteral } from '@src/shared/types/object-literal.type'
 
 @injectable()
 export abstract class SequelizeRepositoryBase<Aggregate extends AggregateRoot<any>, DbModel extends { id: string }> implements RepositoryPort<Aggregate> {
@@ -15,9 +16,9 @@ export abstract class SequelizeRepositoryBase<Aggregate extends AggregateRoot<an
     return posts.map(this.mapper.toDomain)
   }
 
-  public async findAllPaginated(params: PaginatedQueryParams): Promise<Paginated<Aggregate>> {
-    const { rows: items, count } = await this.model.findAndCountAll({ limit: params.limit, offset: params.offset })
-
+  public async findAllPaginated(params: QueryParams): Promise<Paginated<Aggregate>> {
+    const where = Object.entries(params.where).reduce((p, i) => ((p[i[0]] = i[1]), p), {} as ObjectLiteral)
+    const { rows: items, count } = await this.model.findAndCountAll({ limit: params.limit, offset: params.offset, where })
     return new Paginated({ data: items.map(this.mapper.toDomain), count, limit: params.limit, page: params.page })
   }
 
@@ -48,6 +49,7 @@ export abstract class SequelizeRepositoryBase<Aggregate extends AggregateRoot<an
 
     try {
       isNewPost ? await this.model.create(rawSequelizePost) : await this.model.update(rawSequelizePost, { where: { id: entity.id } })
+      await entity.publishEvents()
     } catch (err) {
       throw new Error(getStringFromUnknown(err))
     }

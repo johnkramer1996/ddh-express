@@ -1,6 +1,6 @@
+import { ArgumentOutOfRangeException } from '@src/shared/exceptions/exceptions'
 import { Guard } from '../../../../shared/core/guard'
 import { ValueObject } from '../../../../shared/domain/value-object.base'
-import { ArgumentOutOfRangeException } from '../../../../shared/exceptions'
 
 export interface TextProps {
   value: string

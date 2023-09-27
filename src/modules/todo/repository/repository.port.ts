@@ -1,8 +1,8 @@
-import { PaginatedQueryParams, RepositoryPort } from '../../../shared/domain/repository.port'
+import { QueryParams, RepositoryPort } from '../../../shared/domain/repository.port'
 import { TodoAttributes } from '../../../shared/infra/database/sequelize/models/todo.model'
 import { TodoEntity } from '../domain/todo.entity'
 
-export interface FindTodosParams extends PaginatedQueryParams {
+export interface FindTodosParams extends QueryParams {
   readonly where: Partial<TodoAttributes>
 }
 

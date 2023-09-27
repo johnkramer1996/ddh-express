@@ -12,8 +12,8 @@ module.exports = {
         allowNull: false,
       },
       completed: {
-        type: new Sequelize.STRING(),
-        allowNull: true,
+        type: new Sequelize.BOOLEAN(),
+        allowNull: false,
       },
       createdAt: {
         type: Sequelize.DATE,

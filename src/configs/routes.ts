@@ -2,5 +2,7 @@ export const todoUrls = {
   root: '/todos',
   findAll: '/',
   findOne: '/:todoId',
-  createOne: '/new',
+  createOne: '/',
+  updateOne: '/:todoId',
+  deleteOne: '/:todoId',
 }

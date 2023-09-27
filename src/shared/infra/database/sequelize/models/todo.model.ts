@@ -1,10 +1,12 @@
 import { CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequelize'
 import { sequelize } from '../config/connection'
+import { injectable } from 'inversify'
 
 export type TodoAttributes = InferAttributes<TodoModel>
 export type TodoCreationAttributes = InferCreationAttributes<TodoModel>
 
 // <TodoAttributes, TodoCreationAttributes>
+@injectable()
 class TodoModel extends Model {
   declare id: CreationOptional<string>
   declare text: string
@@ -26,7 +28,7 @@ TodoModel.init(
       allowNull: false,
     },
     completed: {
-      type: new DataTypes.STRING(),
+      type: new DataTypes.BOOLEAN(),
       allowNull: true,
     },
     createdAt: DataTypes.DATE,

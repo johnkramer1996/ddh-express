@@ -1,0 +1,31 @@
+
+### GET LIST
+GET http://localhost:8086/api/v1/todos?page=3&limit=12
+Content-Type: application/json
+
+{
+    "completed": false
+}
+
+### GET ONE
+GET http://localhost:8086/api/v1/todos/6d3c5559-2188-4782-b629-1182ca619ebf
+
+### CREATE ONE
+POST http://localhost:8086/api/v1/todos/
+Content-Type: application/json
+
+{
+    "text": "new todo"
+}
+
+### UPDATE ONE
+PUT http://localhost:8086/api/v1/todos/0da8de04-d532-4c97-ac32-80d5111f06ef
+Content-Type: application/json
+
+{
+    "completed": true
+}
+
+### DELETE ONE
+DELETE http://localhost:8086/api/v1/todos/13c6e1dd-c53e-42b9-aefe-6679c1fecb2a
+

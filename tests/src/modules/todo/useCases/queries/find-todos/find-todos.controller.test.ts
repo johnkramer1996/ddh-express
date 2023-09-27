@@ -4,51 +4,59 @@ import { TodoPaginatedResponseDto } from '@src/modules/todo/dtos/todo.paginated.
 import { FindTodosService } from '@src/modules/todo/useCases/queries/find-todos/find-todos.service'
 import { Result } from '@src/shared/core/result'
 import { Paginated } from '@src/shared/domain/repository.port'
-import TodoModel from '@src/shared/infra/database/sequelize/models/todo.model'
 import { container } from '@src/shared/infra/di/container'
 import { TYPES } from '@src/shared/infra/di/types'
 import { IServer } from '@src/shared/infra/http/server'
 import request from 'supertest'
-import { mockData } from '../../todos'
+import { todoUrls } from '@src/configs/routes'
+import { mock, mockTodo } from '../../todos'
 
-describe('Find Todo Controller', () => {
-  let todosModel: TodoModel[]
+describe('Find Todos Controller', () => {
+  const route = todoUrls.root + todoUrls.findAll
+  container.rebind(TYPES.FIND_TODOS_SERVICE).toConstantValue(mock.findTodosService)
   const app = container.get<IServer>(TYPES.SERVER).create('/')
-  const findTodosService = container.get<FindTodosService>(TYPES.FIND_TODOS_SERVICE)
-  const mapper = container.get<TodoMapper>(TYPES.TODO_MAPPER)
+  // const mapper = container.get<TodoMapper>(TYPES.TODO_MAPPER)
 
-  beforeAll(async () => {
-    todosModel = await mockData()
-  })
+  beforeAll(async () => {})
 
   beforeEach(() => {
     jest.clearAllMocks()
   })
 
-  describe('GET /todos', () => {
-    test('should return 200 with data', async () => {
-      const responseData = new Paginated({ data: todosModel.map(mapper.toDomain), count: 1, limit: 1, page: 1 })
-      const expectedData = new TodoPaginatedResponseDto(responseData)
+  test('Should return list items', async () => {
+    //arrange
+    const responseData = { data: mockTodo, count: 1, limit: 1, page: 1 }
+    const expectedData = new TodoPaginatedResponseDto(responseData as any)
+    mock.findTodosService.execute.mockResolvedValue(Result.ok(responseData))
 
-      jest.spyOn(findTodosService, 'execute').mockResolvedValue(Result.ok(responseData))
+    //act
+    const response = await request(app).get(route)
 
-      //act
-      const response = await request(app).get('/todos')
+    //assert
+    expect(response.status).toBe(200)
+    expect(response.body).toEqual(expectedData)
+  })
 
-      //assert
-      expect(response.body).toEqual(expectedData)
-    })
+  test('Should return 500 error with message', async () => {
+    //arrange
+    const expectedData = { message: 'Error' }
+    mock.findTodosService.execute.mockResolvedValue(Result.fail(new Error(expectedData.message)))
 
-    test('GET /todos returns 500 on use case error', async () => {
-      const expectedData = { message: 'Error' }
+    //act
+    const response = await request(app).get(route)
 
-      jest.spyOn(findTodosService, 'execute').mockResolvedValue(Result.fail(new Error(expectedData.message)))
+    //assert
+    expect(response.status).toBe(500)
+    expect(response.body).toStrictEqual(expectedData)
+  })
 
-      const response = await request(app).get('/todos')
+  test('Should return 400 error', async () => {
+    //arrange
 
-      //assert
-      expect(response.status).toBe(500)
-      expect(response.body).toStrictEqual(expectedData)
-    })
+    //act
+    const response = await request(app).get(route).send({ text: true, completed: 'string' })
+
+    //assert
+    expect(response.status).toBe(400)
   })
 })

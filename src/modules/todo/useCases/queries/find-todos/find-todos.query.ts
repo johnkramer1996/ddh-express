@@ -1,7 +1,6 @@
-import { InferAttributes, WhereOptions } from 'sequelize'
-import { PaginatedParams, PaginatedQueryBase } from '../../../../../shared/domain/query.base'
-import TodoModel, { TodoAttributes } from '../../../../../shared/infra/database/sequelize/models/todo.model'
-import { FindTodosParams } from '../../../repository/repository.port'
+import { FindTodosParams } from '@src/modules/todo/repository/repository.port'
+import { PaginatedParams, PaginatedQueryBase } from '@src/shared/domain/query.base'
+import { TodoAttributes } from '@src/shared/infra/database/sequelize/models/todo.model'
 
 export class FindTodosQuery extends PaginatedQueryBase implements FindTodosParams {
   readonly where: Partial<TodoAttributes>

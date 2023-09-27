@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rimraf ./dist && tsc",
     "db": "",
-    "db:create": "ts-node scripts/db/create",
+    "db:create:dev": "ts-node scripts/db/create",
     "db:create:test": "cross-env NODE_ENV=test ts-node scripts/db/create",
     "db:delete:dev": "ts-node scripts/db/delete",
     "db:delete:test": "cross-env NODE_ENV=test ts-node scripts/db/delete",

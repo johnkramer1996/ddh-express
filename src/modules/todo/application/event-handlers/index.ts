@@ -1,9 +1,5 @@
-import { TodoEntity, TodoProps } from '../../domain/todo.entity'
-import { Text } from '../../domain/value-objects/text.value-object'
-import { CreateWalletWhenUserIsCreatedDomainEventHandler } from './create-wallet-when-user-is-created.domain-event-handler'
+import { LogWhenTodoIsCreatedDomainEventHandler } from './log-when-todo-is-created.domain-event-handler'
+import { LogWhenTodoIsDeletedDomainEventHandler } from './log-when-todo-is-deleted.domain-event-handler'
 
-new CreateWalletWhenUserIsCreatedDomainEventHandler()
-
-const text = new Text({ value: 'text' })
-const props: TodoProps = { text, completed: false }
-new TodoEntity({ id: '1', props })
+new LogWhenTodoIsCreatedDomainEventHandler()
+new LogWhenTodoIsDeletedDomainEventHandler()

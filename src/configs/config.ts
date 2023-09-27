@@ -20,4 +20,8 @@ const envCongig = {
   isProduction,
 }
 
-export { dbConfig, envCongig, PORT }
+const repositoryConfig = {
+  limit: 15,
+}
+
+export { dbConfig, envCongig, repositoryConfig, PORT }

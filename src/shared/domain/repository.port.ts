@@ -1,30 +1,38 @@
+import { repositoryConfig } from '@src/configs/config'
+import { ObjectLiteral } from '../types/object-literal.type'
+
 export class Paginated<T> {
   readonly count: number
   readonly limit: number
   readonly page: number
   readonly data: readonly T[]
 
-  constructor(props: Paginated<T>) {
-    this.count = props.count
-    this.limit = props.limit
-    this.page = props.page
-    this.data = props.data
+  constructor(props: Partial<Paginated<T>>) {
+    this.count = props.count ?? 0
+    this.limit = props.limit ?? repositoryConfig.limit
+    this.page = props.page ?? 1
+    this.data = props.data ?? []
   }
 }
 
 export type OrderBy = [string, 'asc' | 'desc']
 
-export type PaginatedQueryParams = {
+export type Where<Type> = {
+  [Property in keyof Type]?: string | Type[Property]
+}
+
+export type QueryParams = {
   limit: number
   page: number
   offset: number
   order: OrderBy[]
+  where: ObjectLiteral
 }
 
 export interface RepositoryPort<Entity> {
   findOneById(id: string): Promise<Entity | null>
   findAll(): Promise<Entity[]>
-  findAllPaginated(params: PaginatedQueryParams): Promise<Paginated<Entity>>
+  findAllPaginated(params: QueryParams): Promise<Paginated<Entity>>
   delete(entity: Entity): Promise<boolean>
   exists(id: string): Promise<boolean>
   save(entity: Entity): Promise<void>

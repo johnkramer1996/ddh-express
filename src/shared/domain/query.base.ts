@@ -1,4 +1,5 @@
-import { OrderBy, PaginatedQueryParams } from './repository.port'
+import { repositoryConfig } from '@src/configs/config'
+import { OrderBy, QueryParams } from './repository.port'
 
 /**
  * Base class for regular queries
@@ -16,7 +17,7 @@ export abstract class PaginatedQueryBase extends QueryBase {
 
   constructor(props: PaginatedParams<PaginatedQueryBase>) {
     super()
-    this.limit = props.limit ?? 15
+    this.limit = props.limit ?? repositoryConfig.limit
     this.offset = props.page ? (props.page - 1) * this.limit : 1
     this.page = props.page ?? 1
     this.order = props.order && props.order.length ? props.order : [['id', 'desc']]
@@ -24,4 +25,4 @@ export abstract class PaginatedQueryBase extends QueryBase {
 }
 
 // Paginated query parameters
-export type PaginatedParams<T> = Omit<T, 'limit' | 'offset' | 'order' | 'page'> & Partial<Omit<PaginatedQueryParams, 'offset'>>
+export type PaginatedParams<T> = Omit<T, 'limit' | 'offset' | 'order' | 'page'> & Partial<Omit<QueryParams, 'offset'>>

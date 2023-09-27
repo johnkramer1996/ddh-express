@@ -5,27 +5,26 @@ import { TodoRepositoryPort } from '../../../repository/repository.port'
 import { Paginated } from '../../../../../shared/domain/repository.port'
 import { TodoEntity } from '../../../domain/todo.entity'
 import { getStringFromUnknown } from '../../../../../shared/utils/get-error'
-import { CreateTodoCommand } from './create-todo.command'
-import { Text } from '@src/modules/todo/domain/value-objects/text.value-object'
-import { AggregateID } from '@src/shared/domain/entity'
+import { DeleteTodoCommand } from './delete-todo.command'
+import { TodoNotFoundException } from '@src/modules/todo/domain/todo.errors'
 import { InternalServerErrorException } from '@src/shared/exceptions/exceptions'
 
-type Response = Result<true, AggregateID> | Result<false, Error>
+type Response = Result<true> | Result<false, Error>
 
 @injectable()
-export class CreateTodoService {
+export class DeleteTodoService {
   constructor(@inject(TYPES.TODO_REPOSITORY) private repository: TodoRepositoryPort) {}
 
-  async execute(command: CreateTodoCommand): Promise<Response> {
-    const todo = TodoEntity.create({
-      text: new Text({ value: command.text }),
-      completed: command.completed,
-    })
+  async execute(command: DeleteTodoCommand): Promise<Response> {
+    const todo = await this.repository.findOneById(command.todoId)
+    if (!todo) return Result.fail(new TodoNotFoundException(command.todoId))
+
+    todo.delete()
 
     try {
-      await this.repository.save(todo)
+      await this.repository.delete(todo)
 
-      return Result.ok(todo.id)
+      return Result.ok<void>()
     } catch (err) {
       return Result.fail(new InternalServerErrorException(getStringFromUnknown(err)))
     }

@@ -1,9 +1,10 @@
 import { MaxLength, IsString, Matches, IsOptional, IsBoolean } from 'class-validator'
 
-export class CreateTodoRequestDto {
+export class UpdateTodoRequestDto {
+  @IsOptional()
   @MaxLength(50)
   @IsString()
-  readonly text!: string
+  readonly text?: string
 
   @IsOptional()
   @IsBoolean()

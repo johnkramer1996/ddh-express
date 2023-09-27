@@ -4,6 +4,7 @@ import { AggregateID } from '../../../shared/domain/entity'
 import { TodoCreatedDomainEvent } from './events/todo-created.domain-event'
 import { Text } from './value-objects/text.value-object'
 import { TodoTextChangedDomainEvent } from './events/todo-text-changed.domain-event'
+import { TodoDeletedDomainEvent } from './events/todo-deleted.domain-event'
 
 export interface CreateTodoProps {
   text: Text
@@ -39,12 +40,22 @@ export class TodoEntity extends AggregateRoot<TodoProps> {
     return this.props.completed
   }
 
-  public changeText(props: UpdateTodoTextProps): void {
+  public delete(): void {
+    this.addEvent(new TodoDeletedDomainEvent({ entity: this }))
+  }
+
+  public updateText(props: UpdateTodoTextProps): void {
     if (props.text === this.props.text) return
 
     const newText = props.text
     this.addEvent(new TodoTextChangedDomainEvent({ entity: this, oldText: this.props.text, newText }))
     this.props.text = newText
+  }
+
+  public updateCompleted(completed: boolean): void {
+    if (completed === this.props.completed) return
+
+    this.props.completed = completed
   }
 
   validate(): void {

@@ -4,21 +4,23 @@ import { Result } from '@src/shared/core/result'
 import { Paginated } from '@src/shared/domain/repository.port'
 import { TYPES } from '@src/shared/infra/di/types'
 import { inject, injectable } from 'inversify'
-import { FindTodosQuery } from './find-todos.query'
+import { FindTodoQuery } from './find-todo.query'
 import { getStringFromUnknown } from '@src/shared/utils/get-error'
 import { InternalServerErrorException } from '@src/shared/exceptions/exceptions'
+import { TodoNotFoundException } from '@src/modules/todo/domain/todo.errors'
 
-type FindTodosServiceResponse = Result<true, Paginated<TodoEntity>> | Result<false, Error>
+type FindTodoServiceResponse = Result<true, TodoEntity> | Result<false, Error>
 
 @injectable()
-export class FindTodosService {
+export class FindTodoService {
   constructor(@inject(TYPES.TODO_REPOSITORY) private repository: TodoRepositoryPort) {}
 
-  async execute(query: FindTodosQuery): Promise<FindTodosServiceResponse> {
+  async execute(query: FindTodoQuery): Promise<FindTodoServiceResponse> {
     try {
-      const todos = await this.repository.findAllPaginated(query)
+      const todo = await this.repository.findOneById(query.todoId)
+      if (!todo) return Result.fail(new TodoNotFoundException(query.todoId))
 
-      return Result.ok(todos)
+      return Result.ok(todo)
     } catch (err) {
       return Result.fail(new InternalServerErrorException(getStringFromUnknown(err)))
     }

@@ -1,8 +1,8 @@
-import { dbConfig } from '@src/configs/config'
+import { dbConfig, envCongig } from '@src/configs/config'
 import { Sequelize } from 'sequelize'
 
 const { host, username, password, database } = dbConfig
-console.log('connection to ' + database)
+if (envCongig.isDevelopment) console.log('connection to ' + database)
 
 export const sequelize = new Sequelize({
   username,

@@ -1,5 +1,5 @@
 import { Guard } from '../core/guard'
-import { ArgumentNotProvidedException } from '../exceptions'
+import { ArgumentNotProvidedException } from '../exceptions/exceptions'
 import { convertPropsToObject } from '../utils/convert-props-to-object.util'
 
 /**
