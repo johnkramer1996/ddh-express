@@ -1,0 +1,15 @@
+###
+GET http://localhost:8086/api/v1/todos?page=2
+Content-Type: application/json
+
+{
+    "completed": true
+}
+
+###
+POST http://localhost:8086/api/v1/todos/new
+Content-Type: application/json
+
+{
+    "text": "new todo"
+}
