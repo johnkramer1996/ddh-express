@@ -7,15 +7,16 @@ import { CreateTodoController } from '@src/modules/todo/useCases/commands/create
 import { FindTodoController } from '@src/modules/todo/useCases/queries/find-todo/find-todo.controller'
 import { UpdateTodoController } from '@src/modules/todo/useCases/commands/update-todo/update-todo.controller'
 import { DeleteTodoController } from '@src/modules/todo/useCases/commands/delete-todo/delete-todo.controller'
+import { TODO_TYPES } from '../../di/types'
 
 @injectable()
 class TodoRouter {
   constructor(
-    @inject(TYPES.FIND_TODOS_CONTROLLER) private findTodosController: FindTodosController,
-    @inject(TYPES.FIND_TODO_CONTROLLER) private findTodoController: FindTodoController,
-    @inject(TYPES.CREATE_TODO_CONTROLLER) private createTodoController: CreateTodoController,
-    @inject(TYPES.UPDATE_TODO_CONTROLLER) private updateTodoController: UpdateTodoController,
-    @inject(TYPES.DELETE_TODO_CONTROLLER) private deleteTodoController: DeleteTodoController
+    private findTodosController: FindTodosController,
+    private findTodoController: FindTodoController,
+    private createTodoController: CreateTodoController,
+    private updateTodoController: UpdateTodoController,
+    private deleteTodoController: DeleteTodoController
   ) {}
   get(): Router {
     const router = express.Router()

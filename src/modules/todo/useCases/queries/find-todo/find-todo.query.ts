@@ -1,8 +1,7 @@
-import { FindTodosParams } from '@src/modules/todo/repository/repository.port'
-import { PaginatedParams, PaginatedQueryBase } from '@src/shared/domain/query.base'
-import { TodoAttributes } from '@src/shared/infra/database/sequelize/models/todo.model'
+import { IQuery } from '../../../../../shared/core/cqs/query.interface'
+import { FindTodoServiceResponse } from './find-todo.service'
 
-export class FindTodoQuery {
+export class FindTodoQuery implements IQuery<FindTodoServiceResponse> {
   readonly todoId: string
 
   constructor(props: FindTodoQuery) {

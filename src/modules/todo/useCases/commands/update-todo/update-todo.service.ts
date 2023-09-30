@@ -9,12 +9,13 @@ import { UpdateTodoCommand } from './update-todo.command'
 import { Text } from '@src/modules/todo/domain/value-objects/text.value-object'
 import { TodoNotFoundException } from '@src/modules/todo/domain/todo.errors'
 import { InternalServerErrorException } from '@src/shared/exceptions/exceptions'
+import { TODO_TYPES } from '@src/modules/todo/infra/di/types'
 
 type Response = Result<true> | Result<false, Error>
 
 @injectable()
 export class UpdateTodoService {
-  constructor(@inject(TYPES.TODO_REPOSITORY) private repository: TodoRepositoryPort) {}
+  constructor(@inject(TODO_TYPES.REPOSITORY) private repository: TodoRepositoryPort) {}
 
   async execute(command: UpdateTodoCommand): Promise<Response> {
     const todo = await this.repository.findOneById(command.todoId)

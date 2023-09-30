@@ -9,7 +9,6 @@ export class DomainEvents {
     if (!this.handlersMap.hasOwnProperty(eventClassName)) {
       this.handlersMap[eventClassName] = []
     }
-    console.log('register' + eventClassName)
     this.handlersMap[eventClassName].push(callback)
   }
 

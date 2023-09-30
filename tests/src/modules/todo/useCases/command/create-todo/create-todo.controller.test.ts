@@ -7,11 +7,12 @@ import request from 'supertest'
 import { CreateTodoService } from '@src/modules/todo/useCases/commands/create-todo/create-todo.service'
 import { v4 } from 'uuid'
 import { todoUrls } from '@src/configs/routes'
+import { TODO_TYPES } from '@src/modules/todo/infra/di/types'
 
 describe('Create Todo Controller', () => {
   const route = todoUrls.root + todoUrls.createOne
   const server = container.get<IServer>(TYPES.SERVER).create('/')
-  const createTodoService = container.get<CreateTodoService>(TYPES.CREATE_TODO_SERVICE)
+  const createTodoService = container.get<CreateTodoService>(TODO_TYPES.CREATE_TODO_SERVICE)
 
   beforeAll(async () => {})
 

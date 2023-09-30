@@ -8,12 +8,13 @@ import { mock, mockTodo } from '../../todos'
 import { TodoRepositoryPort } from '@src/modules/todo/repository/repository.port'
 import { FindTodosQuery } from '@src/modules/todo/useCases/queries/find-todos/find-todos.query'
 import { TodoSequelizeRepository } from '@src/modules/todo/repository/repository'
+import { TODO_TYPES } from '@src/modules/todo/infra/di/types'
 
 type ExpectedData = Awaited<ReturnType<InstanceType<typeof TodoSequelizeRepository>['findAllPaginated']>>
 
 describe('Find Todos Service', () => {
-  container.rebind(TYPES.TODO_REPOSITORY).toConstantValue(mock.todoRepository)
-  const findTodosService = container.get<FindTodosService>(TYPES.FIND_TODOS_SERVICE)
+  container.rebind(TODO_TYPES.REPOSITORY).toConstantValue(mock.todoRepository)
+  const findTodosService = container.get(FindTodosService)
 
   beforeAll(async () => {})
 

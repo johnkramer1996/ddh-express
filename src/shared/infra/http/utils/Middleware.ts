@@ -1,99 +1,54 @@
-import { NextFunction, Request, Response } from 'express'
 import { envCongig } from '@src/configs/config'
-const rateLimit = require('express-rate-limit')
+import { USER_TYPES } from '@src/modules/user/infra/di/types'
+import { AuthServicePort } from '@src/modules/user/services/auth.service.port'
+import { NextFunction, Request, Response } from 'express'
+import { inject, injectable } from 'inversify'
+import { RequestDecoded } from '../models/controller.base'
 
+@injectable()
 export class Middleware {
-  //   private authService: IAuthService
-
-  //   constructor(authService: IAuthService) {
-  //     this.authService = authService
-  //   }
+  constructor(@inject(USER_TYPES.AUTH_SERVICE) private authService: AuthServicePort) {}
 
   private endRequest(status: 400 | 401 | 403, message: string, res: any): any {
     return res.status(status).send({ message })
   }
 
-  //   public includeDecodedTokenIfExists() {
-  //     return async (req, res, next) => {
-  //       const token = req.headers['authorization']
-  //       // Confirm that the token was signed with our signature.
-  //       if (token) {
-  //         const decoded = await this.authService.decodeJWT(token)
-  //         const signatureFailed = !!decoded === false
+  private getTokenFromRequest(req: Request): string {
+    return req.headers['authorization'] ? req.headers['authorization'].split(' ')[1] : req.cookies['accessToken'] ? req.cookies['accessToken'] : ''
+  }
 
-  //         if (signatureFailed) {
-  //           return this.endRequest(403, 'Token signature expired.', res)
-  //         }
+  public authenticated(ensure: true) {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      const token = this.getTokenFromRequest(req)
+      if (!token) return ensure ? this.endRequest(403, 'No access token provided', res) : next()
 
-  //         // See if the token was found
-  //         const { username } = decoded
-  //         const tokens = await this.authService.getTokens(username)
+      try {
+        console.log(token)
+        const decoded = await this.authService.decodeJWT(token)
+        const tokens = await this.authService.getTokens(decoded.email)
 
-  //         // if the token was found, just continue the request.
-  //         if (tokens.length !== 0) {
-  //           req.decoded = decoded
-  //           return next()
-  //         } else {
-  //           return next()
-  //         }
-  //       } else {
-  //         return next()
-  //       }
-  //     }
-  //   }
+        if (tokens.length === 0) {
+          return ensure ? this.endRequest(403, 'Auth token not found. User is probably not logged in. Please login again.', res) : next()
+        }
 
-  //   public ensureAuthenticated() {
-  //     return async (req, res, next) => {
-  //       const token = req.headers['authorization']
-  //       // Confirm that the token was signed with our signature.
-  //       if (token) {
-  //         const decoded = await this.authService.decodeJWT(token)
-  //         const signatureFailed = !!decoded === false
+        ;(req as RequestDecoded).decoded = decoded
+        return next()
+      } catch (e) {
+        return this.endRequest(403, 'Token signature expired.', res)
+      }
+    }
+  }
 
-  //         if (signatureFailed) {
-  //           return this.endRequest(403, 'Token signature expired.', res)
-  //         }
+  public static restrictedUrl(req: Request, res: Response, next: NextFunction) {
+    if (!envCongig.isProduction) {
+      return next()
+    }
 
-  //         // See if the token was found
-  //         const { username } = decoded
-  //         const tokens = await this.authService.getTokens(username)
+    const approvedDomainList = ['https://khalilstemmler.com']
+    const domain = req.headers.origin
+    const isValidDomain = !!approvedDomainList.find((d) => d === domain)
+    console.log(`Domain =${domain}, valid?=${isValidDomain}`)
 
-  //         // if the token was found, just continue the request.
-  //         if (tokens.length !== 0) {
-  //           req.decoded = decoded
-  //           return next()
-  //         } else {
-  //           return this.endRequest(403, 'Auth token not found. User is probably not logged in. Please login again.', res)
-  //         }
-  //       } else {
-  //         return this.endRequest(403, 'No access token provided', res)
-  //       }
-  //     }
-  //   }
-
-  //   public static createRateLimit(mins: number, maxRequests: number) {
-  //     return rateLimit({
-  //       windowMs: mins * 60 * 1000,
-  //       max: maxRequests,
-  //     })
-  //   }
-
-  //   public static restrictedUrl(req, res, next) {
-  //     if (!isProduction) {
-  //       return next()
-  //     }
-
-  //     const approvedDomainList = ['https://khalilstemmler.com']
-
-  //     const domain = req.headers.origin
-
-  //     const isValidDomain = !!approvedDomainList.find((d) => d === domain)
-  //     console.log(`Domain =${domain}, valid?=${isValidDomain}`)
-
-  //     if (!isValidDomain) {
-  //       return res.status(403).json({ message: 'Unauthorized' })
-  //     } else {
-  //       return next()
-  //     }
-  //   }
+    return isValidDomain ? next() : res.status(403).json({ message: 'Unauthorized' })
+  }
 }

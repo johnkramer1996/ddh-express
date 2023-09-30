@@ -5,13 +5,14 @@ import { TodoRepositoryPort } from '@src/modules/todo/repository/repository.port
 import { FindTodosQuery } from '@src/modules/todo/useCases/queries/find-todos/find-todos.query'
 import { mock, mockTodo } from '../useCases/todos'
 import { repositoryConfig } from '@src/configs/config'
+import { TODO_TYPES } from '@src/modules/todo/infra/di/types'
 
 // type myType =
 
 describe('Todo Repository', () => {
-  container.rebind(TYPES.TODO_SEQUELIZE_MODEL).toConstantValue(mock.sequelizeModel)
-  container.rebind(TYPES.TODO_MAPPER).toConstantValue(mock.todoMapper)
-  const todoRepository = container.get<TodoRepositoryPort>(TYPES.TODO_REPOSITORY)
+  container.rebind(TODO_TYPES.TODO_SEQUELIZE_MODEL).toConstantValue(mock.sequelizeModel)
+  container.rebind(TODO_TYPES.MAPPER).toConstantValue(mock.todoMapper)
+  const todoRepository = container.get<TodoRepositoryPort>(TODO_TYPES.REPOSITORY)
 
   beforeAll(async () => {})
 

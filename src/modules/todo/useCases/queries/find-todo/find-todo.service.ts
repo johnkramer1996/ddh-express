@@ -8,12 +8,15 @@ import { FindTodoQuery } from './find-todo.query'
 import { getStringFromUnknown } from '@src/shared/utils/get-error'
 import { InternalServerErrorException } from '@src/shared/exceptions/exceptions'
 import { TodoNotFoundException } from '@src/modules/todo/domain/todo.errors'
+import { TODO_TYPES } from '@src/modules/todo/infra/di/types'
+import { IQueryHandler, QueryHandler } from '../../../../../shared/core/cqs/query-handler'
 
-type FindTodoServiceResponse = Result<true, TodoEntity> | Result<false, Error>
+export type FindTodoServiceResponse = Result<true, TodoEntity> | Result<false, Error>
 
 @injectable()
-export class FindTodoService {
-  constructor(@inject(TYPES.TODO_REPOSITORY) private repository: TodoRepositoryPort) {}
+@QueryHandler(FindTodoQuery)
+export class FindTodoService implements IQueryHandler<FindTodoQuery, FindTodoServiceResponse> {
+  constructor(@inject(TODO_TYPES.REPOSITORY) private repository: TodoRepositoryPort) {}
 
   async execute(query: FindTodoQuery): Promise<FindTodoServiceResponse> {
     try {

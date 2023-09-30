@@ -4,7 +4,6 @@ const uuid = require('uuid')
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  // @ts-ignore
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert(
       'todos',
@@ -21,7 +20,6 @@ module.exports = {
     )
   },
 
-  // @ts-ignore
   async down(queryInterface, Sequelize) {
     await queryInterface.bulkDelete('todos', null, {})
   },

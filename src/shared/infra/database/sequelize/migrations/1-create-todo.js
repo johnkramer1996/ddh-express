@@ -1,31 +1,29 @@
 module.exports = {
-  // @ts-ignore
   up: async (queryInterface, Sequelize) => {
     return queryInterface.createTable('todos', {
       id: {
-        type: Sequelize.UUID,
+        type: Sequelize.DataTypes.UUID,
         allowNull: false,
         primaryKey: true,
       },
       text: {
-        type: new Sequelize.STRING(),
+        type: Sequelize.DataTypes.STRING,
         allowNull: false,
       },
       completed: {
-        type: new Sequelize.BOOLEAN(),
+        type: Sequelize.DataTypes.BOOLEAN,
         allowNull: false,
       },
       createdAt: {
-        type: Sequelize.DATE,
+        type: Sequelize.DataTypes.DATE,
         allowNull: false,
       },
       updatedAt: {
-        type: Sequelize.DATE,
+        type: Sequelize.DataTypes.DATE,
         allowNull: false,
       },
     })
   },
-  // @ts-ignore
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('todos')
   },

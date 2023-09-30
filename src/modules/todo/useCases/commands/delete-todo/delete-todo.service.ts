@@ -8,12 +8,13 @@ import { getStringFromUnknown } from '../../../../../shared/utils/get-error'
 import { DeleteTodoCommand } from './delete-todo.command'
 import { TodoNotFoundException } from '@src/modules/todo/domain/todo.errors'
 import { InternalServerErrorException } from '@src/shared/exceptions/exceptions'
+import { TODO_TYPES } from '@src/modules/todo/infra/di/types'
 
 type Response = Result<true> | Result<false, Error>
 
 @injectable()
 export class DeleteTodoService {
-  constructor(@inject(TYPES.TODO_REPOSITORY) private repository: TodoRepositoryPort) {}
+  constructor(@inject(TODO_TYPES.REPOSITORY) private repository: TodoRepositoryPort) {}
 
   async execute(command: DeleteTodoCommand): Promise<Response> {
     const todo = await this.repository.findOneById(command.todoId)

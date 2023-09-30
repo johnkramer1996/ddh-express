@@ -2,17 +2,19 @@ import { inject, injectable } from 'inversify'
 import { FindTodosQuery } from './find-todos.query'
 import { FindTodosRequestDto } from './find-todos.request.dto'
 import { Request, Response } from 'express'
-import { FindTodosService } from './find-todos.service'
+import { FindTodosService, FindTodosServiceResponse } from './find-todos.service'
 import { plainToClass } from 'class-transformer'
-import { ValidateRequest } from '@src/shared/infra/http/utils/Validate'
+import { ValidateRequest } from '@src/shared/infra/http/utils/validate-request'
 import { PaginatedQueryRequestDto } from '@src/shared/api/paginated-query.request.dto'
 import { BaseController } from '@src/shared/infra/http/models/controller.base'
-import { TYPES } from '@src/shared/infra/di/types'
 import { TodoPaginatedResponseDto } from '@src/modules/todo/dtos/todo.paginated.response.dto.ts'
+import { TYPES } from '@src/shared/infra/di/types'
+import { IQueryBus } from '@src/shared/core/cqs/query-bus'
+import { IQuery } from '@src/shared/core/cqs/query.interface'
 
 @injectable()
 export class FindTodosController extends BaseController {
-  constructor(@inject(TYPES.FIND_TODOS_SERVICE) private service: FindTodosService) {
+  constructor(@inject(TYPES.QUERY_BUS) private queryBus: IQueryBus) {
     super()
   }
 
@@ -24,8 +26,8 @@ export class FindTodosController extends BaseController {
     const body = plainToClass(FindTodosRequestDto, req.body)
     const params = plainToClass(PaginatedQueryRequestDto, req.query)
 
-    const query = new FindTodosQuery({ where: { ...body }, ...params })
-    const result = await this.service.execute(query)
+    const query: IQuery<FindTodosServiceResponse> = new FindTodosQuery({ where: { ...body }, ...params })
+    const result = await this.queryBus.execute(query)
 
     if (!result.isSuccess) {
       return this.fail(res, result.getValue())

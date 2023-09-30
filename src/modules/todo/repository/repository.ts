@@ -6,10 +6,11 @@ import { TodoRepositoryPort } from './repository.port'
 import { TodoMapper } from '../domain/todo.mapper'
 import { TYPES } from '@src/shared/infra/di/types'
 import { ModelDefined } from 'sequelize'
+import { TODO_TYPES } from '../infra/di/types'
 
 @injectable()
 export class TodoSequelizeRepository extends SequelizeRepositoryBase<TodoEntity, TodoAttributes> implements TodoRepositoryPort {
-  constructor(@inject(TYPES.TODO_MAPPER) mapper: TodoMapper, @inject(TYPES.TODO_SEQUELIZE_MODEL) model: ModelDefined<any, any>) {
+  constructor(@inject(TODO_TYPES.MAPPER) mapper: TodoMapper, @inject(TODO_TYPES.TODO_SEQUELIZE_MODEL) model: ModelDefined<any, any>) {
     super(mapper, model)
   }
 }

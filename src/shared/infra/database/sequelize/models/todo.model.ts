@@ -5,9 +5,8 @@ import { injectable } from 'inversify'
 export type TodoAttributes = InferAttributes<TodoModel>
 export type TodoCreationAttributes = InferCreationAttributes<TodoModel>
 
-// <TodoAttributes, TodoCreationAttributes>
 @injectable()
-class TodoModel extends Model {
+class TodoModel extends Model<TodoAttributes, TodoCreationAttributes> {
   declare id: CreationOptional<string>
   declare text: string
   declare completed: boolean
@@ -29,7 +28,7 @@ TodoModel.init(
     },
     completed: {
       type: new DataTypes.BOOLEAN(),
-      allowNull: true,
+      allowNull: false,
     },
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE,

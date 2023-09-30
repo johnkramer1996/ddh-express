@@ -1,19 +1,20 @@
 import { inject, injectable } from 'inversify'
 import { FindTodoQuery } from './find-todo.query'
 import { Request, Response } from 'express'
-import { FindTodoService } from './find-todo.service'
+import { FindTodoServiceResponse } from './find-todo.service'
 import { plainToClass } from 'class-transformer'
-import { ValidateRequest } from '@src/shared/infra/http/utils/Validate'
-import { PaginatedQueryRequestDto } from '@src/shared/api/paginated-query.request.dto'
+import { ValidateRequest } from '@src/shared/infra/http/utils/validate-request'
 import { BaseController } from '@src/shared/infra/http/models/controller.base'
-import { TYPES } from '@src/shared/infra/di/types'
 import { TodoResponseDto } from '@src/modules/todo/dtos/todo.response.dto'
 import { TodoIdRequestDto } from '@src/modules/todo/dtos/todo-id.request.dto'
 import { TodoNotFoundException } from '@src/modules/todo/domain/todo.errors'
+import { TYPES } from '@src/shared/infra/di/types'
+import { IQueryBus } from '@src/shared/core/cqs/query-bus'
+import { IQuery } from '@src/shared/core/cqs/query.interface'
 
 @injectable()
 export class FindTodoController extends BaseController {
-  constructor(@inject(TYPES.FIND_TODO_SERVICE) private service: FindTodoService) {
+  constructor(@inject(TYPES.QUERY_BUS) private queryBus: IQueryBus) {
     super()
   }
 
@@ -21,8 +22,8 @@ export class FindTodoController extends BaseController {
   async executeImpl(req: Request, res: Response): Promise<any> {
     const params = plainToClass(TodoIdRequestDto, req.params)
 
-    const query = new FindTodoQuery(params)
-    const result = await this.service.execute(query)
+    const query: IQuery<FindTodoServiceResponse> = new FindTodoQuery(params)
+    const result = await this.queryBus.execute(query)
 
     if (!result.isSuccess) {
       const value = result.getValue()

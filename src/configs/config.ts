@@ -20,8 +20,18 @@ const envCongig = {
   isProduction,
 }
 
+const redisConfig = {
+  host: 'localhost',
+  port: 6379,
+}
+
 const repositoryConfig = {
   limit: 15,
 }
 
-export { dbConfig, envCongig, repositoryConfig, PORT }
+const authConfig = {
+  secret: 'ukrainer',
+  tokenExpiryTime: 5,
+}
+
+export { dbConfig, envCongig, repositoryConfig, redisConfig, authConfig, PORT }

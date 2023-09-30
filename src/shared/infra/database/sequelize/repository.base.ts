@@ -17,8 +17,8 @@ export abstract class SequelizeRepositoryBase<Aggregate extends AggregateRoot<an
   }
 
   public async findAllPaginated(params: QueryParams): Promise<Paginated<Aggregate>> {
-    const where = Object.entries(params.where).reduce((p, i) => ((p[i[0]] = i[1]), p), {} as ObjectLiteral)
-    const { rows: items, count } = await this.model.findAndCountAll({ limit: params.limit, offset: params.offset, where })
+    const { rows: items, count } = await this.model.findAndCountAll({ limit: params.limit, offset: params.offset, where: params.where })
+
     return new Paginated({ data: items.map(this.mapper.toDomain), count, limit: params.limit, page: params.page })
   }
 

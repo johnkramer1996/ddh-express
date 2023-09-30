@@ -10,10 +10,11 @@ import { IServer } from '@src/shared/infra/http/server'
 import request from 'supertest'
 import { todoUrls } from '@src/configs/routes'
 import { mock, mockTodo } from '../../todos'
+import { TODO_TYPES } from '@src/modules/todo/infra/di/types'
 
 describe('Find Todos Controller', () => {
   const route = todoUrls.root + todoUrls.findAll
-  container.rebind(TYPES.FIND_TODOS_SERVICE).toConstantValue(mock.findTodosService)
+  container.rebind(TYPES.QUERY_BUS).toConstantValue(mock.queryBus)
   const app = container.get<IServer>(TYPES.SERVER).create('/')
   // const mapper = container.get<TodoMapper>(TYPES.TODO_MAPPER)
 
@@ -27,7 +28,7 @@ describe('Find Todos Controller', () => {
     //arrange
     const responseData = { data: mockTodo, count: 1, limit: 1, page: 1 }
     const expectedData = new TodoPaginatedResponseDto(responseData as any)
-    mock.findTodosService.execute.mockResolvedValue(Result.ok(responseData))
+    mock.queryBus.execute.mockResolvedValue(Result.ok(responseData))
 
     //act
     const response = await request(app).get(route)
@@ -40,7 +41,7 @@ describe('Find Todos Controller', () => {
   test('Should return 500 error with message', async () => {
     //arrange
     const expectedData = { message: 'Error' }
-    mock.findTodosService.execute.mockResolvedValue(Result.fail(new Error(expectedData.message)))
+    mock.queryBus.execute.mockResolvedValue(Result.fail(new Error(expectedData.message)))
 
     //act
     const response = await request(app).get(route)

@@ -3,15 +3,16 @@ import { TYPES } from '../../../../../shared/infra/di/types'
 import { Request, Response } from 'express'
 import { BaseController } from '../../../../../shared/infra/http/models/controller.base'
 import { plainToClass } from 'class-transformer'
-import { ValidateRequest } from '@src/shared/infra/http/utils/Validate'
+import { ValidateRequest } from '@src/shared/infra/http/utils/validate-request'
 import { CreateTodoService } from './create-todo.service'
 import { CreateTodoRequestDto } from './create-todo.request.dto'
 import { CreateTodoCommand } from './create-todo.command'
 import { IdResponse } from '@src/shared/api/id.response.dto'
+import { TODO_TYPES } from '@src/modules/todo/infra/di/types'
 
 @injectable()
 export class CreateTodoController extends BaseController {
-  constructor(@inject(TYPES.CREATE_TODO_SERVICE) private service: CreateTodoService) {
+  constructor(@inject(TODO_TYPES.CREATE_TODO_SERVICE) private service: CreateTodoService) {
     super()
   }
 

@@ -11,5 +11,5 @@ export const mock = {
   sequelizeModel: { findAndCountAll: jest.fn() },
   todoRepository: { findAllPaginated: jest.fn() },
   todoMapper: { toDomain: jest.fn() },
-  findTodosService: { execute: jest.fn() },
+  queryBus: { execute: jest.fn() },
 }

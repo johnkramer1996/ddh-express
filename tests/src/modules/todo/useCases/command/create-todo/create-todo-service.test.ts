@@ -7,10 +7,11 @@ import { CreateTodoCommand } from '@src/modules/todo/useCases/commands/create-to
 import { Text } from '@src/modules/todo/domain/value-objects/text.value-object'
 import { TodoEntity } from '@src/modules/todo/domain/todo.entity'
 import { v4 } from 'uuid'
+import { TODO_TYPES } from '@src/modules/todo/infra/di/types'
 
 describe('Create Todo Service', () => {
-  const todoRepository = container.get<TodoRepositoryPort>(TYPES.TODO_REPOSITORY)
-  const findTodosService = container.get<CreateTodoService>(TYPES.CREATE_TODO_SERVICE)
+  const todoRepository = container.get<TodoRepositoryPort>(TODO_TYPES.REPOSITORY)
+  const findTodosService = container.get<CreateTodoService>(TODO_TYPES.CREATE_TODO_SERVICE)
 
   beforeAll(async () => {})
 

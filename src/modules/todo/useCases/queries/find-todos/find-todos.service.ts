@@ -7,12 +7,15 @@ import { inject, injectable } from 'inversify'
 import { FindTodosQuery } from './find-todos.query'
 import { getStringFromUnknown } from '@src/shared/utils/get-error'
 import { InternalServerErrorException } from '@src/shared/exceptions/exceptions'
+import { TODO_TYPES } from '@src/modules/todo/infra/di/types'
+import { IQueryHandler, QueryHandler } from '../../../../../shared/core/cqs/query-handler'
 
-type FindTodosServiceResponse = Result<true, Paginated<TodoEntity>> | Result<false, Error>
+export type FindTodosServiceResponse = Result<true, Paginated<TodoEntity>> | Result<false, Error>
 
 @injectable()
-export class FindTodosService {
-  constructor(@inject(TYPES.TODO_REPOSITORY) private repository: TodoRepositoryPort) {}
+@QueryHandler(FindTodosQuery)
+export class FindTodosService implements IQueryHandler<FindTodosQuery, FindTodosServiceResponse> {
+  constructor(@inject(TODO_TYPES.REPOSITORY) private repository: TodoRepositoryPort) {}
 
   async execute(query: FindTodosQuery): Promise<FindTodosServiceResponse> {
     try {

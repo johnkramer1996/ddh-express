@@ -1,6 +1,6 @@
 import { plainToClass } from 'class-transformer'
 import { validate } from 'class-validator'
-import { transformValidationErrorsToJSON } from './Validate'
+import { transformValidationErrorsToJSON } from './validate-request'
 
 function validationFactory<T extends object>(model: { new (...args: any[]): T }, source: 'body' | 'query' | 'params') {
   return function (target: any, propertyName: string, descriptor: PropertyDescriptor) {

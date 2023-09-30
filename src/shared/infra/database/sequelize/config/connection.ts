@@ -12,3 +12,7 @@ export const sequelize = new Sequelize({
   dialect: 'postgres',
   logging: false,
 })
+
+const queryInterface = sequelize.getQueryInterface()
+
+const start = async () => {}

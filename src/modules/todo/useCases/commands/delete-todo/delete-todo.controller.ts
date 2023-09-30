@@ -1,17 +1,17 @@
 import { inject, injectable } from 'inversify'
-import { TYPES } from '../../../../../shared/infra/di/types'
 import { Request, Response } from 'express'
 import { BaseController } from '../../../../../shared/infra/http/models/controller.base'
 import { plainToClass } from 'class-transformer'
-import { ValidateRequest } from '@src/shared/infra/http/utils/Validate'
+import { ValidateRequest } from '@src/shared/infra/http/utils/validate-request'
 import { DeleteTodoService } from './delete-todo.service'
 import { DeleteTodoCommand } from './delete-todo.command'
 import { TodoIdRequestDto } from '@src/modules/todo/dtos/todo-id.request.dto'
 import { TodoNotFoundException } from '@src/modules/todo/domain/todo.errors'
+import { TODO_TYPES } from '@src/modules/todo/infra/di/types'
 
 @injectable()
 export class DeleteTodoController extends BaseController {
-  constructor(@inject(TYPES.DELETE_TODO_SERVICE) private service: DeleteTodoService) {
+  constructor(@inject(TODO_TYPES.DELETE_TODO_SERVICE) private service: DeleteTodoService) {
     super()
   }
 

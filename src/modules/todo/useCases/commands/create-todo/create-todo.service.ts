@@ -9,12 +9,13 @@ import { CreateTodoCommand } from './create-todo.command'
 import { Text } from '@src/modules/todo/domain/value-objects/text.value-object'
 import { AggregateID } from '@src/shared/domain/entity'
 import { InternalServerErrorException } from '@src/shared/exceptions/exceptions'
+import { TODO_TYPES } from '@src/modules/todo/infra/di/types'
 
 type Response = Result<true, AggregateID> | Result<false, Error>
 
 @injectable()
 export class CreateTodoService {
-  constructor(@inject(TYPES.TODO_REPOSITORY) private repository: TodoRepositoryPort) {}
+  constructor(@inject(TODO_TYPES.REPOSITORY) private repository: TodoRepositoryPort) {}
 
   async execute(command: CreateTodoCommand): Promise<Response> {
     const todo = TodoEntity.create({
