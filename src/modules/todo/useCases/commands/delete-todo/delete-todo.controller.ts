@@ -3,24 +3,21 @@ import { Request, Response } from 'express'
 import { BaseController } from '../../../../../shared/infra/http/models/controller.base'
 import { plainToClass } from 'class-transformer'
 import { ValidateRequest } from '@src/shared/infra/http/utils/validate-request'
-import { DeleteTodoService } from './delete-todo.service'
+import { DeleteTodoService, DeleteTodoServiceResponse } from './delete-todo.service'
 import { DeleteTodoCommand } from './delete-todo.command'
 import { TodoIdRequestDto } from '@src/modules/todo/dtos/todo-id.request.dto'
 import { TodoNotFoundException } from '@src/modules/todo/domain/todo.errors'
 import { TODO_TYPES } from '@src/modules/todo/infra/di/types'
+import { ICommand } from '@src/shared/core/cqs/command.interface'
 
 @injectable()
 export class DeleteTodoController extends BaseController {
-  constructor(@inject(TODO_TYPES.DELETE_TODO_SERVICE) private service: DeleteTodoService) {
-    super()
-  }
-
   @ValidateRequest([['params', TodoIdRequestDto]])
   async executeImpl(req: Request, res: Response): Promise<any> {
     const params = plainToClass(TodoIdRequestDto, req.params)
 
-    const command = new DeleteTodoCommand(params)
-    const result = await this.service.execute(command)
+    const command: ICommand<DeleteTodoServiceResponse> = new DeleteTodoCommand(params)
+    const result = await this.commandBus.execute(command)
 
     if (!result.isSuccess) {
       const value = result.getValue()

@@ -11,6 +11,8 @@ export const userUrls = {
   root: '/users',
   findAll: '/',
   login: '/login',
+  logout: '/logout',
+  refreshToken: '/refreshToken',
   currentUser: '/currentUser',
   // findOne: '/:todoId',
   // createOne: '/',

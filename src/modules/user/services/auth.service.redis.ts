@@ -16,14 +16,12 @@ export class RedisAuthService extends AbstractRedisClient implements AuthService
     return keys.length !== 0
   }
 
-  public async getUserNameFromRefreshToken(refreshToken: RefreshToken): Promise<string> {
+  public async getEmailFromRefreshToken(refreshToken: RefreshToken): Promise<string> {
     const keys = await this.getAllKeys(`*${refreshToken}*`)
     const exists = keys.length !== 0
-
     if (!exists) throw new Error('Username not found for refresh token.')
 
     const key = keys[0]
-
     return key.substring(key.indexOf(this.jwtHashName) + this.jwtHashName.length + 1)
   }
 
@@ -55,12 +53,12 @@ export class RedisAuthService extends AbstractRedisClient implements AuthService
     return decoded as JWTClaims
   }
 
-  private constructKey(username: string, refreshToken: RefreshToken): string {
-    return `refresh-${refreshToken}.${this.jwtHashName}.${username}`
+  private constructKey(email: string, refreshToken: RefreshToken): string {
+    return `refresh-${refreshToken}.${this.jwtHashName}.${email}`
   }
 
-  public addToken(username: string, refreshToken: RefreshToken, token: JWTToken): Promise<any> {
-    return this.set(this.constructKey(username, refreshToken), token)
+  public addToken(email: string, refreshToken: RefreshToken, token: JWTToken): Promise<any> {
+    return this.set(this.constructKey(email, refreshToken), token)
   }
 
   public async clearAllTokens(): Promise<any> {

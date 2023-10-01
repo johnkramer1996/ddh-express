@@ -1,28 +1,27 @@
 import { inject, injectable } from 'inversify'
 import { Result } from '../../../../../shared/core/result'
 import { getStringFromUnknown } from '../../../../../shared/utils/get-error'
-import { LoginCommand } from './login.command'
+import { RefreshTokenCommand } from './refresh-token.command'
 import { InternalServerErrorException } from '@src/shared/exceptions/exceptions'
 import { UserRepositoryPort } from '@src/modules/user/repository/repository.port'
 import { USER_TYPES } from '@src/modules/user/infra/di/types'
-import { UserTokensResponseDto } from '../../../dtos/user-tokens.response.dto'
 import { AuthServicePort } from '@src/modules/user/services/auth.service.port'
-import { PasswordDoesntMatchException, UserNotFoundException } from '@src/modules/user/domain/user.errors'
+import { UserNotFoundException } from '@src/modules/user/domain/user.errors'
 import { CommandHandler, ICommandHandler } from '@src/shared/core/cqs/command-handler'
+import { JWTToken } from '@src/modules/user/domain/jwt'
 
-export type LoginServiceResponse = Result<true, UserTokensResponseDto> | Result<false, Error>
+export type RefreshTokenServiceResponse = Result<true, JWTToken> | Result<false, Error>
 
 @injectable()
-@CommandHandler(LoginCommand)
-export class LoginService implements ICommandHandler<LoginCommand, LoginServiceResponse> {
+@CommandHandler(RefreshTokenCommand)
+export class RefreshTokenService implements ICommandHandler<RefreshTokenCommand, RefreshTokenServiceResponse> {
   constructor(@inject(USER_TYPES.REPOSITORY) private repository: UserRepositoryPort, @inject(USER_TYPES.AUTH_SERVICE) private authService: AuthServicePort) {}
 
-  async execute(command: LoginCommand): Promise<LoginServiceResponse> {
+  async execute(command: RefreshTokenCommand): Promise<RefreshTokenServiceResponse> {
     try {
-      const user = await this.repository.findOneByEmail(command.email)
-      if (!user) return Result.fail(new UserNotFoundException(command.email))
-
-      if (!(user.password === command.password)) return Result.fail(new PasswordDoesntMatchException())
+      const email = await this.authService.getEmailFromRefreshToken(command.refreshToken)
+      const user = await this.repository.findOneByEmail(email)
+      if (!user) return Result.fail(new UserNotFoundException(email, 'email'))
 
       const accessToken = this.authService.signJWT({
         id: user.id,
@@ -35,10 +34,7 @@ export class LoginService implements ICommandHandler<LoginCommand, LoginServiceR
 
       await this.authService.saveAuthenticatedUser(user.email, accessToken, refreshToken)
 
-      this.repository.save(user)
-      console.log('update')
-
-      return Result.ok({ accessToken, refreshToken })
+      return Result.ok(accessToken)
     } catch (err) {
       return Result.fail(new InternalServerErrorException(getStringFromUnknown(err)))
     }

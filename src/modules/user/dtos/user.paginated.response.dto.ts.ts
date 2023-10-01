@@ -7,13 +7,12 @@ import { UserResponseDto } from './user.response.dto'
 export class UserPaginatedResponseDto extends PaginatedResponseDto<UserResponseDto> {
   declare data: readonly UserResponseDto[]
 
-  constructor(props: Paginated<UserEntity>) {
-    const data: UserResponseDto[] = props.data.map((user) => ({
-      ...new ResponseBase(user),
-      email: user.email,
-      country: user.country,
-      street: user.street,
-    }))
-    super({ ...props, data })
-  }
+  // constructor(props: Paginated<UserEntity>) {
+  //   const data: UserResponseDto[] = props.data.map((user) => {
+  //     const copy = user.getProps()
+
+  //     return
+  //   })
+  //   super({ ...props, data })
+  // }
 }

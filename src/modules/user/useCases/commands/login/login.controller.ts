@@ -1,23 +1,25 @@
-import { inject, injectable } from 'inversify'
-import { TYPES } from '../../../../../shared/infra/di/types'
+import { injectable } from 'inversify'
 import { Request, Response } from 'express'
-import { BaseController } from '../../../../../shared/infra/http/models/controller.base'
 import { plainToClass } from 'class-transformer'
 import { ValidateRequest } from '@src/shared/infra/http/utils/validate-request'
-import { LoginService, LoginServiceResponse } from './login.service'
+import { LoginServiceResponse } from './login.service'
 import { LoginRequestDto } from './login.request.dto'
 import { LoginCommand } from './login.command'
-import { ICommandBus } from '@src/shared/core/cqs/command-bus'
 import { ICommand } from '@src/shared/core/cqs/command.interface'
-import { UserNotFoundException } from '@src/modules/user/domain/user.errors'
+import { PasswordDoesntMatchException, UserNotFoundException } from '@src/modules/user/domain/user.errors'
+import { UserTokensResponseDto } from '@src/modules/user/dtos/user-tokens.response.dto'
+import { UserController } from '@src/modules/user/infra/models/user.controller'
+import { userUrls } from '@src/configs/routes'
+import { Controller } from '@src/shared/infra/http/decorators/controller'
 
 @injectable()
-export class LoginController extends BaseController {
-  constructor(@inject(TYPES.COMMAND_BUS) private commandBus: ICommandBus) {
-    super()
+@Controller('post', userUrls.root + userUrls.login)
+export class LoginController extends UserController {
+  @ValidateRequest([['body', LoginRequestDto]])
+  async execute(req: Request, res: Response): Promise<any> {
+    return super.execute(req, res)
   }
 
-  @ValidateRequest([['body', LoginRequestDto]])
   async executeImpl(req: Request, res: Response): Promise<any> {
     const request = plainToClass(LoginRequestDto, req.body)
 
@@ -27,11 +29,12 @@ export class LoginController extends BaseController {
     if (!result.isSuccess) {
       const value = result.getValue()
       if (value instanceof UserNotFoundException) return this.notFound(res, value.message)
+      if (value instanceof PasswordDoesntMatchException) return this.clientError(res, value.message)
       return this.fail(res, result.getValue())
     }
 
     const tokens = result.getValue()
 
-    return this.created(res.cookie('accessToken', tokens.accessToken).cookie('refreshToken', tokens.refreshToken), tokens)
+    return this.created(res.cookie('accessToken', tokens.accessToken).cookie('refreshToken', tokens.refreshToken), new UserTokensResponseDto(tokens))
   }
 }

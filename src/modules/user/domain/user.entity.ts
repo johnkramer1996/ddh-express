@@ -50,29 +50,29 @@ export class UserEntity extends AggregateRoot<TodoProps> {
     return this.props.email
   }
 
-  // get username(): string | null {
-  //   return this.props.username
-  // }
+  get password(): string {
+    return this.props.password
+  }
 
   // get address(): Address {
   //   return this.props.address
   // }
 
-  get country(): string | null {
-    return this.props.address.country
-  }
+  // get country(): string | null {
+  //   return this.props.address.country
+  // }
 
-  get street(): string | null {
-    return this.props.address.street
-  }
+  // get street(): string | null {
+  //   return this.props.address.street
+  // }
 
   // get isDeleted(): boolean {
   //   return this.props.isDeleted
   // }
 
-  // get lastLogin(): Date | null {
-  //   return this.props.lastLogin
-  // }
+  get lastLogin(): Date | null {
+    return this.props.lastLogin
+  }
 
   get accessToken(): string {
     if (!this.props.accessToken) throw new Error('accessToken not found')

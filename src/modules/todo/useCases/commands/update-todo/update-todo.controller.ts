@@ -1,23 +1,17 @@
-import { inject, injectable } from 'inversify'
-import { TYPES } from '../../../../../shared/infra/di/types'
+import { injectable } from 'inversify'
 import { Request, Response } from 'express'
-import { BaseController } from '../../../../../shared/infra/http/models/controller.base'
 import { plainToClass } from 'class-transformer'
 import { ValidateRequest } from '@src/shared/infra/http/utils/validate-request'
-import { UpdateTodoService } from './update-todo.service'
+import { UpdateTodoServiceResponse } from './update-todo.service'
 import { UpdateTodoRequestDto } from './update-todo.request.dto'
 import { UpdateTodoCommand } from './update-todo.command'
-import { IdResponse } from '@src/shared/api/id.response.dto'
 import { TodoIdRequestDto } from '@src/modules/todo/dtos/todo-id.request.dto'
 import { TodoNotFoundException } from '@src/modules/todo/domain/todo.errors'
-import { TODO_TYPES } from '@src/modules/todo/infra/di/types'
+import { TodoController } from '@src/modules/user/infra/models/user.controller'
+import { ICommand } from '@src/shared/core/cqs/command.interface'
 
 @injectable()
-export class UpdateTodoController extends BaseController {
-  constructor(@inject(TODO_TYPES.UPDATE_TODO_SERVICE) private service: UpdateTodoService) {
-    super()
-  }
-
+export class UpdateTodoController extends TodoController {
   @ValidateRequest([
     ['body', UpdateTodoRequestDto],
     ['params', TodoIdRequestDto],
@@ -26,8 +20,8 @@ export class UpdateTodoController extends BaseController {
     const body = plainToClass(UpdateTodoRequestDto, req.body)
     const params = plainToClass(TodoIdRequestDto, req.params)
 
-    const command = new UpdateTodoCommand({ ...body, ...params })
-    const result = await this.service.execute(command)
+    const command: ICommand<UpdateTodoServiceResponse> = new UpdateTodoCommand({ ...body, ...params })
+    const result = await this.commandBus.execute(command)
 
     if (!result.isSuccess) {
       const value = result.getValue()

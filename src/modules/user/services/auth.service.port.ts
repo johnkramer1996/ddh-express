@@ -10,5 +10,5 @@ export interface AuthServicePort {
   saveAuthenticatedUser(userEmail: string, accessToken: string, refreshToken: RefreshToken): Promise<void>
   deAuthenticateUser(username: string): Promise<void>
   refreshTokenExists(refreshToken: RefreshToken): Promise<boolean>
-  getUserNameFromRefreshToken(refreshToken: RefreshToken): Promise<string>
+  getEmailFromRefreshToken(refreshToken: RefreshToken): Promise<string>
 }

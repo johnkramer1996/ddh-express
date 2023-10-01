@@ -11,8 +11,12 @@ import { RedisAuthService } from '../../services/auth.service.redis'
 import { AuthServicePort } from '../../services/auth.service.port'
 import { LoginController } from '../../useCases/commands/login/login.controller'
 import { LoginService } from '../../useCases/commands/login/login.service'
-import { CurrentUserService } from '../../useCases/queries/current-user/find-users.service'
+import { CurrentUserService } from '../../useCases/queries/current-user/current-user.service'
 import { CurrentUserController } from '../../useCases/queries/current-user/current-user.controller'
+import { LogoutController } from '../../useCases/commands/logout/logout.controller'
+import { LogoutService } from '../../useCases/commands/logout/logout.service'
+import { RefreshTokenController } from '../../useCases/commands/refresh-token/refresh-token.controller'
+import { RefreshTokenService } from '../../useCases/commands/refresh-token/refresh-token.service'
 
 const userModule = (container: Container) => {
   container.bind(USER_TYPES.ROUTER).to(UserRouter)
@@ -28,8 +32,14 @@ const userModule = (container: Container) => {
   container.bind(LoginController).toSelf()
   container.bind(LoginService).toSelf()
 
+  container.bind(LogoutController).toSelf()
+  container.bind(LogoutService).toSelf()
+
   container.bind(CurrentUserController).toSelf()
   container.bind(CurrentUserService).toSelf()
+
+  container.bind(RefreshTokenController).toSelf()
+  container.bind(RefreshTokenService).toSelf()
 }
 
 export default userModule

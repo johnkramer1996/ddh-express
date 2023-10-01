@@ -6,6 +6,13 @@ GET http://localhost:8086/api/v1/users
 ### CURRENT USER
 GET http://localhost:8086/api/v1/users/currentUser
 
+### REFRESH TOKEN
+POST http://localhost:8086/api/v1/users/refreshToken
+Content-Type: application/json
+
+{
+    "refreshToken": "3aec4067-cf9d-4547-b7d0-d1989594ea5f"
+}
 
 
 ### LOGIN
@@ -13,6 +20,9 @@ POST http://localhost:8086/api/v1/users/login
 Content-Type: application/json
 
 {
-    "email": "vitalii@gmail.com",
-    "password": "123451"
+    "email": "user0@gmail.com",
+    "password": "12345"
 }
+
+### LOGIN
+POST http://localhost:8086/api/v1/users/logout

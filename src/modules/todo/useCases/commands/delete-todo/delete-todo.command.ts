@@ -1,4 +1,7 @@
-export class DeleteTodoCommand {
+import { ICommand } from '@src/shared/core/cqs/command.interface'
+import { DeleteTodoServiceResponse } from './delete-todo.service'
+
+export class DeleteTodoCommand implements ICommand<DeleteTodoServiceResponse> {
   readonly todoId: string
 
   constructor(props: DeleteTodoCommand) {

@@ -11,13 +11,10 @@ import { TodoNotFoundException } from '@src/modules/todo/domain/todo.errors'
 import { TYPES } from '@src/shared/infra/di/types'
 import { IQueryBus } from '@src/shared/core/cqs/query-bus'
 import { IQuery } from '@src/shared/core/cqs/query.interface'
+import { TodoController } from '@src/modules/user/infra/models/user.controller'
 
 @injectable()
-export class FindTodoController extends BaseController {
-  constructor(@inject(TYPES.QUERY_BUS) private queryBus: IQueryBus) {
-    super()
-  }
-
+export class FindTodoController extends TodoController {
   @ValidateRequest([['params', TodoIdRequestDto]])
   async executeImpl(req: Request, res: Response): Promise<any> {
     const params = plainToClass(TodoIdRequestDto, req.params)

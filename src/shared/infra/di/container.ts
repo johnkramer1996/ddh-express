@@ -8,7 +8,7 @@ import todoModule from '@src/modules/todo/infra/di/container'
 import userModule from '@src/modules/user/infra/di/container'
 import { QueryBus } from '@src/shared/core/cqs/query-bus'
 import { CommandBus } from '@src/shared/core/cqs/command-bus'
-import { Middleware } from '../http/utils/Middleware'
+import { Middleware } from '../http/utils/middleware'
 
 const container = new Container({ defaultScope: 'Singleton', skipBaseClassChecks: true })
 

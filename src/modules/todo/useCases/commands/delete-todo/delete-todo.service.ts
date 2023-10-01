@@ -1,22 +1,22 @@
 import { inject, injectable } from 'inversify'
 import { Result } from '../../../../../shared/core/result'
-import { TYPES } from '../../../../../shared/infra/di/types'
 import { TodoRepositoryPort } from '../../../repository/repository.port'
-import { Paginated } from '../../../../../shared/domain/repository.port'
-import { TodoEntity } from '../../../domain/todo.entity'
 import { getStringFromUnknown } from '../../../../../shared/utils/get-error'
 import { DeleteTodoCommand } from './delete-todo.command'
 import { TodoNotFoundException } from '@src/modules/todo/domain/todo.errors'
 import { InternalServerErrorException } from '@src/shared/exceptions/exceptions'
 import { TODO_TYPES } from '@src/modules/todo/infra/di/types'
+import { CommandHandler } from '@src/shared/core/cqs/command-handler'
+import { IQueryHandler } from '@src/shared/core/cqs/query-handler'
 
-type Response = Result<true> | Result<false, Error>
+export type DeleteTodoServiceResponse = Result<true> | Result<false, Error>
 
 @injectable()
-export class DeleteTodoService {
+@CommandHandler(DeleteTodoCommand)
+export class DeleteTodoService implements IQueryHandler<DeleteTodoCommand, DeleteTodoServiceResponse> {
   constructor(@inject(TODO_TYPES.REPOSITORY) private repository: TodoRepositoryPort) {}
 
-  async execute(command: DeleteTodoCommand): Promise<Response> {
+  async execute(command: DeleteTodoCommand): Promise<DeleteTodoServiceResponse> {
     const todo = await this.repository.findOneById(command.todoId)
     if (!todo) return Result.fail(new TodoNotFoundException(command.todoId))
 

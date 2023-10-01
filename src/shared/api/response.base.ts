@@ -6,11 +6,17 @@ export type ResponseBaseProps<T> = Omit<T, 'id' | 'createdAt' | 'updatedAt'> & {
   updatedAt: Date
 }
 
+// export type ResponseBaseProps ={
+//   id: string
+//   createdAt: Date
+//   updatedAt: Date
+// }
+
 export class ResponseBase extends IdResponse {
   constructor(props: ResponseBaseProps<ResponseBase>) {
     super(props.id)
-    this.createdAt = new Date(props.createdAt).toISOString()
-    this.updatedAt = new Date(props.updatedAt).toISOString()
+    this.createdAt = props.createdAt.toISOString()
+    this.updatedAt = props.updatedAt.toISOString()
   }
 
   public readonly createdAt: string

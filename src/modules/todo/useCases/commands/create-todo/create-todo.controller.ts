@@ -1,27 +1,22 @@
-import { inject, injectable } from 'inversify'
-import { TYPES } from '../../../../../shared/infra/di/types'
+import { injectable } from 'inversify'
 import { Request, Response } from 'express'
-import { BaseController } from '../../../../../shared/infra/http/models/controller.base'
 import { plainToClass } from 'class-transformer'
 import { ValidateRequest } from '@src/shared/infra/http/utils/validate-request'
-import { CreateTodoService } from './create-todo.service'
 import { CreateTodoRequestDto } from './create-todo.request.dto'
 import { CreateTodoCommand } from './create-todo.command'
 import { IdResponse } from '@src/shared/api/id.response.dto'
-import { TODO_TYPES } from '@src/modules/todo/infra/di/types'
+import { TodoController } from '@src/modules/user/infra/models/user.controller'
+import { ICommand } from '@src/shared/core/cqs/command.interface'
+import { CreateTodoServiceResponse } from './create-todo.service'
 
 @injectable()
-export class CreateTodoController extends BaseController {
-  constructor(@inject(TODO_TYPES.CREATE_TODO_SERVICE) private service: CreateTodoService) {
-    super()
-  }
-
+export class CreateTodoController extends TodoController {
   @ValidateRequest([['body', CreateTodoRequestDto]])
   async executeImpl(req: Request, res: Response): Promise<any> {
     const request = plainToClass(CreateTodoRequestDto, req.body)
 
-    const command = new CreateTodoCommand(request)
-    const result = await this.service.execute(command)
+    const command: ICommand<CreateTodoServiceResponse> = new CreateTodoCommand(request)
+    const result = await this.commandBus.execute(command)
 
     if (!result.isSuccess) {
       return this.fail(res, result.getValue())

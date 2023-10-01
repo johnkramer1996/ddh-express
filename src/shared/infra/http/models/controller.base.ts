@@ -2,7 +2,13 @@ import { envCongig } from '@src/configs/config'
 import { JWTClaims } from '@src/modules/user/domain/jwt'
 import { getStringFromUnknown } from '@src/shared/utils/get-error'
 import { Request, Response } from 'express'
-import { injectable } from 'inversify'
+import { inject, injectable } from 'inversify'
+import { TYPES } from '../../di/types'
+import { ICommandBus } from '@src/shared/core/cqs/command-bus'
+import { IQueryBus } from '@src/shared/core/cqs/query-bus'
+import { Mapper } from '@src/shared/domain/mapper.interface'
+import { Entity } from '@src/shared/domain/entity'
+import { ObjectLiteral } from '@src/shared/types/object-literal.type'
 
 export interface RequestDecoded extends Request {
   decoded: JWTClaims
@@ -10,6 +16,8 @@ export interface RequestDecoded extends Request {
 
 @injectable()
 export abstract class BaseController {
+  constructor(protected queryBus: IQueryBus, protected commandBus: ICommandBus, protected mapper: Mapper<Entity<any>, ObjectLiteral>) {}
+
   protected abstract executeImpl(req: RequestDecoded, res: Response): Promise<void | any>
 
   public async execute(req: Request, res: Response): Promise<void> {

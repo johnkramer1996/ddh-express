@@ -6,18 +6,12 @@ import { FindUsersServiceResponse } from './find-users.service'
 import { plainToClass } from 'class-transformer'
 import { ValidateRequest } from '@src/shared/infra/http/utils/validate-request'
 import { PaginatedQueryRequestDto } from '@src/shared/api/paginated-query.request.dto'
-import { BaseController } from '@src/shared/infra/http/models/controller.base'
 import { UserPaginatedResponseDto } from '@src/modules/user/dtos/user.paginated.response.dto.ts'
-import { TYPES } from '@src/shared/infra/di/types'
-import { QueryBus } from '@src/shared/core/cqs/query-bus'
 import { IQuery } from '@src/shared/core/cqs/query.interface'
+import { UserController } from '@src/modules/user/infra/models/user.controller'
 
 @injectable()
-export class FindUsersController extends BaseController {
-  constructor(@inject(TYPES.QUERY_BUS) private queryBus: QueryBus) {
-    super()
-  }
-
+export class FindUsersController extends UserController {
   @ValidateRequest([
     ['body', FindUsersRequestDto],
     ['query', PaginatedQueryRequestDto],
@@ -35,6 +29,12 @@ export class FindUsersController extends BaseController {
 
     const paginated = result.getValue()
 
-    return this.ok(res, new UserPaginatedResponseDto(paginated))
+    return this.ok(
+      res,
+      new UserPaginatedResponseDto({
+        ...paginated,
+        data: paginated.data.map(this.mapper.toResponse),
+      })
+    )
   }
 }
