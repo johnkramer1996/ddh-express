@@ -1,6 +1,5 @@
 import { Container } from 'inversify'
 import { TODO_TYPES } from './types'
-import TodoRouter from '../http/routes'
 import { TodoMapper } from '../../domain/todo.mapper'
 import { TodoSequelizeRepository } from '../../repository/repository'
 import TodoModel from '@src/shared/infra/database/sequelize/models/todo.model'
@@ -17,7 +16,6 @@ import { DeleteTodoService } from '../../useCases/commands/delete-todo/delete-to
 import { TodoRepositoryPort } from '../../repository/repository.port'
 
 const todoModule = (container: Container) => {
-  container.bind(TODO_TYPES.ROUTER).to(TodoRouter)
   container.bind(TODO_TYPES.MAPPER).to(TodoMapper)
   container.bind<TodoRepositoryPort>(TODO_TYPES.REPOSITORY).to(TodoSequelizeRepository)
   container.bind(TODO_TYPES.TODO_SEQUELIZE_MODEL).toConstantValue(TodoModel)
@@ -29,13 +27,13 @@ const todoModule = (container: Container) => {
   container.bind(FindTodoService).toSelf()
 
   container.bind(CreateTodoController).toSelf()
-  container.bind(TODO_TYPES.CREATE_TODO_SERVICE).to(CreateTodoService)
+  container.bind(CreateTodoService).toSelf()
 
   container.bind(UpdateTodoController).toSelf()
-  container.bind(TODO_TYPES.UPDATE_TODO_SERVICE).to(UpdateTodoService)
+  container.bind(UpdateTodoService).toSelf()
 
   container.bind(DeleteTodoController).toSelf()
-  container.bind(TODO_TYPES.DELETE_TODO_SERVICE).to(DeleteTodoService)
+  container.bind(DeleteTodoService).toSelf()
 }
 
 export default todoModule

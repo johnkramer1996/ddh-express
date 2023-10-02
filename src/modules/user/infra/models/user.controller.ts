@@ -6,6 +6,7 @@ import { inject } from 'inversify'
 import { UserMapper } from '../../domain/user.mapper'
 import { USER_TYPES } from '../di/types'
 import { TYPES } from '@src/shared/infra/di/types'
+import { TODO_TYPES } from '@src/modules/todo/infra/di/types'
 
 export abstract class UserController extends BaseController {
   declare mapper: UserMapper
@@ -25,7 +26,7 @@ export abstract class TodoController extends BaseController {
   constructor(
     @inject(TYPES.QUERY_BUS) protected queryBus: IQueryBus,
     @inject(TYPES.COMMAND_BUS) protected commandBus: ICommandBus,
-    @inject(USER_TYPES.MAPPER) mapper: TodoMapper
+    @inject(TODO_TYPES.MAPPER) mapper: TodoMapper
   ) {
     super(queryBus, commandBus, mapper)
   }

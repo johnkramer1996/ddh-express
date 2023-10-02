@@ -1,5 +1,4 @@
 import { Container } from 'inversify'
-import UserRouter from '../http/routes'
 import { USER_TYPES } from './types'
 import { UserMapper } from '../../domain/user.mapper'
 import { UserRepositoryPort } from '../../repository/repository.port'
@@ -17,9 +16,10 @@ import { LogoutController } from '../../useCases/commands/logout/logout.controll
 import { LogoutService } from '../../useCases/commands/logout/logout.service'
 import { RefreshTokenController } from '../../useCases/commands/refresh-token/refresh-token.controller'
 import { RefreshTokenService } from '../../useCases/commands/refresh-token/refresh-token.service'
+import { FindUserController } from '../../useCases/queries/find-user/find-user.controller'
+import { FindUserService } from '../../useCases/queries/find-user/find-todo.service'
 
 const userModule = (container: Container) => {
-  container.bind(USER_TYPES.ROUTER).to(UserRouter)
   container.bind(USER_TYPES.MAPPER).to(UserMapper)
   container.bind<UserRepositoryPort>(USER_TYPES.REPOSITORY).to(UserSequelizeRepository)
   // todo change
@@ -40,6 +40,9 @@ const userModule = (container: Container) => {
 
   container.bind(RefreshTokenController).toSelf()
   container.bind(RefreshTokenService).toSelf()
+
+  container.bind(FindUserController).toSelf()
+  container.bind(FindUserService).toSelf()
 }
 
 export default userModule

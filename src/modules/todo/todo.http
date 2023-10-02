@@ -8,7 +8,7 @@ Content-Type: application/json
 }
 
 ### GET ONE
-GET http://localhost:8086/api/v1/todos/6d3c5559-2188-4782-b629-1182ca619ebf
+GET http://localhost:8086/api/v1/todos/8fed232a-1870-4635-958f-53314a0a3149
 
 ### CREATE ONE
 POST http://localhost:8086/api/v1/todos/
@@ -19,7 +19,7 @@ Content-Type: application/json
 }
 
 ### UPDATE ONE
-PUT http://localhost:8086/api/v1/todos/0da8de04-d532-4c97-ac32-80d5111f06ef
+PUT http://localhost:8086/api/v1/todos/8fed232a-1870-4635-958f-53314a0a3149
 Content-Type: application/json
 
 {
@@ -27,5 +27,5 @@ Content-Type: application/json
 }
 
 ### DELETE ONE
-DELETE http://localhost:8086/api/v1/todos/13c6e1dd-c53e-42b9-aefe-6679c1fecb2a
+DELETE http://localhost:8086/api/v1/todos/8fed232a-1870-4635-958f-53314a0a3149
 

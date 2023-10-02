@@ -4,13 +4,16 @@ import { FindTodosRequestDto } from './find-todos.request.dto'
 import { Request, Response } from 'express'
 import { FindTodosServiceResponse } from './find-todos.service'
 import { plainToClass } from 'class-transformer'
-import { ValidateRequest } from '@src/shared/infra/http/utils/validate-request'
+import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-request'
 import { PaginatedQueryRequestDto } from '@src/shared/api/paginated-query.request.dto'
 import { TodoPaginatedResponseDto } from '@src/modules/todo/dtos/todo.paginated.response.dto.ts'
 import { IQuery } from '@src/shared/core/cqs/query.interface'
 import { TodoController } from '@src/modules/user/infra/models/user.controller'
+import { ControllerGet, ControllerPost } from '@src/shared/infra/http/decorators/controller'
+import { routesV1 } from '@src/configs/routes'
 
 @injectable()
+@ControllerGet(routesV1.todo.findAll)
 export class FindTodosController extends TodoController {
   @ValidateRequest([
     ['body', FindTodosRequestDto],

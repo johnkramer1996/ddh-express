@@ -8,9 +8,14 @@ import { RequestDecoded } from '@src/shared/infra/http/models/controller.base'
 import { IQuery } from '@src/shared/core/cqs/query.interface'
 import { UserNotFoundException } from '@src/modules/user/domain/user.errors'
 import { UserController } from '@src/modules/user/infra/models/user.controller'
+import { routesV1 } from '@src/configs/routes'
+import { ControllerGet, ControllerPost } from '@src/shared/infra/http/decorators/controller'
+import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
 
 @injectable()
+@ControllerGet(routesV1.user.currentUser)
 export class CurrentUserController extends UserController {
+  @UseGuard(AuthGuard)
   async executeImpl(req: RequestDecoded, res: Response): Promise<any> {
     const body = plainToClass(UserRequestDto, req.decoded)
 

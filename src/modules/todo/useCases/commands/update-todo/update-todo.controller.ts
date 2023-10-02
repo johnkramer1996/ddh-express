@@ -1,7 +1,7 @@
 import { injectable } from 'inversify'
 import { Request, Response } from 'express'
 import { plainToClass } from 'class-transformer'
-import { ValidateRequest } from '@src/shared/infra/http/utils/validate-request'
+import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-request'
 import { UpdateTodoServiceResponse } from './update-todo.service'
 import { UpdateTodoRequestDto } from './update-todo.request.dto'
 import { UpdateTodoCommand } from './update-todo.command'
@@ -9,8 +9,11 @@ import { TodoIdRequestDto } from '@src/modules/todo/dtos/todo-id.request.dto'
 import { TodoNotFoundException } from '@src/modules/todo/domain/todo.errors'
 import { TodoController } from '@src/modules/user/infra/models/user.controller'
 import { ICommand } from '@src/shared/core/cqs/command.interface'
+import { ControllerPost } from '@src/shared/infra/http/decorators/controller'
+import { routesV1 } from '@src/configs/routes'
 
 @injectable()
+@ControllerPost(routesV1.todo.updateOne)
 export class UpdateTodoController extends TodoController {
   @ValidateRequest([
     ['body', UpdateTodoRequestDto],

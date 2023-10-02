@@ -7,11 +7,14 @@ import { RefreshTokenCommand } from './refresh-token.command'
 import { ICommand } from '@src/shared/core/cqs/command.interface'
 import { UserNotFoundException } from '@src/modules/user/domain/user.errors'
 import { RefreshTokenRequestDto } from './refresh-token.request.dto'
-import { ValidateRequest } from '@src/shared/infra/http/utils/validate-request'
+import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-request'
 import { UserTokensResponseDto } from '@src/modules/user/dtos/user-tokens.response.dto'
 import { UserController } from '@src/modules/user/infra/models/user.controller'
+import { ControllerPost } from '@src/shared/infra/http/decorators/controller'
+import { routesV1 } from '@src/configs/routes'
 
 @injectable()
+@ControllerPost(routesV1.user.refreshToken)
 export class RefreshTokenController extends UserController {
   @ValidateRequest([['body', RefreshTokenRequestDto]])
   async executeImpl(req: RequestDecoded, res: Response): Promise<any> {

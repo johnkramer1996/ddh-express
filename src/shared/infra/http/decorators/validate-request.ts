@@ -1,7 +1,6 @@
-import { FindTodosRequestDto } from '@src/modules/todo/useCases/queries/find-todos/find-todos.request.dto'
-import { PaginatedQueryRequestDto } from '@src/shared/api/paginated-query.request.dto'
 import { plainToClass } from 'class-transformer'
 import { ValidationError, validate } from 'class-validator'
+import { Request, Response } from 'express'
 
 type ValidateRequest = ['body' | 'query' | 'params', { new (...args: any[]): object }]
 
@@ -9,9 +8,7 @@ export const ValidateRequest = (dtos: ValidateRequest[]) => {
   return function (target: any, propertyName: string, descriptor: PropertyDescriptor) {
     const method = descriptor.value as Function
 
-    descriptor.value = async function () {
-      const [req, res] = arguments
-
+    descriptor.value = async function (req: Request, res: Response) {
       for (let i = 0; i < dtos.length; i++) {
         const [source, model] = dtos[i]
         const plain = req[source]

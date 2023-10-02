@@ -8,7 +8,7 @@ import todoModule from '@src/modules/todo/infra/di/container'
 import userModule from '@src/modules/user/infra/di/container'
 import { QueryBus } from '@src/shared/core/cqs/query-bus'
 import { CommandBus } from '@src/shared/core/cqs/command-bus'
-import { Middleware } from '../http/utils/middleware'
+import { AuthGuard } from '../http/decorators/useGuard'
 
 const container = new Container({ defaultScope: 'Singleton', skipBaseClassChecks: true })
 
@@ -16,7 +16,7 @@ container.bind<IServer>(TYPES.SERVER).to(Server)
 container.bind(TYPES.HTTP_ROUTER).to(HTTPRouter)
 container.bind(TYPES.QUERY_BUS).to(QueryBus)
 container.bind(TYPES.COMMAND_BUS).to(CommandBus)
-container.bind(Middleware).toSelf()
+container.bind(AuthGuard).toSelf()
 container.bind(Container).toDynamicValue((ctx) => ctx.container as Container)
 
 todoModule(container)

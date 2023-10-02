@@ -1,19 +1,21 @@
-import { inject, injectable } from 'inversify'
-import { TYPES } from '../../../../../shared/infra/di/types'
-import { Request, Response } from 'express'
-import { BaseController, RequestDecoded } from '../../../../../shared/infra/http/models/controller.base'
+import { injectable } from 'inversify'
+import { Response } from 'express'
+import { RequestDecoded } from '../../../../../shared/infra/http/models/controller.base'
 import { plainToClass } from 'class-transformer'
-import { ValidateRequest } from '@src/shared/infra/http/utils/validate-request'
 import { LogoutServiceResponse } from './logout.service'
 import { LogoutCommand } from './logout.command'
-import { ICommandBus } from '@src/shared/core/cqs/command-bus'
 import { ICommand } from '@src/shared/core/cqs/command.interface'
 import { UserNotFoundException } from '@src/modules/user/domain/user.errors'
 import { UserRequestDto } from '@src/modules/user/dtos/user.request.dto'
 import { UserController } from '@src/modules/user/infra/models/user.controller'
+import { ControllerPost } from '@src/shared/infra/http/decorators/controller'
+import { routesV1, userUrls } from '@src/configs/routes'
+import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
 
 @injectable()
+@ControllerPost(routesV1.user.logout)
 export class LogoutController extends UserController {
+  @UseGuard(AuthGuard)
   async executeImpl(req: RequestDecoded, res: Response): Promise<any> {
     const request = plainToClass(UserRequestDto, req.decoded)
 

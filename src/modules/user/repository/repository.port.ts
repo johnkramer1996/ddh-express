@@ -1,9 +1,8 @@
-import { UserAttributes } from '@src/shared/infra/database/sequelize/models/user.model'
 import { QueryParams, RepositoryPort } from '../../../shared/domain/repository.port'
-import { UserEntity } from '../domain/user.entity'
+import { UserModelAttributes, UserEntity } from '../domain/user.entity'
 
 export interface FindTodosParams extends QueryParams {
-  readonly where: Partial<UserAttributes>
+  readonly where: Partial<UserModelAttributes>
 }
 
 export interface UserRepositoryPort extends RepositoryPort<UserEntity> {

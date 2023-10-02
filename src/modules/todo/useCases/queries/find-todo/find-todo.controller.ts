@@ -3,7 +3,7 @@ import { FindTodoQuery } from './find-todo.query'
 import { Request, Response } from 'express'
 import { FindTodoServiceResponse } from './find-todo.service'
 import { plainToClass } from 'class-transformer'
-import { ValidateRequest } from '@src/shared/infra/http/utils/validate-request'
+import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-request'
 import { BaseController } from '@src/shared/infra/http/models/controller.base'
 import { TodoResponseDto } from '@src/modules/todo/dtos/todo.response.dto'
 import { TodoIdRequestDto } from '@src/modules/todo/dtos/todo-id.request.dto'
@@ -12,8 +12,11 @@ import { TYPES } from '@src/shared/infra/di/types'
 import { IQueryBus } from '@src/shared/core/cqs/query-bus'
 import { IQuery } from '@src/shared/core/cqs/query.interface'
 import { TodoController } from '@src/modules/user/infra/models/user.controller'
+import { ControllerGet, ControllerPost } from '@src/shared/infra/http/decorators/controller'
+import { routesV1 } from '@src/configs/routes'
 
 @injectable()
+@ControllerGet(routesV1.todo.findOne)
 export class FindTodoController extends TodoController {
   @ValidateRequest([['params', TodoIdRequestDto]])
   async executeImpl(req: Request, res: Response): Promise<any> {
@@ -29,6 +32,7 @@ export class FindTodoController extends TodoController {
     }
 
     const todo = result.getValue()
-    return this.ok(res, new TodoResponseDto(todo))
+
+    return this.ok(res, this.mapper.toResponse(todo))
   }
 }

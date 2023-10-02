@@ -1,16 +1,15 @@
 import { injectable } from 'inversify'
 import { Mapper } from '../../../shared/domain/mapper.interface'
 import { UserResponseDto } from '../dtos/user.response.dto'
-import { UserEntity } from './user.entity'
-import { UserAttributes } from '@src/shared/infra/database/sequelize/models/user.model'
+import { UserModelAttributes, UserEntity } from './user.entity'
 import { AddressAttributes } from '@src/shared/infra/database/sequelize/models/address.model'
 import { Address } from '@src/modules/todo/domain/value-objects/addres.value-object'
 
 @injectable()
-export class UserMapper implements Mapper<UserEntity, UserAttributes, UserResponseDto> {
-  public toPersistence(entity: UserEntity): UserAttributes {
+export class UserMapper implements Mapper<UserEntity, UserModelAttributes, UserResponseDto> {
+  public toPersistence(entity: UserEntity): UserModelAttributes {
     const copy = entity.getProps()
-    const record: UserAttributes = {
+    const record: UserModelAttributes = {
       id: copy.id,
       createdAt: copy.createdAt,
       updatedAt: copy.updatedAt,
@@ -25,7 +24,7 @@ export class UserMapper implements Mapper<UserEntity, UserAttributes, UserRespon
     return record
   }
 
-  public toDomain(record: UserAttributes & { address?: AddressAttributes }): UserEntity {
+  public toDomain(record: UserModelAttributes): UserEntity {
     const entity = new UserEntity({
       id: record.id,
       createdAt: new Date(record.createdAt),
@@ -37,7 +36,7 @@ export class UserMapper implements Mapper<UserEntity, UserAttributes, UserRespon
         isDeleted: record.is_deleted,
         isAdminUser: record.is_admin_user,
         isEmailVerified: record.is_email_verified,
-        lastLogin: null,
+        lastLogin: record.last_login,
         address: new Address({
           country: record.address?.country ?? null,
           postalCode: record.address?.country ?? null,

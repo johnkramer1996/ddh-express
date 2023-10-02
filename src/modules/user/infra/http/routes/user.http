@@ -1,6 +1,10 @@
 
 ### GET LIST
-GET http://localhost:8086/api/v1/users
+GET http://localhost:8086/api/v1/users?limit=20
+
+
+### GET one
+GET http://localhost:8086/api/v1/users/73201b5a-f9b4-4c94-b8f4-cba10cb519ae
 
 
 ### CURRENT USER
@@ -11,7 +15,7 @@ POST http://localhost:8086/api/v1/users/refreshToken
 Content-Type: application/json
 
 {
-    "refreshToken": "3aec4067-cf9d-4547-b7d0-d1989594ea5f"
+    "refreshToken": "1c42db73-64cd-402d-845c-0300108b51e0"
 }
 
 
@@ -20,7 +24,7 @@ POST http://localhost:8086/api/v1/users/login
 Content-Type: application/json
 
 {
-    "email": "user0@gmail.com",
+    "email": "vitalii@gmail.com",
     "password": "12345"
 }
 

@@ -6,8 +6,14 @@ import { inject, injectable } from 'inversify'
 import { RequestDecoded } from '../models/controller.base'
 
 @injectable()
-export class Middleware {
+export class aaa {
   constructor(@inject(USER_TYPES.AUTH_SERVICE) private authService: AuthServicePort) {}
+
+  public log(req: Request, res: Response, next: NextFunction) {
+    const { url, method, body, headers } = req
+    console.log('[LOG]', { url, method, body, headers })
+    next()
+  }
 
   private endRequest(status: 400 | 401 | 403, message: string, res: any): any {
     return res.status(status).send({ message })

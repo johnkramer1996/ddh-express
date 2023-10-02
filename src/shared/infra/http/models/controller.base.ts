@@ -16,7 +16,7 @@ export interface RequestDecoded extends Request {
 
 @injectable()
 export abstract class BaseController {
-  constructor(protected queryBus: IQueryBus, protected commandBus: ICommandBus, protected mapper: Mapper<Entity<any>, ObjectLiteral>) {}
+  constructor(protected queryBus: IQueryBus, protected commandBus: ICommandBus, protected mapper: Mapper<Entity<any>, any>) {}
 
   protected abstract executeImpl(req: RequestDecoded, res: Response): Promise<void | any>
 

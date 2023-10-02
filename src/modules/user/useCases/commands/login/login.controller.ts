@@ -1,7 +1,7 @@
 import { injectable } from 'inversify'
 import { Request, Response } from 'express'
 import { plainToClass } from 'class-transformer'
-import { ValidateRequest } from '@src/shared/infra/http/utils/validate-request'
+import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-request'
 import { LoginServiceResponse } from './login.service'
 import { LoginRequestDto } from './login.request.dto'
 import { LoginCommand } from './login.command'
@@ -9,17 +9,13 @@ import { ICommand } from '@src/shared/core/cqs/command.interface'
 import { PasswordDoesntMatchException, UserNotFoundException } from '@src/modules/user/domain/user.errors'
 import { UserTokensResponseDto } from '@src/modules/user/dtos/user-tokens.response.dto'
 import { UserController } from '@src/modules/user/infra/models/user.controller'
-import { userUrls } from '@src/configs/routes'
-import { Controller } from '@src/shared/infra/http/decorators/controller'
+import { routesV1 } from '@src/configs/routes'
+import { ControllerPost } from '@src/shared/infra/http/decorators/controller'
 
 @injectable()
-@Controller('post', userUrls.root + userUrls.login)
+@ControllerPost(routesV1.user.login)
 export class LoginController extends UserController {
   @ValidateRequest([['body', LoginRequestDto]])
-  async execute(req: Request, res: Response): Promise<any> {
-    return super.execute(req, res)
-  }
-
   async executeImpl(req: Request, res: Response): Promise<any> {
     const request = plainToClass(LoginRequestDto, req.body)
 

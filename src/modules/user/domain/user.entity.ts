@@ -3,13 +3,14 @@ import { AggregateRoot } from '../../../shared/domain/aggregate-root.base'
 import { AggregateID } from '../../../shared/domain/entity'
 import { JWTToken, RefreshToken } from './jwt'
 import { Address } from '@src/modules/todo/domain/value-objects/addres.value-object'
+import { AddressAttributes } from '@src/shared/infra/database/sequelize/models/address.model'
 
 export interface CreateTodoProps {
   email: string
   password: string
 }
 
-export interface TodoProps extends CreateTodoProps {
+export interface UserProps extends CreateTodoProps {
   username: string | null
   isEmailVerified: boolean
   isAdminUser: boolean
@@ -21,13 +22,29 @@ export interface TodoProps extends CreateTodoProps {
   // country: string | null
 }
 
-export class UserEntity extends AggregateRoot<TodoProps> {
+export interface UserModelAttributes extends UserModelCreationAttributes {
+  username: string | null
+  is_email_verified: boolean
+  is_admin_user: boolean
+  is_deleted: boolean
+  last_login: Date | null
+  createdAt: Date
+  updatedAt: Date
+  address?: AddressAttributes
+}
+export interface UserModelCreationAttributes {
+  id: string
+  email: string
+  password: string
+}
+
+export class UserEntity extends AggregateRoot<UserProps> {
   protected readonly _id!: AggregateID
 
   static create(create: CreateTodoProps): UserEntity {
     const id = v4()
 
-    const props: TodoProps = {
+    const props: UserProps = {
       ...create,
       username: null,
       isEmailVerified: false,

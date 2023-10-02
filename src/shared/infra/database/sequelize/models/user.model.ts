@@ -8,16 +8,15 @@ import {
   HasOneGetAssociationMixin,
   HasOneSetAssociationMixin,
   HasOneCreateAssociationMixin,
+  NonAttribute,
 } from 'sequelize'
 import { sequelize } from '../config/connection'
 import { injectable } from 'inversify'
-import { AddressModel } from './address.model'
-
-export type UserAttributes = InferAttributes<UserModel>
-export type UserCreationAttributes = InferCreationAttributes<UserModel>
+import { AddressAttributes, AddressModel } from './address.model'
+import { UserModelAttributes, UserModelCreationAttributes } from '@src/modules/user/domain/user.entity'
 
 @injectable()
-class UserModel extends Model<UserAttributes, UserCreationAttributes> {
+class UserModel extends Model<UserModelAttributes, UserModelCreationAttributes> {
   declare id: CreationOptional<string>
   declare email: string
   declare password: string

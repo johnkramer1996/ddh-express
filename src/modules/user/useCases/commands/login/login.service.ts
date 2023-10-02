@@ -35,8 +35,7 @@ export class LoginService implements ICommandHandler<LoginCommand, LoginServiceR
 
       await this.authService.saveAuthenticatedUser(user.email, accessToken, refreshToken)
 
-      this.repository.save(user)
-      console.log('update')
+      await this.repository.save(user)
 
       return Result.ok({ accessToken, refreshToken })
     } catch (err) {
