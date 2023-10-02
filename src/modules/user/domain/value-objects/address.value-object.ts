@@ -1,12 +1,25 @@
 import { Guard } from '@src/shared/core/guard'
 import { ValueObject } from '@src/shared/domain/value-object.base'
 import { ArgumentOutOfRangeException } from '@src/shared/exceptions/exceptions'
+import { PrimaryKey } from '@src/shared/core/primary-key'
+import { TimeStamp } from '@src/shared/core/time-stamp'
 
-export interface AddressProps {
-  country?: string | null
-  postalCode?: string | null
-  street?: string | null
+export interface AddressCreationProps {
+  country: string | null
+  postalCode: string | null
+  street: string | null
 }
+
+export interface AddressProps extends AddressCreationProps {}
+
+export interface AddressCreationAttributes extends PrimaryKey {
+  userId: string
+  country: string | null
+  postalCode: string | null
+  street: string | null
+}
+
+export interface AddressAttributes extends AddressCreationAttributes, TimeStamp {}
 
 export class Address extends ValueObject<AddressProps> {
   get country(): string | null {
@@ -21,14 +34,7 @@ export class Address extends ValueObject<AddressProps> {
     return this.props.street ?? null
   }
 
-  /**
-   * Note: This is a very simplified example of validation,
-   * real world projects will have stricter rules.
-   * You can avoid this type of validation here and validate
-   * only on the edge of the application (in controllers when receiving
-   * a request) sacrificing some security for performance and convenience.
-   */
-  protected validate(props: AddressProps): void {
+  protected validate(props: AddressCreationProps): void {
     if (props.country && !Guard.lengthIsBetween(props.country, 2, 50)) {
       throw new ArgumentOutOfRangeException('country is out of range')
     }

@@ -1,4 +1,4 @@
-import { JWTToken, RefreshToken } from '@src/modules/user/domain/jwt'
+import { JWTToken, RefreshToken } from '@src/shared/core/jwt'
 
 export class UserTokensResponseDto {
   accessToken: JWTToken

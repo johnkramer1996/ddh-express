@@ -3,12 +3,16 @@ import './shared/utils/dotenv'
 import { TYPES } from './shared/infra/di/types'
 import { IServer } from './shared/infra/http/server'
 import { PORT, envCongig } from './configs/config'
-import './shared/infra/di/container'
 import { container } from './shared/infra/di/container'
 
 import './modules/todo'
 import { USER_TYPES } from './modules/user/infra/di/types'
 import { AuthServicePort } from './modules/user/services/auth.service.port'
+import { sequelize } from './shared/infra/database/sequelize/config/connection'
+import accociate from './shared/infra/database/sequelize/models/accociate'
+import UserModel from './shared/infra/database/sequelize/models/user.model'
+import CommentModel from './shared/infra/database/sequelize/models/comment.model'
+import { v4 } from 'uuid'
 
 async function bootstrap() {
   const app = container.get<IServer>(TYPES.SERVER).create()
@@ -17,10 +21,36 @@ async function bootstrap() {
   if (envCongig.isProduction) await redis.connect()
   await redis.connect()
 
-  // await sequelize.sync({ alter: true })
+  accociate()
+  // await sequelize.sync({ force: true, alter: true })
+  // const user = await UserModel.create({ email: 'vitalii@gmail.com', id: v4(), password: '12345' }, { raw: true })
 
   app.listen(PORT, () => {
     console.log(`server started ON PORT ${PORT}`)
   })
 }
 bootstrap()
+
+// console.log('init')
+
+//
+//   console.log(user)
+//   await CommentModel.create({ id: v4(), text: 'text', userId: user.id }, { raw: true })
+
+//   const vitalii = await UserModel.findOne({
+//     include: [{ as: 'comments', model: CommentModel }],
+//     rejectOnEmpty: true,
+//   })
+
+//   console.log(vitalii.isEmailVerified)
+
+//   // const comment = await CommentModel.findOne({
+//   //   include: [{ as: 'user', model: UserModel }],
+//   //   rejectOnEmpty: true,
+//   // })
+
+//   // console.log(comment.text)
+//   // console.log(comment.user_id)
+
+//   // console.log(console.log(user))
+//   // AddressModel.create({ user_id: user.id })

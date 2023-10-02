@@ -1,29 +1,20 @@
-import { TodoEntity } from '@src/modules/todo/domain/todo.entity'
-import { UserRepositoryPort } from '@src/modules/user/repository/repository.port'
-import { Result } from '@src/shared/core/result'
+import { Result, ResultWithError } from '@src/shared/core/result'
 import { Paginated } from '@src/shared/domain/repository.port'
-import { inject, injectable } from 'inversify'
+import { injectable } from 'inversify'
 import { FindUsersQuery } from './find-users.query'
-import { getStringFromUnknown } from '@src/shared/utils/get-error'
-import { InternalServerErrorException } from '@src/shared/exceptions/exceptions'
-import { USER_TYPES } from '@src/modules/user/infra/di/types'
 import { UserEntity } from '@src/modules/user/domain/user.entity'
-import { IQueryHandler, QueryHandler } from '@src/shared/core/cqs/query-handler'
+import { QueryHandler } from '@src/shared/core/cqs/query-handler'
+import { UserService } from '../../models/user.service.base'
 
-export type FindUsersServiceResponse = Result<true, Paginated<UserEntity>> | Result<false, Error>
+type FindUsersServiceReturn = Paginated<UserEntity>
+export type FindUsersServiceResponse = ResultWithError<FindUsersServiceReturn>
 
 @injectable()
 @QueryHandler(FindUsersQuery)
-export class FindUsersService implements IQueryHandler<FindUsersQuery, FindUsersServiceResponse> {
-  constructor(@inject(USER_TYPES.REPOSITORY) private repository: UserRepositoryPort) {}
+export class FindUsersService extends UserService<FindUsersQuery, FindUsersServiceReturn> {
+  async executeImpl(query: FindUsersQuery): Promise<Paginated<UserEntity>> {
+    const items = await this.repository.findAllPaginated(query)
 
-  async execute(query: FindUsersQuery): Promise<FindUsersServiceResponse> {
-    try {
-      const items = await this.repository.findAllPaginated(query)
-
-      return Result.ok(items)
-    } catch (err) {
-      return Result.fail(new InternalServerErrorException(getStringFromUnknown(err)))
-    }
+    return items
   }
 }

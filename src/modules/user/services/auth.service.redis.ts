@@ -1,5 +1,5 @@
 import { v4 } from 'uuid'
-import { JWTClaims, JWTToken, RefreshToken } from '../domain/jwt'
+import { JWTClaims, JWTToken, RefreshToken } from '../../../shared/core/jwt'
 import { AuthServicePort } from './auth.service.port'
 import { AbstractRedisClient } from './redis/redis-client.base'
 import jwt from 'jsonwebtoken'

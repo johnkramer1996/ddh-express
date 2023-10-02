@@ -14,11 +14,11 @@ module.exports = {
         type: Sequelize.DataTypes.BOOLEAN,
         allowNull: false,
       },
-      createdAt: {
+      created_at: {
         type: Sequelize.DataTypes.DATE,
         allowNull: false,
       },
-      updatedAt: {
+      updated_at: {
         type: Sequelize.DataTypes.DATE,
         allowNull: false,
       },

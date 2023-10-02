@@ -1,52 +1,30 @@
-import {
-  CreationOptional,
-  DataTypes,
-  InferAttributes,
-  InferCreationAttributes,
-  Model,
-  ForeignKey,
-  HasOneGetAssociationMixin,
-  HasOneSetAssociationMixin,
-} from 'sequelize'
+import { DataTypes, Model, ForeignKey } from 'sequelize'
 import { sequelize } from '../config/connection'
+import { TimeStamp } from '../../../../core/time-stamp'
+import { AddressAttributes, AddressCreationAttributes } from '@src/modules/user/domain/value-objects/address.value-object'
 import UserModel from './user.model'
 
-export type AddressAttributes = InferAttributes<AddressModel>
-export type AddressCreationAttributes = InferCreationAttributes<AddressModel>
-
-export class AddressModel extends Model<AddressAttributes, AddressCreationAttributes> {
-  // declare id: CreationOptional<number>
-  declare user_id: ForeignKey<UserModel['id']>
+export class AddressModel extends Model<Omit<AddressAttributes, 'userId'>, AddressCreationAttributes> {
+  declare userId: ForeignKey<UserModel['id']>
   declare country: string | null
+  declare postalCode: string | null
   declare street: string | null
-
-  // declare getUser: HasOneGetAssociationMixin<UserModel>
-  // declare setUser: HasOneSetAssociationMixin<UserModel, string>
-
-  declare createdAt: CreationOptional<Date>
-  declare updatedAt: CreationOptional<Date>
+  declare createdAt: Date
+  declare updatedAt: Date
 }
 
 AddressModel.init(
   {
-    // id: {
-    //   type: DataTypes.INTEGER,
-    //   autoIncrement: true,
-    //   primaryKey: true,
-    // },
-    user_id: {
-      primaryKey: true,
+    id: {
       type: DataTypes.UUID,
-      references: {
-        model: {
-          tableName: 'users',
-          schema: 'public',
-        },
-        key: 'id',
-      },
       allowNull: false,
+      primaryKey: true,
     },
     country: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    postalCode: {
       type: DataTypes.STRING,
       allowNull: true,
     },
@@ -54,8 +32,14 @@ AddressModel.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE,
+    createdAt: {
+      field: 'created_at',
+      type: DataTypes.DATE,
+    },
+    updatedAt: {
+      field: 'updated_at',
+      type: DataTypes.DATE,
+    },
   },
   {
     tableName: 'user_addresses',

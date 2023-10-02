@@ -1,6 +1,5 @@
 import '@src/shared/utils/dotenv' // load jest
 import { container } from '@src/shared/infra/di/container'
-import { TYPES } from '@src/shared/infra/di/types'
 import { TodoRepositoryPort } from '@src/modules/todo/repository/repository.port'
 import { FindTodosQuery } from '@src/modules/todo/useCases/queries/find-todos/find-todos.query'
 import { mock, mockTodo } from '../useCases/todos'

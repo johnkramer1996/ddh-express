@@ -1,6 +1,6 @@
 
 ### GET LIST
-GET http://localhost:8086/api/v1/todos?page=3&limit=12
+GET http://localhost:8086/api/v1/todos?page=1&limit=10
 Content-Type: application/json
 
 {

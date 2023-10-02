@@ -1,35 +1,24 @@
-import { inject, injectable } from 'inversify'
-import { Result } from '../../../../../shared/core/result'
-import { TodoRepositoryPort } from '../../../repository/repository.port'
-import { getStringFromUnknown } from '../../../../../shared/utils/get-error'
+import { injectable } from 'inversify'
+import { ResultWithError } from '../../../../../shared/core/result'
 import { UpdateTodoCommand } from './update-todo.command'
 import { Text } from '@src/modules/todo/domain/value-objects/text.value-object'
-import { TodoNotFoundException } from '@src/modules/todo/domain/todo.errors'
-import { InternalServerErrorException } from '@src/shared/exceptions/exceptions'
-import { TODO_TYPES } from '@src/modules/todo/infra/di/types'
-import { IQueryHandler } from '@src/shared/core/cqs/query-handler'
+import { NotFoundException } from '@src/shared/exceptions/exceptions'
 import { CommandHandler } from '@src/shared/core/cqs/command-handler'
+import { TodoService } from '../../todo.service'
 
-export type UpdateTodoServiceResponse = Result<true> | Result<false, Error>
+type Return = void
+export type UpdateTodoServiceResponse = ResultWithError<Return>
 
 @injectable()
 @CommandHandler(UpdateTodoCommand)
-export class UpdateTodoService implements IQueryHandler<UpdateTodoCommand, UpdateTodoServiceResponse> {
-  constructor(@inject(TODO_TYPES.REPOSITORY) private repository: TodoRepositoryPort) {}
-
-  async execute(command: UpdateTodoCommand): Promise<UpdateTodoServiceResponse> {
+export class UpdateTodoService extends TodoService<UpdateTodoCommand, Return> {
+  async executeImpl(command: UpdateTodoCommand): Promise<Return> {
     const todo = await this.repository.findOneById(command.todoId)
-    if (!todo) return Result.fail(new TodoNotFoundException(command.todoId))
+    if (!todo) throw new NotFoundException()
 
     if (command.text !== undefined) todo.updateText({ text: new Text({ value: command.text }) })
     if (command.completed !== undefined) todo.updateCompleted(command.completed)
 
-    try {
-      await this.repository.save(todo)
-
-      return Result.ok<void>()
-    } catch (err) {
-      return Result.fail(new InternalServerErrorException(getStringFromUnknown(err)))
-    }
+    await this.repository.save(todo)
   }
 }

@@ -1,5 +1,4 @@
 import 'reflect-metadata'
-console.log('reflect')
 import { Container } from 'inversify'
 import { TYPES } from './types'
 import Server, { IServer } from '../http/server'

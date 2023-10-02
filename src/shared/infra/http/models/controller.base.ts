@@ -1,5 +1,5 @@
 import { envCongig } from '@src/configs/config'
-import { JWTClaims } from '@src/modules/user/domain/jwt'
+import { JWTClaims } from '@src/shared/core/jwt'
 import { getStringFromUnknown } from '@src/shared/utils/get-error'
 import { Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
@@ -9,6 +9,7 @@ import { IQueryBus } from '@src/shared/core/cqs/query-bus'
 import { Mapper } from '@src/shared/domain/mapper.interface'
 import { Entity } from '@src/shared/domain/entity'
 import { ObjectLiteral } from '@src/shared/types/object-literal.type'
+import { NotFoundException } from '@src/shared/exceptions/exceptions'
 
 export interface RequestDecoded extends Request {
   decoded: JWTClaims
@@ -30,6 +31,11 @@ export abstract class BaseController {
       }
       this.fail(res, 'An unexpected error occurred')
     }
+  }
+
+  protected handleError(res: Response, value: Error) {
+    if (value instanceof NotFoundException) return this.notFound(res, value.message)
+    return this.fail(res, value.message)
   }
 
   public static jsonResponse(res: Response, code: number, message: string) {
@@ -75,10 +81,6 @@ export abstract class BaseController {
 
   public tooMany(res: Response, message?: string) {
     return BaseController.jsonResponse(res, 429, message ? message : 'Too many requests')
-  }
-
-  public todo(res: Response) {
-    return BaseController.jsonResponse(res, 400, 'TODO')
   }
 
   public fail(res: Response, error: Error | string) {

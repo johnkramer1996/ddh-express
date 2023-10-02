@@ -2,6 +2,7 @@ import { ICommand } from '@src/shared/core/cqs/command.interface'
 import { LoginServiceResponse } from './login.service'
 
 export class LoginCommand implements ICommand<LoginServiceResponse> {
+  declare response?: LoginServiceResponse
   readonly email: string
   readonly password: string
 

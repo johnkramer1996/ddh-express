@@ -1,15 +1,12 @@
 import { injectable } from 'inversify'
 import { Response } from 'express'
-import { BaseController, RequestDecoded } from '../../../../../shared/infra/http/models/controller.base'
+import { RequestDecoded } from '../../../../../shared/infra/http/models/controller.base'
 import { plainToClass } from 'class-transformer'
-import { RefreshTokenServiceResponse } from './refresh-token.service'
 import { RefreshTokenCommand } from './refresh-token.command'
-import { ICommand } from '@src/shared/core/cqs/command.interface'
-import { UserNotFoundException } from '@src/modules/user/domain/user.errors'
 import { RefreshTokenRequestDto } from './refresh-token.request.dto'
 import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-request'
 import { UserTokensResponseDto } from '@src/modules/user/dtos/user-tokens.response.dto'
-import { UserController } from '@src/modules/user/infra/models/user.controller'
+import { UserController } from '@src/modules/user/infra/models/user.controller.base'
 import { ControllerPost } from '@src/shared/infra/http/decorators/controller'
 import { routesV1 } from '@src/configs/routes'
 
@@ -20,18 +17,15 @@ export class RefreshTokenController extends UserController {
   async executeImpl(req: RequestDecoded, res: Response): Promise<any> {
     const request = plainToClass(RefreshTokenRequestDto, req.body)
 
-    const command: ICommand<RefreshTokenServiceResponse> = new RefreshTokenCommand(request)
+    const command = new RefreshTokenCommand(request)
     const result = await this.commandBus.execute(command)
 
-    if (!result.isSuccess) {
-      const value = result.getValue()
-      if (value instanceof UserNotFoundException) return this.notFound(res, value.message)
-      return this.fail(res, result.getValue())
-    }
+    if (!result.isSuccess) return this.handleError(res, result.getValue())
 
     const accessToken = result.getValue()
     const refreshToken = request.refreshToken
 
-    return this.ok(res.cookie('accessToken', accessToken).cookie('refreshToken', refreshToken), new UserTokensResponseDto({ accessToken, refreshToken }))
+    res.cookie('accessToken', accessToken).cookie('refreshToken', refreshToken)
+    return this.ok(res, new UserTokensResponseDto({ accessToken, refreshToken }))
   }
 }

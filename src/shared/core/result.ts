@@ -1,3 +1,5 @@
+export type ResultWithError<Success> = Result<true, Success> | Result<false, Error>
+
 export class Result<Success extends boolean, T = void> {
   public constructor(public isSuccess: Success, private _value?: T) {
     Object.freeze(this)

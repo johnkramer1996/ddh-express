@@ -17,17 +17,29 @@ import { LogoutService } from '../../useCases/commands/logout/logout.service'
 import { RefreshTokenController } from '../../useCases/commands/refresh-token/refresh-token.controller'
 import { RefreshTokenService } from '../../useCases/commands/refresh-token/refresh-token.service'
 import { FindUserController } from '../../useCases/queries/find-user/find-user.controller'
-import { FindUserService } from '../../useCases/queries/find-user/find-todo.service'
+import { FindUserService } from '../../useCases/queries/find-user/find-user.service'
+import { DeleteUserController } from '../../useCases/commands/delete-user/delete-user.controller'
+import { DeleteUserService } from '../../useCases/commands/delete-user/delete-user.service'
+import { CreateUserController } from '../../useCases/commands/create-user/create-user.controller'
+import { CreateUserService } from '../../useCases/commands/create-user/create-user.service'
 
 const userModule = (container: Container) => {
   container.bind(USER_TYPES.MAPPER).to(UserMapper)
   container.bind<UserRepositoryPort>(USER_TYPES.REPOSITORY).to(UserSequelizeRepository)
-  // todo change
-  container.bind(USER_TYPES.SEQUELIZE_MODEL).toConstantValue(UserModel)
   container.bind<AuthServicePort>(USER_TYPES.AUTH_SERVICE).to(RedisAuthService)
+  container.bind(USER_TYPES.SEQUELIZE_MODEL).toConstantValue(UserModel)
 
   container.bind(FindUsersController).toSelf()
   container.bind(FindUsersService).toSelf()
+
+  container.bind(FindUserController).toSelf()
+  container.bind(FindUserService).toSelf()
+
+  container.bind(CreateUserController).toSelf()
+  container.bind(CreateUserService).toSelf()
+
+  container.bind(DeleteUserController).toSelf()
+  container.bind(DeleteUserService).toSelf()
 
   container.bind(LoginController).toSelf()
   container.bind(LoginService).toSelf()
@@ -40,9 +52,6 @@ const userModule = (container: Container) => {
 
   container.bind(RefreshTokenController).toSelf()
   container.bind(RefreshTokenService).toSelf()
-
-  container.bind(FindUserController).toSelf()
-  container.bind(FindUserService).toSelf()
 }
 
 export default userModule

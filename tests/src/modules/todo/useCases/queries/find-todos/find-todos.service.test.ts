@@ -1,11 +1,7 @@
 import '@src/shared/utils/dotenv' // load jest
-import { TodoMapper } from '@src/modules/todo/domain/todo.mapper'
 import { FindTodosService } from '@src/modules/todo/useCases/queries/find-todos/find-todos.service'
-import { Paginated } from '@src/shared/domain/repository.port'
 import { container } from '@src/shared/infra/di/container'
-import { TYPES } from '@src/shared/infra/di/types'
 import { mock, mockTodo } from '../../todos'
-import { TodoRepositoryPort } from '@src/modules/todo/repository/repository.port'
 import { FindTodosQuery } from '@src/modules/todo/useCases/queries/find-todos/find-todos.query'
 import { TodoSequelizeRepository } from '@src/modules/todo/repository/repository'
 import { TODO_TYPES } from '@src/modules/todo/infra/di/types'

@@ -1,10 +1,23 @@
 
 ### GET LIST
-GET http://localhost:8086/api/v1/users?limit=20
+GET http://localhost:8086/api/v1/users?limit=10
 
 
 ### GET one
-GET http://localhost:8086/api/v1/users/73201b5a-f9b4-4c94-b8f4-cba10cb519ae
+GET http://localhost:8086/api/v1/users/11111111-1111-1111-1111-111111111111
+
+
+### CREATE ONE
+POST http://localhost:8086/api/v1/users/
+Content-Type: application/json
+
+{
+    "email": "vitalii@gmail.com",
+    "password": "12345"
+}
+
+### DELETE ONE
+DELETE http://localhost:8086/api/v1/users/917cb39c-41cc-4358-96b5-895f3079f0c7
 
 
 ### CURRENT USER
@@ -17,7 +30,6 @@ Content-Type: application/json
 {
     "refreshToken": "1c42db73-64cd-402d-845c-0300108b51e0"
 }
-
 
 ### LOGIN
 POST http://localhost:8086/api/v1/users/login

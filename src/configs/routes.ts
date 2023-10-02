@@ -38,6 +38,9 @@ export const routesV1 = {
   user: {
     findAll: `/${usersRoot}`,
     findOne: `/${usersRoot}/:userId`,
+    createOne: `/${usersRoot}`,
+    updateOne: `/${usersRoot}/:todoId`,
+    deleteOne: `/${usersRoot}/:todoId`,
     login: `/${usersRoot}/login`,
     logout: `/${usersRoot}/logout`,
     refreshToken: `/${usersRoot}/refreshToken`,

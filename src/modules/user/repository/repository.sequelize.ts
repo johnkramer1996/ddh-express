@@ -1,6 +1,7 @@
 import { inject, injectable } from 'inversify'
 import { SequelizeRepositoryBase } from '../../../shared/infra/database/sequelize/repository.base'
-import { UserModelAttributes, UserEntity } from '../domain/user.entity'
+import { UserEntity } from '../domain/user.entity'
+import { UserModelAttributes } from '../domain/user.types'
 import { UserRepositoryPort } from './repository.port'
 import { UserMapper } from '../domain/user.mapper'
 import { ModelDefined } from 'sequelize'

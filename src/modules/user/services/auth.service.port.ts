@@ -1,4 +1,4 @@
-import { JWTClaims, JWTToken, RefreshToken } from '../domain/jwt'
+import { JWTClaims, JWTToken, RefreshToken } from '../../../shared/core/jwt'
 import { UserEntity } from '../domain/user.entity'
 
 export interface AuthServicePort {

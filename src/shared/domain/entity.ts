@@ -1,3 +1,5 @@
+import { PrimaryKey } from '../core/primary-key'
+import { TimeStamp } from '../core/time-stamp'
 import { convertPropsToObject } from '../utils/convert-props-to-object.util'
 
 export type AggregateID = string
@@ -15,7 +17,7 @@ export interface CreateEntityProps<T> {
   updatedAt?: Date
 }
 
-export abstract class Entity<EntityProps> {
+export abstract class Entity<EntityProps> implements TimeStamp, PrimaryKey {
   constructor({ id, createdAt, updatedAt, props }: CreateEntityProps<EntityProps>) {
     this.setId(id)
     this.validateProps(props)

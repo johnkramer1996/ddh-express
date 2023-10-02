@@ -1,9 +1,10 @@
 import { injectable } from 'inversify'
 import { Mapper } from '../../../shared/domain/mapper.interface'
 import { UserResponseDto } from '../dtos/user.response.dto'
-import { UserModelAttributes, UserEntity } from './user.entity'
-import { AddressAttributes } from '@src/shared/infra/database/sequelize/models/address.model'
-import { Address } from '@src/modules/todo/domain/value-objects/addres.value-object'
+import { UserEntity } from './user.entity'
+import { UserModelAttributes } from './user.types'
+import { Address } from '@src/modules/user/domain/value-objects/address.value-object'
+import { Password } from './value-objects/password.value-object'
 
 @injectable()
 export class UserMapper implements Mapper<UserEntity, UserModelAttributes, UserResponseDto> {
@@ -14,12 +15,12 @@ export class UserMapper implements Mapper<UserEntity, UserModelAttributes, UserR
       createdAt: copy.createdAt,
       updatedAt: copy.updatedAt,
       email: copy.email,
-      password: copy.password,
+      password: copy.password.value,
       username: copy.username,
-      last_login: copy.lastLogin,
-      is_deleted: copy.isDeleted,
-      is_admin_user: copy.isAdminUser,
-      is_email_verified: copy.isEmailVerified,
+      lastLogin: copy.lastLogin,
+      isDeleted: copy.isDeleted,
+      isAdminUser: copy.isAdminUser,
+      isEmailVerified: copy.isEmailVerified,
     }
     return record
   }
@@ -31,15 +32,15 @@ export class UserMapper implements Mapper<UserEntity, UserModelAttributes, UserR
       updatedAt: new Date(record.updatedAt),
       props: {
         email: record.email,
-        password: record.password,
+        password: new Password({ value: record.password }),
         username: record.username,
-        isDeleted: record.is_deleted,
-        isAdminUser: record.is_admin_user,
-        isEmailVerified: record.is_email_verified,
-        lastLogin: record.last_login,
+        isDeleted: record.isDeleted,
+        isAdminUser: record.isAdminUser,
+        isEmailVerified: record.isEmailVerified,
+        lastLogin: record.lastLogin,
         address: new Address({
           country: record.address?.country ?? null,
-          postalCode: record.address?.country ?? null,
+          postalCode: record.address?.postalCode ?? null,
           street: record.address?.street ?? null,
         }),
       },
@@ -49,6 +50,6 @@ export class UserMapper implements Mapper<UserEntity, UserModelAttributes, UserR
 
   public toResponse(entity: UserEntity): UserResponseDto {
     const copy = entity.getProps()
-    return new UserResponseDto({ ...copy, country: copy.address.country, street: copy.address.street })
+    return new UserResponseDto({ ...copy, country: copy.address.country, postalCode: copy.address.postalCode, street: copy.address.street })
   }
 }

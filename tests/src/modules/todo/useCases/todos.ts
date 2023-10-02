@@ -1,7 +1,7 @@
-import { TodoAttributes } from '@src/shared/infra/database/sequelize/models/todo.model'
+import { TodoModelAttributes } from '@src/modules/todo/domain/todo.types'
 import { v4 } from 'uuid'
 
-export const mockTodo: TodoAttributes[] = [
+export const mockTodo: TodoModelAttributes[] = [
   { id: v4(), text: 'Todo 1', completed: true, createdAt: new Date(), updatedAt: new Date() },
   { id: v4(), text: 'Todo 2', completed: false, createdAt: new Date(), updatedAt: new Date() },
   { id: v4(), text: 'Todo 3', completed: false, createdAt: new Date(), updatedAt: new Date() },

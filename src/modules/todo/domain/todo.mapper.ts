@@ -1,15 +1,15 @@
 import { injectable } from 'inversify'
 import { Mapper } from '../../../shared/domain/mapper.interface'
-import { TodoAttributes } from '../../../shared/infra/database/sequelize/models/todo.model'
 import { TodoResponseDto } from '../dtos/todo.response.dto'
 import { TodoEntity } from './todo.entity'
+import { TodoModelAttributes } from './todo.types'
 import { Text } from './value-objects/text.value-object'
 
 @injectable()
-export class TodoMapper implements Mapper<TodoEntity, TodoAttributes, TodoResponseDto> {
-  public toPersistence(entity: TodoEntity): TodoAttributes {
+export class TodoMapper implements Mapper<TodoEntity, TodoModelAttributes, TodoResponseDto> {
+  public toPersistence(entity: TodoEntity): TodoModelAttributes {
     const copy = entity.getProps()
-    const record: TodoAttributes = {
+    const record: TodoModelAttributes = {
       id: copy.id,
       createdAt: copy.createdAt,
       updatedAt: copy.updatedAt,
@@ -19,7 +19,7 @@ export class TodoMapper implements Mapper<TodoEntity, TodoAttributes, TodoRespon
     return record
   }
 
-  public toDomain(record: TodoAttributes): TodoEntity {
+  public toDomain(record: TodoModelAttributes): TodoEntity {
     const entity = new TodoEntity({
       id: record.id,
       createdAt: new Date(record.createdAt),
@@ -33,6 +33,7 @@ export class TodoMapper implements Mapper<TodoEntity, TodoAttributes, TodoRespon
   }
 
   public toResponse(entity: TodoEntity): TodoResponseDto {
-    return new TodoResponseDto(entity)
+    const copy = entity.getProps()
+    return new TodoResponseDto({ ...copy, text: copy.text.value })
   }
 }

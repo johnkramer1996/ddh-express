@@ -1,1 +1,3 @@
-export interface ICommand<TResult> {}
+export interface ICommand<TResult> {
+  response?: TResult
+}

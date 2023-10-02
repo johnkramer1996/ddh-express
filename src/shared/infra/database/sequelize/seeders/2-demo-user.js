@@ -9,20 +9,20 @@ module.exports = {
       'users',
       [
         {
-          id: uuid.v4(),
+          id: '11111111-1111-1111-1111-111111111111',
           email: `vitalii@gmail.com`,
           password: '12345',
-          createdAt: new Date(),
-          updatedAt: new Date(),
+          created_at: new Date(),
+          updated_at: new Date(),
         },
-        ...Array(10)
+        ...Array(9)
           .fill(null)
           .map((_, i) => ({
-            id: uuid.v4(),
+            id: '11111111-1111-1111-1111-11111111112' + i,
             email: `user${i}@gmail.com`,
             password: '12345',
-            createdAt: new Date(),
-            updatedAt: new Date(),
+            created_at: new Date(),
+            updated_at: new Date(),
           })),
       ],
       {}
@@ -36,8 +36,8 @@ module.exports = {
         user_id: i.id,
         country: 'country ' + index,
         street: 'street ' + index,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        created_at: new Date(),
+        updated_at: new Date(),
       }))
     )
   },

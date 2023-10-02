@@ -1,8 +1,9 @@
 import { ICommand } from '@src/shared/core/cqs/command.interface'
 import { RefreshTokenServiceResponse } from './refresh-token.service'
-import { RefreshToken } from '@src/modules/user/domain/jwt'
+import { RefreshToken } from '@src/shared/core/jwt'
 
 export class RefreshTokenCommand implements ICommand<RefreshTokenServiceResponse> {
+  declare response?: RefreshTokenServiceResponse
   readonly refreshToken: RefreshToken
 
   constructor(props: RefreshTokenCommand) {

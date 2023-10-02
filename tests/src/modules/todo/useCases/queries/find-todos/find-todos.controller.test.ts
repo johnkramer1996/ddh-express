@@ -1,22 +1,20 @@
 import '@src/shared/utils/dotenv' // load jest
-import { TodoMapper } from '@src/modules/todo/domain/todo.mapper'
 import { TodoPaginatedResponseDto } from '@src/modules/todo/dtos/todo.paginated.response.dto.ts'
-import { FindTodosService } from '@src/modules/todo/useCases/queries/find-todos/find-todos.service'
 import { Result } from '@src/shared/core/result'
-import { Paginated } from '@src/shared/domain/repository.port'
 import { container } from '@src/shared/infra/di/container'
 import { TYPES } from '@src/shared/infra/di/types'
 import { IServer } from '@src/shared/infra/http/server'
 import request from 'supertest'
-import { todoUrls } from '@src/configs/routes'
+import { routesV1 } from '@src/configs/routes'
 import { mock, mockTodo } from '../../todos'
 import { TODO_TYPES } from '@src/modules/todo/infra/di/types'
+import { TodoMapper } from '@src/modules/todo/domain/todo.mapper'
 
 describe('Find Todos Controller', () => {
-  const route = todoUrls.root + todoUrls.findAll
+  const route = routesV1.todo.findAll
   container.rebind(TYPES.QUERY_BUS).toConstantValue(mock.queryBus)
   const app = container.get<IServer>(TYPES.SERVER).create('/')
-  // const mapper = container.get<TodoMapper>(TYPES.TODO_MAPPER)
+  const mapper = container.get<TodoMapper>(TODO_TYPES.MAPPER)
 
   beforeAll(async () => {})
 
@@ -26,8 +24,12 @@ describe('Find Todos Controller', () => {
 
   test('Should return list items', async () => {
     //arrange
-    const responseData = { data: mockTodo, count: 1, limit: 1, page: 1 }
-    const expectedData = new TodoPaginatedResponseDto(responseData as any)
+    const responseData = { data: mockTodo.map(mapper.toDomain), count: 1, limit: 1, page: 1 }
+    const expectedData = new TodoPaginatedResponseDto({
+      ...responseData,
+      data: responseData.data.map(mapper.toResponse),
+    })
+
     mock.queryBus.execute.mockResolvedValue(Result.ok(responseData))
 
     //act
@@ -35,6 +37,7 @@ describe('Find Todos Controller', () => {
 
     //assert
     expect(response.status).toBe(200)
+
     expect(response.body).toEqual(expectedData)
   })
 

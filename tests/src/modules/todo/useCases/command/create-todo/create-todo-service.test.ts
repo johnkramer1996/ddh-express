@@ -11,7 +11,7 @@ import { TODO_TYPES } from '@src/modules/todo/infra/di/types'
 
 describe('Create Todo Service', () => {
   const todoRepository = container.get<TodoRepositoryPort>(TODO_TYPES.REPOSITORY)
-  const findTodosService = container.get<CreateTodoService>(TODO_TYPES.CREATE_TODO_SERVICE)
+  const findTodosService = container.get<CreateTodoService>(CreateTodoService)
 
   beforeAll(async () => {})
 

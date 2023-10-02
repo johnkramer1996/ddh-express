@@ -1,29 +1,20 @@
 import { TodoEntity } from '@src/modules/todo/domain/todo.entity'
-import { TodoRepositoryPort } from '@src/modules/todo/repository/repository.port'
-import { Result } from '@src/shared/core/result'
+import { ResultWithError } from '@src/shared/core/result'
 import { Paginated } from '@src/shared/domain/repository.port'
-import { TYPES } from '@src/shared/infra/di/types'
-import { inject, injectable } from 'inversify'
+import { injectable } from 'inversify'
 import { FindTodosQuery } from './find-todos.query'
-import { getStringFromUnknown } from '@src/shared/utils/get-error'
-import { InternalServerErrorException } from '@src/shared/exceptions/exceptions'
-import { TODO_TYPES } from '@src/modules/todo/infra/di/types'
-import { IQueryHandler, QueryHandler } from '../../../../../shared/core/cqs/query-handler'
+import { QueryHandler } from '../../../../../shared/core/cqs/query-handler'
+import { TodoService } from '../../todo.service'
 
-export type FindTodosServiceResponse = Result<true, Paginated<TodoEntity>> | Result<false, Error>
+type Return = Paginated<TodoEntity>
+export type FindTodosServiceResponse = ResultWithError<Return>
 
 @injectable()
 @QueryHandler(FindTodosQuery)
-export class FindTodosService implements IQueryHandler<FindTodosQuery, FindTodosServiceResponse> {
-  constructor(@inject(TODO_TYPES.REPOSITORY) private repository: TodoRepositoryPort) {}
+export class FindTodosService extends TodoService<FindTodosQuery, Return> {
+  async executeImpl(query: FindTodosQuery): Promise<Return> {
+    const todos = await this.repository.findAllPaginated(query)
 
-  async execute(query: FindTodosQuery): Promise<FindTodosServiceResponse> {
-    try {
-      const todos = await this.repository.findAllPaginated(query)
-
-      return Result.ok(todos)
-    } catch (err) {
-      return Result.fail(new InternalServerErrorException(getStringFromUnknown(err)))
-    }
+    return todos
   }
 }

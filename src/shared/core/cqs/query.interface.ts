@@ -1,1 +1,3 @@
-export interface IQuery<TResult> {}
+export interface IQuery<TResult> {
+  response?: TResult
+}

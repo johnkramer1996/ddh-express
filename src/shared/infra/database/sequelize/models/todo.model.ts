@@ -1,18 +1,16 @@
 import { CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequelize'
 import { sequelize } from '../config/connection'
 import { injectable } from 'inversify'
-
-export type TodoAttributes = InferAttributes<TodoModel>
-export type TodoCreationAttributes = InferCreationAttributes<TodoModel>
+import { TodoModelAttributes, TodoModelCreationAttributes } from '@src/modules/todo/domain/todo.types'
 
 @injectable()
-class TodoModel extends Model<TodoAttributes, TodoCreationAttributes> {
-  declare id: CreationOptional<string>
+class TodoModel extends Model<TodoModelAttributes, TodoModelCreationAttributes> {
+  declare id: string
   declare text: string
   declare completed: boolean
 
-  declare createdAt: CreationOptional<Date>
-  declare updatedAt: CreationOptional<Date>
+  declare createdAt: Date
+  declare updatedAt: Date
 }
 
 TodoModel.init(

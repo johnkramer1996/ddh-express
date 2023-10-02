@@ -13,8 +13,8 @@ module.exports = {
           id: uuid.v4(),
           text: `Todo ${i}`,
           completed: false,
-          createdAt: new Date(),
-          updatedAt: new Date(),
+          created_at: new Date(),
+          updated_at: new Date(),
         })),
       {}
     )

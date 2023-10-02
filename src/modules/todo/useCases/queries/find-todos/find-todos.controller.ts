@@ -8,7 +8,7 @@ import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-requ
 import { PaginatedQueryRequestDto } from '@src/shared/api/paginated-query.request.dto'
 import { TodoPaginatedResponseDto } from '@src/modules/todo/dtos/todo.paginated.response.dto.ts'
 import { IQuery } from '@src/shared/core/cqs/query.interface'
-import { TodoController } from '@src/modules/user/infra/models/user.controller'
+import { TodoController } from '@src/modules/todo/infra/models/todo.controller'
 import { ControllerGet, ControllerPost } from '@src/shared/infra/http/decorators/controller'
 import { routesV1 } from '@src/configs/routes'
 
@@ -23,12 +23,10 @@ export class FindTodosController extends TodoController {
     const body = plainToClass(FindTodosRequestDto, req.body)
     const params = plainToClass(PaginatedQueryRequestDto, req.query)
 
-    const query: IQuery<FindTodosServiceResponse> = new FindTodosQuery({ where: { ...body }, ...params })
+    const query = new FindTodosQuery({ where: { ...body }, ...params })
     const result = await this.queryBus.execute(query)
 
-    if (!result.isSuccess) {
-      return this.fail(res, result.getValue())
-    }
+    if (!result.isSuccess) return this.handleError(res, result.getValue())
 
     const paginated = result.getValue()
 

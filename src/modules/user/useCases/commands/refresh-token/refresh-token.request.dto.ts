@@ -1,4 +1,4 @@
-import { RefreshToken } from '@src/modules/user/domain/jwt'
+import { RefreshToken } from '@src/shared/core/jwt'
 import { IsString } from 'class-validator'
 
 export class RefreshTokenRequestDto {

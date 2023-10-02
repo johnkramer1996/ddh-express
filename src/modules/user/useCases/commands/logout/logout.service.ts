@@ -1,31 +1,27 @@
 import { inject, injectable } from 'inversify'
-import { Result } from '../../../../../shared/core/result'
-import { getStringFromUnknown } from '../../../../../shared/utils/get-error'
+import { ResultWithError } from '../../../../../shared/core/result'
 import { LogoutCommand } from './logout.command'
-import { InternalServerErrorException } from '@src/shared/exceptions/exceptions'
+import { NotFoundException } from '@src/shared/exceptions/exceptions'
 import { UserRepositoryPort } from '@src/modules/user/repository/repository.port'
 import { USER_TYPES } from '@src/modules/user/infra/di/types'
 import { AuthServicePort } from '@src/modules/user/services/auth.service.port'
-import { UserNotFoundException } from '@src/modules/user/domain/user.errors'
-import { CommandHandler, ICommandHandler } from '@src/shared/core/cqs/command-handler'
+import { CommandHandler } from '@src/shared/core/cqs/command-handler'
+import { UserService } from '../../models/user.service.base'
 
-export type LogoutServiceResponse = Result<true> | Result<false, Error>
+export type Return = void
+export type LogoutServiceResponse = ResultWithError<Return>
 
 @injectable()
 @CommandHandler(LogoutCommand)
-export class LogoutService implements ICommandHandler<LogoutCommand, LogoutServiceResponse> {
-  constructor(@inject(USER_TYPES.REPOSITORY) private repository: UserRepositoryPort, @inject(USER_TYPES.AUTH_SERVICE) private authService: AuthServicePort) {}
+export class LogoutService extends UserService<LogoutCommand, Return> {
+  constructor(@inject(USER_TYPES.REPOSITORY) repository: UserRepositoryPort, @inject(USER_TYPES.AUTH_SERVICE) private authService: AuthServicePort) {
+    super(repository)
+  }
 
-  async execute(command: LogoutCommand): Promise<LogoutServiceResponse> {
-    try {
-      const user = await this.repository.findOneById(command.id)
-      if (!user) return Result.fail(new UserNotFoundException(command.id))
+  async executeImpl(command: LogoutCommand): Promise<Return> {
+    const user = await this.repository.findOneById(command.id)
+    if (!user) throw new NotFoundException()
 
-      await this.authService.deAuthenticateUser(user.email)
-
-      return Result.ok<void>()
-    } catch (err) {
-      return Result.fail(new InternalServerErrorException(getStringFromUnknown(err)))
-    }
+    await this.authService.deAuthenticateUser(user.email)
   }
 }

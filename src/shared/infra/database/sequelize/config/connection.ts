@@ -11,8 +11,6 @@ export const sequelize = new Sequelize({
   host,
   dialect: 'postgres',
   logging: false,
+  define: { underscored: true },
+  // define: { updatedAt: 'updated_at', createdAt: 'created_at', deletedAt: 'deleted_at' },
 })
-
-const queryInterface = sequelize.getQueryInterface()
-
-const start = async () => {}
