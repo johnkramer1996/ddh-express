@@ -2,45 +2,39 @@ import { DataTypes, Model, ForeignKey } from 'sequelize'
 import { sequelize } from '../config/connection'
 import { injectable } from 'inversify'
 import UserModel from './user.model'
+import { TimeStamp } from '@src/shared/core/time-stamp'
+import { PrimaryKey } from '@src/shared/core/primary-key'
 
-export interface MembelAttributes extends MemberCreationAttributes {
+export interface MemberModelCreationAttributes extends PrimaryKey {
+  userId: string
+  reputation: number
+}
+
+export interface MembelModelAttributes extends MemberModelCreationAttributes, TimeStamp {
   // title: string
   // text: string
   // link: string
   // slug: string
   // points: number
   // total_num_comments: number
-  createdAt: Date
-  updatedAt: Date
-}
-
-export interface MemberCreationAttributes {
-  user_id: string
-  reputation: number
 }
 
 @injectable()
-class MemberModel extends Model<MembelAttributes, MemberCreationAttributes> {
+class MemberModel extends Model<Omit<MembelModelAttributes, 'userId'>, MemberModelCreationAttributes> {
   declare user_id: ForeignKey<UserModel['id']>
-  declare type: string
+  declare reputation: string
 
   declare createdAt: Date
   declare updatedAt: Date
+  declare deletedAt: Date | null
 }
 
 MemberModel.init(
   {
-    user_id: {
-      primaryKey: true,
+    id: {
       type: DataTypes.UUID,
-      references: {
-        model: {
-          tableName: 'users',
-          schema: 'public',
-        },
-        key: 'id',
-      },
       allowNull: false,
+      primaryKey: true,
     },
     reputation: {
       type: DataTypes.INTEGER,

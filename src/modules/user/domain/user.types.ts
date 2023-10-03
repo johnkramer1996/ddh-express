@@ -1,20 +1,22 @@
-import { Address, AddressAttributes } from '@src/modules/user/domain/value-objects/address.value-object'
+import { Address, AddressModelAttributes } from '@src/modules/user/domain/value-objects/address.value-object'
 import { PrimaryKey } from '@src/shared/core/primary-key'
 import { TimeStamp } from '@src/shared/core/time-stamp'
 import { Password } from './value-objects/password.value-object'
+import { PostModelAttributes } from '@src/modules/forum/domain/post.types'
 
-export interface UserCreationProps {
+export interface UserEntityCreationProps {
   email: string
   password: Password
 }
 
-export interface UserProps extends UserCreationProps {
+export interface UserEntityProps extends UserEntityCreationProps {
   username: string | null
   isEmailVerified: boolean
   isAdminUser: boolean
   isDeleted: boolean
   lastLogin: Date | null
   address: Address
+  posts?: any[]
 }
 
 export interface UserModelCreationAttributes extends PrimaryKey {
@@ -28,5 +30,6 @@ export interface UserModelAttributes extends UserModelCreationAttributes, TimeSt
   isAdminUser: boolean
   isDeleted: boolean
   lastLogin: Date | null
-  address?: AddressAttributes
+  address?: AddressModelAttributes
+  posts?: PostModelAttributes[]
 }

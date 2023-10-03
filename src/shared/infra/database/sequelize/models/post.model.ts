@@ -1,31 +1,19 @@
-import { DataTypes, Model } from 'sequelize'
+import { DataTypes, Model, ForeignKey, NonAttribute } from 'sequelize'
 import { sequelize } from '../config/connection'
 import { injectable } from 'inversify'
-import { AddressModel } from './address.model'
-
-export interface PostAttributes extends PostCreationAttributes {
-  // title: string
-  // text: string
-  // link: string
-  // slug: string
-  // points: number
-  // total_num_comments: number
-  createdAt: Date
-  updatedAt: Date
-}
-
-export interface PostCreationAttributes {
-  id: string
-  type: string
-}
+import { PostModelAttributes, PostModelCreationAttributes } from '@src/modules/forum/domain/post.types'
+import UserModel from './user.model'
 
 @injectable()
-class PostModel extends Model<PostAttributes, PostCreationAttributes> {
-  declare id: string
-  declare type: string
+class PostModel extends Model<Omit<PostModelAttributes, 'userId'>, PostModelCreationAttributes> {
+  declare text: string
+  declare userId: ForeignKey<UserModel['id']>
+
+  declare user?: NonAttribute<UserModel>
 
   declare createdAt: Date
   declare updatedAt: Date
+  declare deletedAt: Date | null
 }
 
 PostModel.init(
@@ -35,7 +23,7 @@ PostModel.init(
       allowNull: false,
       primaryKey: true,
     },
-    type: {
+    text: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -45,6 +33,9 @@ PostModel.init(
   {
     tableName: 'posts',
     sequelize,
+    defaultScope: {
+      // include: [{ model: UserModel, as: 'user' }],
+    },
   }
 )
 

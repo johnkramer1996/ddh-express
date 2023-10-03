@@ -5,7 +5,12 @@ import UserModel from './user.model'
 import { TimeStamp } from '@src/shared/core/time-stamp'
 import { PrimaryKey } from '@src/shared/core/primary-key'
 
-export interface CommentAttributes extends PostCreationAttributes, TimeStamp {
+export interface CommentModelCreationAttributes extends PrimaryKey {
+  userId: string
+  text: string
+}
+
+export interface CommentModelAttributes extends CommentModelCreationAttributes, TimeStamp {
   // title: string
   // text: string
   // link: string
@@ -14,13 +19,8 @@ export interface CommentAttributes extends PostCreationAttributes, TimeStamp {
   // total_num_comments: number
 }
 
-export interface PostCreationAttributes extends PrimaryKey {
-  userId: string
-  text: string
-}
-
 @injectable()
-class CommentModel extends Model<Omit<CommentAttributes, 'userId'>, PostCreationAttributes> {
+class CommentModel extends Model<Omit<CommentModelAttributes, 'userId'>, CommentModelCreationAttributes> {
   declare id: string
   declare userId: ForeignKey<UserModel['id']>
   declare text: string
@@ -29,6 +29,7 @@ class CommentModel extends Model<Omit<CommentAttributes, 'userId'>, PostCreation
 
   declare createdAt: Date
   declare updatedAt: Date
+  declare deletedAt: Date | null
 }
 
 CommentModel.init(
@@ -38,37 +39,17 @@ CommentModel.init(
       allowNull: false,
       primaryKey: true,
     },
-    // user_id: {
-    //   type: DataTypes.UUID,
-    //   references: {
-    //     model: {
-    //       tableName: 'users',
-    //       schema: 'public',
-    //     },
-    //     key: 'id',
-    //   },
-    //   allowNull: false,
-    // },
     text: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    createdAt: {
-      field: 'created_at',
-      type: DataTypes.DATE,
-    },
-    updatedAt: {
-      field: 'updated_at',
-      type: DataTypes.DATE,
-    },
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
   },
   {
     tableName: 'comments',
     sequelize,
   }
 )
-
-// CommentModel.belongsTo(UserModel, { as: 'user', targetKey: 'id', foreignKey: 'user_id', constraints: false })
-// CommentModel.belongsTo(PostModel, { as: 'post', targetKey: 'id', foreignKey: 'post_id', constraints: false })
 
 export default CommentModel

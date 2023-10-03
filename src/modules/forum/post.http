@@ -1,0 +1,28 @@
+
+### GET LIST
+GET http://localhost:8086/api/v1/posts?page=1&limit=10
+Content-Type: application/json
+
+
+### GET ONE
+GET http://localhost:8086/api/v1/posts/8fed232a-1870-4635-958f-53314a0a3149
+
+### CREATE ONE
+POST http://localhost:8086/api/v1/posts/
+Content-Type: application/json
+
+{
+    "text": "new post"
+}
+
+### UPDATE ONE
+PUT http://localhost:8086/api/v1/posts/8fed232a-1870-4635-958f-53314a0a3149
+Content-Type: application/json
+
+{
+    "text": "new text"
+}
+
+### DELETE ONE
+DELETE http://localhost:8086/api/v1/posts/8fed232a-1870-4635-958f-53314a0a3149
+

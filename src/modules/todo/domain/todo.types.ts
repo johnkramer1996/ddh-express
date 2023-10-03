@@ -2,12 +2,12 @@ import { Text } from './value-objects/text.value-object'
 import { TimeStamp } from '@src/shared/core/time-stamp'
 import { PrimaryKey } from '@src/shared/core/primary-key'
 
-export interface TodoCreationProps {
+export interface TodoEntityCreationProps {
   text: Text
   completed: boolean
 }
 
-export interface TodoProps extends TodoCreationProps {}
+export interface TodoEntityProps extends TodoEntityCreationProps {}
 
 export interface TodoModelCreationAttributes extends PrimaryKey {
   text: string
@@ -15,7 +15,3 @@ export interface TodoModelCreationAttributes extends PrimaryKey {
 }
 
 export interface TodoModelAttributes extends TodoModelCreationAttributes, TimeStamp {}
-
-export interface TodoUpdateTextProps {
-  text: Text
-}

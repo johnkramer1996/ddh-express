@@ -1,7 +1,7 @@
 import { injectable } from 'inversify'
-import { TodoCreatedDomainEvent } from '../../domain/events/todo-created.domain-event'
+import { TodoCreatedDomainEvent } from '../../domain/events/created.domain-event'
 import { OnEvent } from '@src/shared/domain/events/on-event'
-import { TodoDeletedDomainEvent } from '../../domain/events/todo-deleted.domain-event'
+import { TodoDeletedDomainEvent } from '../../domain/events/deleted.domain-event'
 
 @injectable()
 export class LogWhenTodoIsDeletedDomainEventHandler {

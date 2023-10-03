@@ -11,6 +11,6 @@ export const sequelize = new Sequelize({
   host,
   dialect: 'postgres',
   logging: false,
-  define: { underscored: true },
+  define: { underscored: true, paranoid: true },
   // define: { updatedAt: 'updated_at', createdAt: 'created_at', deletedAt: 'deleted_at' },
 })

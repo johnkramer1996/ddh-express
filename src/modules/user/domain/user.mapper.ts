@@ -43,6 +43,7 @@ export class UserMapper implements Mapper<UserEntity, UserModelAttributes, UserR
           postalCode: record.address?.postalCode ?? null,
           street: record.address?.street ?? null,
         }),
+        posts: record.posts,
       },
     })
     return entity

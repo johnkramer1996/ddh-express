@@ -22,6 +22,7 @@ export const userUrls = {
 
 // Root
 const todosRoot = 'todos'
+const postsRoot = 'posts'
 const usersRoot = 'users'
 
 // Api Versions
@@ -34,6 +35,13 @@ export const routesV1 = {
     createOne: `/${todosRoot}`,
     updateOne: `/${todosRoot}/:todoId`,
     deleteOne: `/${todosRoot}/:todoId`,
+  },
+  post: {
+    findAll: `/${postsRoot}`,
+    findOne: `/${postsRoot}/:postId`,
+    createOne: `/${postsRoot}`,
+    updateOne: `/${postsRoot}/:postId`,
+    deleteOne: `/${postsRoot}/:postId`,
   },
   user: {
     findAll: `/${usersRoot}`,

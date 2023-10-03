@@ -6,6 +6,10 @@ export interface TextProps {
   value: string
 }
 
+export interface UpdateTextProps {
+  text: Text
+}
+
 export class Text extends ValueObject<TextProps> {
   public static maxLength: number = 15
   public static minLength: number = 2

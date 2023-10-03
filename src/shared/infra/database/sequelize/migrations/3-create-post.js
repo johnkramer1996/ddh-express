@@ -1,11 +1,13 @@
 module.exports = {
-  // @ts-ignore
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.createTable('user_addresses', {
-      user_id: {
-        primaryKey: true,
+    return queryInterface.createTable('posts', {
+      id: {
         type: Sequelize.DataTypes.UUID,
-        onDelete: 'CASCADE',
+        allowNull: false,
+        primaryKey: true,
+      },
+      user_id: {
+        type: Sequelize.DataTypes.UUID,
         references: {
           model: {
             tableName: 'users',
@@ -15,26 +17,25 @@ module.exports = {
         },
         allowNull: false,
       },
-      country: {
+      text: {
         type: Sequelize.DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
       },
-      street: {
-        type: Sequelize.DataTypes.STRING,
-        allowNull: true,
-      },
-      createdAt: {
+      created_at: {
         type: Sequelize.DataTypes.DATE,
         allowNull: false,
       },
-      updatedAt: {
+      updated_at: {
         type: Sequelize.DataTypes.DATE,
         allowNull: false,
+      },
+      deleted_at: {
+        type: Sequelize.DataTypes.DATE,
+        allowNull: true,
       },
     })
   },
-  // @ts-ignore
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('user_addresses')
+    return queryInterface.dropTable('posts')
   },
 }

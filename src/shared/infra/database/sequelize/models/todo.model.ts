@@ -11,6 +11,7 @@ class TodoModel extends Model<TodoModelAttributes, TodoModelCreationAttributes> 
 
   declare createdAt: Date
   declare updatedAt: Date
+  declare deletedAt: Date | null
 }
 
 TodoModel.init(

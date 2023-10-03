@@ -8,6 +8,7 @@ import userModule from '@src/modules/user/infra/di/container'
 import { QueryBus } from '@src/shared/core/cqs/query-bus'
 import { CommandBus } from '@src/shared/core/cqs/command-bus'
 import { AuthGuard } from '../http/decorators/useGuard'
+import postModule from '@src/modules/forum/infra/di/container'
 
 const container = new Container({ defaultScope: 'Singleton', skipBaseClassChecks: true })
 
@@ -20,5 +21,6 @@ container.bind(Container).toDynamicValue((ctx) => ctx.container as Container)
 
 todoModule(container)
 userModule(container)
+postModule(container)
 
 export { container }

@@ -1,37 +1,30 @@
 import { v4 } from 'uuid'
 import { AggregateRoot } from '../../../shared/domain/aggregate-root.base'
 import { AggregateID } from '../../../shared/domain/entity'
-import { TodoCreatedDomainEvent } from './events/todo-created.domain-event'
-import { TodoTextChangedDomainEvent } from './events/todo-text-changed.domain-event'
-import { TodoDeletedDomainEvent } from './events/todo-deleted.domain-event'
-import { TodoProps, TodoCreationProps, TodoUpdateTextProps } from './todo.types'
+import { TodoCreatedDomainEvent } from './events/created.domain-event'
+import { TodoTextChangedDomainEvent } from './events/text-changed.domain-event'
+import { TodoDeletedDomainEvent } from './events/deleted.domain-event'
+import { TodoEntityProps, TodoEntityCreationProps } from './todo.types'
+import { UpdateTextProps } from './value-objects/text.value-object'
 
-export class TodoEntity extends AggregateRoot<TodoProps> {
+export class TodoEntity extends AggregateRoot<TodoEntityProps> {
   protected readonly _id!: AggregateID
 
-  static create(create: TodoCreationProps): TodoEntity {
+  static create(create: TodoEntityCreationProps): TodoEntity {
     const id = v4()
 
-    const props: TodoProps = { ...create, completed: create.completed }
+    const props: TodoEntityProps = { ...create, completed: create.completed }
     const user = new TodoEntity({ id, props })
     user.addEvent(new TodoCreatedDomainEvent({ entity: user }))
 
     return user
   }
 
-  get text(): string {
-    return this.props.text.value
-  }
-
-  get completed(): boolean {
-    return this.props.completed
-  }
-
   public delete(): void {
     this.addEvent(new TodoDeletedDomainEvent({ entity: this }))
   }
 
-  public updateText(props: TodoUpdateTextProps): void {
+  public updateText(props: UpdateTextProps): void {
     if (props.text === this.props.text) return
 
     const newText = props.text

@@ -10,8 +10,6 @@ import { USER_TYPES } from './modules/user/infra/di/types'
 import { AuthServicePort } from './modules/user/services/auth.service.port'
 import { sequelize } from './shared/infra/database/sequelize/config/connection'
 import accociate from './shared/infra/database/sequelize/models/accociate'
-import UserModel from './shared/infra/database/sequelize/models/user.model'
-import CommentModel from './shared/infra/database/sequelize/models/comment.model'
 import { v4 } from 'uuid'
 
 async function bootstrap() {
@@ -30,6 +28,8 @@ async function bootstrap() {
   })
 }
 bootstrap()
+
+// const a = sequelize.getQueryInterface().createTable()
 
 // console.log('init')
 

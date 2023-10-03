@@ -12,14 +12,14 @@ export interface AddressCreationProps {
 
 export interface AddressProps extends AddressCreationProps {}
 
-export interface AddressCreationAttributes extends PrimaryKey {
+export interface AddressModelCreationAttributes extends PrimaryKey {
   userId: string
   country: string | null
   postalCode: string | null
   street: string | null
 }
 
-export interface AddressAttributes extends AddressCreationAttributes, TimeStamp {}
+export interface AddressModelAttributes extends AddressModelCreationAttributes, TimeStamp {}
 
 export class Address extends ValueObject<AddressProps> {
   get country(): string | null {

@@ -4,6 +4,7 @@ import { TimeStamp } from '../../../../core/time-stamp'
 import { injectable } from 'inversify'
 import { UserModelAttributes, UserModelCreationAttributes } from '@src/modules/user/domain/user.types'
 import CommentModel from './comment.model'
+import PostModel from './post.model'
 
 @injectable()
 class UserModel extends Model<UserModelAttributes, UserModelCreationAttributes> {
@@ -18,12 +19,14 @@ class UserModel extends Model<UserModelAttributes, UserModelCreationAttributes> 
 
   declare createdAt: Date
   declare updatedAt: Date
+  declare deletedAt: Date | null
 
   // declare getAddress: HasOneGetAssociationMixin<AddressModel>
   // declare setddress: HasOneSetAssociationMixin<AddressModel, number>
   // declare createAddress: HasOneCreateAssociationMixin<AddressModel>
 
   declare comments?: NonAttribute<CommentModel[]>
+  declare posts?: NonAttribute<PostModel[]>
 
   // declare static associations: {
   //   address: Association<UserModel, AddressModel>
@@ -51,42 +54,32 @@ UserModel.init(
       allowNull: true,
     },
     isEmailVerified: {
-      // field: 'is_email_verified',
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,
     },
     isAdminUser: {
-      // field: 'is_admin_user',
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,
     },
     isDeleted: {
-      // field: 'is_deleted',
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,
     },
     lastLogin: {
-      // field: 'last_login',
       type: DataTypes.DATE,
       allowNull: true,
     },
-    createdAt: {
-      // field: 'created_at',
-      type: DataTypes.DATE,
-    },
-    updatedAt: {
-      // field: 'updated_at',
-      type: DataTypes.DATE,
-    },
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
   },
   {
     tableName: 'users',
     sequelize,
     defaultScope: {
-      // include: [{ model: AddressModel, as: 'address' }],
+      // include: [{ model: PostModel, as: 'posts' }],
     },
     hooks: {},
   }
