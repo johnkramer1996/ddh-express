@@ -4,7 +4,7 @@ import { BaseController } from '@src/shared/infra/http/models/controller.base'
 import { inject } from 'inversify'
 import { TYPES } from '@src/shared/infra/di/types'
 import { Response } from 'express'
-import { PostMapper } from '../../domain/post.mapper'
+import { PostMapper } from '../domain/post.mapper'
 import { POST_TYPES } from '../di/types'
 
 export abstract class PostsController extends BaseController {
@@ -18,7 +18,7 @@ export abstract class PostsController extends BaseController {
     super(queryBus, commandBus, mapper)
   }
 
-  // protected handleError(res: Response, value: Error) {
-  //   return super.handleError(res, value)
-  // }
+  protected handleError(res: Response, value: Error) {
+    return super.handleError(res, value)
+  }
 }

@@ -3,7 +3,7 @@ import { SequelizeRepositoryBase } from '../../../shared/infra/database/sequeliz
 import { ModelDefined } from 'sequelize'
 import { PostEntity } from '../domain/post.entity'
 import { PostModelAttributes } from '../domain/post.types'
-import { POST_TYPES } from '../infra/di/types'
+import { POST_TYPES } from '../di/types'
 import { PostMapper } from '../domain/post.mapper'
 import { PostRepositoryPort } from './repository.port'
 

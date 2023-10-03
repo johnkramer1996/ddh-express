@@ -3,7 +3,7 @@ import { Paginated } from '@src/shared/domain/repository.port'
 import { injectable } from 'inversify'
 import { FindPostsQuery } from './find-all.query'
 import { QueryHandler } from '@src/shared/core/cqs/query-handler'
-import { PostService } from '../../models/service.base'
+import { PostService } from '../../service.base'
 import { PostEntity } from '@src/modules/forum/domain/post.entity'
 
 type Return = Paginated<PostEntity>

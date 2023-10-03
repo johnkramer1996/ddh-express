@@ -2,7 +2,7 @@ import { QueryParams, RepositoryPort } from '../../../shared/domain/repository.p
 import { UserEntity } from '../domain/user.entity'
 import { UserModelAttributes } from '../domain/user.types'
 
-export interface FindPostsParams extends QueryParams {
+export interface FindUsersParams extends QueryParams {
   readonly where: Partial<UserModelAttributes>
 }
 

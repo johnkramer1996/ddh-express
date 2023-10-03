@@ -23,10 +23,35 @@ PostModel.init(
       allowNull: false,
       primaryKey: true,
     },
-    text: {
+    type: {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    text: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    link: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    slug: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    points: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    totalNumComments: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE,
   },

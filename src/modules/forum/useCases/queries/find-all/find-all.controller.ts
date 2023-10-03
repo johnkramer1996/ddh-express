@@ -8,7 +8,7 @@ import { PaginatedQueryRequestDto } from '@src/shared/api/paginated-query.reques
 import { routesV1 } from '@src/configs/routes'
 import { ControllerGet } from '@src/shared/infra/http/decorators/controller'
 import { PostPaginatedResponseDto } from '@src/modules/forum/dtos/paginated.response.dto.ts'
-import { PostsController } from '@src/modules/forum/infra/models/controller.base'
+import { PostsController } from '@src/modules/forum/useCases/controller.base'
 
 @injectable()
 @ControllerGet(routesV1.post.findAll)

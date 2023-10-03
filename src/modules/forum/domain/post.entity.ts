@@ -11,7 +11,7 @@ export class PostEntity extends AggregateRoot<PostEntityProps> {
   static create(create: PostEntityCreationProps): PostEntity {
     const id = v4()
 
-    const props: PostEntityProps = { ...create }
+    const props: PostEntityProps = { ...create, points: 0, totalNumComments: 0 }
     const post = new PostEntity({ id, props })
     post.addEvent(new PostCreatedDomainEvent({ entity: post }))
 
