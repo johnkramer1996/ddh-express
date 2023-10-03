@@ -10,10 +10,10 @@ import { TodoPaginatedResponseDto } from '@src/modules/todo/dtos/todo.paginated.
 import { IQuery } from '@src/shared/core/cqs/query.interface'
 import { TodoController } from '@src/modules/todo/infra/models/todo.controller'
 import { ControllerGet, ControllerPost } from '@src/shared/infra/http/decorators/controller'
-import { routesV1 } from '@src/configs/routes'
+import { routes } from '@src/configs/routes'
 
 @injectable()
-@ControllerGet(routesV1.todo.findAll)
+@ControllerGet(routes.todo.findAll)
 export class FindTodosController extends TodoController {
   @ValidateRequest([
     ['body', FindTodosRequestDto],

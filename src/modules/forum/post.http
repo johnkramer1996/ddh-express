@@ -1,19 +1,26 @@
 
 ### GET LIST
-GET http://localhost:8086/api/v1/posts?page=1&limit=10
-Content-Type: application/json
+GET http://localhost:8086/api/v1/posts?page=1
+
+
+### GET POPULAR
+GET http://localhost:8086/api/v1/posts?order=popular
+
+
+### GET RECENT
+GET http://localhost:8086/api/v1/posts/?order=recent
 
 
 ### GET BY SLUG
-GET http://localhost:8086/api/v1/posts/8fed232a-1870-4635-958f-53314a0a3149
+GET http://localhost:8086/api/v1/posts/slug2
 
 ### CREATE ONE
 POST http://localhost:8086/api/v1/posts/
 Content-Type: application/json
 
 {
-    "title": "Title post",
-    "text": "Texct post",
-    "type": "link"
+    "title": "NEW POST ",
+    "text": "Text post",
+    "type": "text"
 }
 

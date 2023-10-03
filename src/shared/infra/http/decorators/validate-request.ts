@@ -12,7 +12,7 @@ export const ValidateRequest = (dtos: ValidateRequest[]) => {
       for (let i = 0; i < dtos.length; i++) {
         const [source, model] = dtos[i]
         const plain = req[source]
-        const obj = plainToClass(model, plain)
+        const obj = plainToClass(model, plain, { version: 1 })
         const errors = await validate(obj)
         if (errors.length > 0) {
           res.status(400).json(transformValidationErrorsToJSON(errors))

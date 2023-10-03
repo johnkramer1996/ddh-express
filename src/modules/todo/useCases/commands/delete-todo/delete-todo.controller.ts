@@ -5,11 +5,11 @@ import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-requ
 import { DeleteTodoCommand } from './delete-todo.command'
 import { TodoIdRequestDto } from '@src/modules/todo/dtos/todo-id.request.dto'
 import { ControllerDelete } from '@src/shared/infra/http/decorators/controller'
-import { routesV1 } from '@src/configs/routes'
+import { routes } from '@src/configs/routes'
 import { TodoController } from '@src/modules/todo/infra/models/todo.controller'
 
 @injectable()
-@ControllerDelete(routesV1.todo.deleteOne)
+@ControllerDelete(routes.todo.deleteOne)
 export class DeleteTodoController extends TodoController {
   @ValidateRequest([['params', TodoIdRequestDto]])
   async executeImpl(req: Request, res: Response): Promise<any> {

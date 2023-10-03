@@ -7,10 +7,10 @@ import { UpdateTodoCommand } from './update-todo.command'
 import { TodoIdRequestDto } from '@src/modules/todo/dtos/todo-id.request.dto'
 import { TodoController } from '@src/modules/todo/infra/models/todo.controller'
 import { ControllerPost } from '@src/shared/infra/http/decorators/controller'
-import { routesV1 } from '@src/configs/routes'
+import { routes } from '@src/configs/routes'
 
 @injectable()
-@ControllerPost(routesV1.todo.updateOne)
+@ControllerPost(routes.todo.updateOne)
 export class UpdateTodoController extends TodoController {
   @ValidateRequest([
     ['body', UpdateTodoRequestDto],

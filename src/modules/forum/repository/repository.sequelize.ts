@@ -6,10 +6,16 @@ import { PostModelAttributes } from '../domain/post.types'
 import { POST_TYPES } from '../di/types'
 import { PostMapper } from '../domain/post.mapper'
 import { PostRepositoryPort } from './repository.port'
+import UserModel from '@src/shared/infra/database/sequelize/models/user.model'
 
 @injectable()
 export class PostSequelizeRepository extends SequelizeRepositoryBase<PostEntity, PostModelAttributes> implements PostRepositoryPort {
   constructor(@inject(POST_TYPES.MAPPER) mapper: PostMapper, @inject(POST_TYPES.SEQUELIZE_MODEL) model: ModelDefined<any, any>) {
     super(mapper, model)
+  }
+
+  public async findOneBySlug(slug: string): Promise<PostEntity | null> {
+    const user = await this.model.findOne({ where: { slug }, include: [{ model: UserModel, as: 'user' }] })
+    return user ? this.mapper.toDomain(user) : user
   }
 }

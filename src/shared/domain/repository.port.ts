@@ -1,5 +1,4 @@
 import { repositoryConfig } from '@src/configs/config'
-import { ObjectLiteral } from '../types/object-literal.type'
 
 export class Paginated<T> {
   readonly count: number
@@ -26,7 +25,6 @@ export type QueryParams = {
   page: number
   offset: number
   order: OrderBy[]
-  where: ObjectLiteral
 }
 
 export interface RepositoryPort<Entity> {

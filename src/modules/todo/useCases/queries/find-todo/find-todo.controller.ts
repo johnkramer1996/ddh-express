@@ -6,10 +6,10 @@ import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-requ
 import { TodoIdRequestDto } from '@src/modules/todo/dtos/todo-id.request.dto'
 import { TodoController } from '@src/modules/todo/infra/models/todo.controller'
 import { ControllerGet } from '@src/shared/infra/http/decorators/controller'
-import { routesV1 } from '@src/configs/routes'
+import { routes } from '@src/configs/routes'
 
 @injectable()
-@ControllerGet(routesV1.todo.findOne)
+@ControllerGet(routes.todo.findOne)
 export class FindTodoController extends TodoController {
   @ValidateRequest([['params', TodoIdRequestDto]])
   async executeImpl(req: Request, res: Response): Promise<any> {

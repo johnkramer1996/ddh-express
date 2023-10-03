@@ -31,7 +31,7 @@ const repositoryConfig = {
 
 const authConfig = {
   secret: 'ukrainer',
-  tokenExpiryTime: 5,
+  tokenExpiryTime: 24 * 60 * 60,
 }
 
 export { dbConfig, envCongig, repositoryConfig, redisConfig, authConfig, PORT }

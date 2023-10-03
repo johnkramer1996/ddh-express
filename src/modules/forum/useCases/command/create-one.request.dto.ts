@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsEnum } from 'class-validator'
+import { IsString, IsOptional, IsEnum, ValidateIf, IsEmpty } from 'class-validator'
 import { PostType } from '../../domain/post.types'
 
 export class CreateOneRequestDto {
@@ -8,11 +8,11 @@ export class CreateOneRequestDto {
   @IsString()
   readonly title!: string
 
-  @IsOptional()
+  @ValidateIf((o) => o.type === PostType.text)
   @IsString()
-  readonly text?: string
+  readonly text!: string
 
-  @IsOptional()
+  @ValidateIf((o) => o.type === PostType.link)
   @IsString()
-  readonly link?: string
+  readonly link!: string
 }

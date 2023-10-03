@@ -8,12 +8,12 @@ import { IdResponse } from '@src/shared/api/id.response.dto'
 import { ICommand } from '@src/shared/core/cqs/command.interface'
 import { CreateUserServiceResponse } from './create-user.service'
 import { ControllerPost } from '@src/shared/infra/http/decorators/controller'
-import { routesV1 } from '@src/configs/routes'
+import { routes } from '@src/configs/routes'
 import { ArgumentOutOfRangeException } from '@src/shared/exceptions/exceptions'
 import { UserController } from '@src/modules/user/infra/models/user.controller.base'
 
 @injectable()
-@ControllerPost(routesV1.user.createOne)
+@ControllerPost(routes.user.createOne)
 export class CreateUserController extends UserController {
   @ValidateRequest([['body', CreateUserRequestDto]])
   async executeImpl(req: Request, res: Response): Promise<any> {

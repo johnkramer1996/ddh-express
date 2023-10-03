@@ -6,12 +6,6 @@ export type ResponseBaseProps<T> = Omit<T, 'id' | 'createdAt' | 'updatedAt'> & {
   updatedAt: Date
 }
 
-// export type ResponseBaseProps ={
-//   id: string
-//   createdAt: Date
-//   updatedAt: Date
-// }
-
 export class ResponseBase extends IdResponse {
   constructor(props: ResponseBaseProps<ResponseBase>) {
     super(props.id)

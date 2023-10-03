@@ -9,6 +9,8 @@ import PostModel from '@src/shared/infra/database/sequelize/models/post.model'
 import { PostRepositoryPort } from '../repository/repository.port'
 import { CreateOneController } from '../useCases/command/create-one.controller'
 import { CreateOneService } from '../useCases/command/create-one.service'
+import { FindBySlugController } from '../useCases/queries/find-by-slug/find-by-slug.controller'
+import { FindBySlugService } from '../useCases/queries/find-by-slug/find-by-slug.service'
 
 const postModule = (container: Container) => {
   container.bind(POST_TYPES.MAPPER).to(PostMapper)
@@ -20,6 +22,9 @@ const postModule = (container: Container) => {
 
   container.bind(CreateOneController).toSelf()
   container.bind(CreateOneService).toSelf()
+
+  container.bind(FindBySlugController).toSelf()
+  container.bind(FindBySlugService).toSelf()
 }
 
 export default postModule

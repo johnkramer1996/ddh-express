@@ -5,7 +5,7 @@ import { PostModelAttributes, PostModelCreationAttributes } from '@src/modules/f
 import UserModel from './user.model'
 
 @injectable()
-class PostModel extends Model<Omit<PostModelAttributes, 'userId'>, PostModelCreationAttributes> {
+class PostModel extends Model<PostModelAttributes, PostModelCreationAttributes> {
   declare text: string
   declare userId: ForeignKey<UserModel['id']>
 
@@ -19,41 +19,66 @@ class PostModel extends Model<Omit<PostModelAttributes, 'userId'>, PostModelCrea
 PostModel.init(
   {
     id: {
-      type: DataTypes.UUID,
-      allowNull: false,
       primaryKey: true,
+      allowNull: false,
+      type: DataTypes.UUID,
+    },
+    userId: {
+      field: 'user_id',
+      allowNull: false,
+      type: DataTypes.UUID,
+      references: {
+        model: {
+          tableName: 'users',
+          schema: 'public',
+        },
+        key: 'id',
+      },
     },
     type: {
-      type: DataTypes.STRING,
       allowNull: false,
+      type: DataTypes.STRING,
     },
     title: {
-      type: DataTypes.STRING,
       allowNull: false,
+      type: DataTypes.STRING,
     },
     text: {
-      type: DataTypes.STRING,
       allowNull: true,
+      type: DataTypes.STRING,
     },
     link: {
-      type: DataTypes.STRING,
       allowNull: true,
+      type: DataTypes.STRING,
     },
     slug: {
-      type: DataTypes.STRING,
       allowNull: false,
+      type: DataTypes.STRING,
     },
     points: {
-      type: DataTypes.INTEGER,
       allowNull: false,
+      type: DataTypes.INTEGER,
     },
     totalNumComments: {
-      type: DataTypes.INTEGER,
+      field: 'total_num_comments',
       allowNull: false,
+      type: DataTypes.INTEGER,
     },
-
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE,
+    createdAt: {
+      field: 'created_at',
+      allowNull: false,
+      type: DataTypes.DATE,
+    },
+    updatedAt: {
+      field: 'updated_at',
+      allowNull: false,
+      type: DataTypes.DATE,
+    },
+    deletedAt: {
+      field: 'deleted_at',
+      allowNull: true,
+      type: DataTypes.DATE,
+    },
   },
   {
     tableName: 'posts',

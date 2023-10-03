@@ -28,7 +28,7 @@ const usersRoot = 'users'
 // Api Versions
 const v1 = 'v1'
 
-export const routesV1 = {
+export const routes = {
   todo: {
     findAll: `/${todosRoot}`,
     findOne: `/${todosRoot}/:todoId`,
@@ -39,6 +39,7 @@ export const routesV1 = {
   post: {
     findAll: `/${postsRoot}`,
     findOne: `/${postsRoot}/:postId`,
+    findOneBySlug: `/${postsRoot}/:slug`,
     createOne: `/${postsRoot}`,
     updateOne: `/${postsRoot}/:postId`,
     deleteOne: `/${postsRoot}/:postId`,
@@ -55,5 +56,3 @@ export const routesV1 = {
     currentUser: `/${usersRoot}/currentUser`,
   },
 }
-
-console.log(routesV1.user.logout)

@@ -8,6 +8,7 @@ export interface BaseEntityProps {
   id: AggregateID
   createdAt: Date
   updatedAt: Date
+  deletedAt: Date | null
 }
 
 export interface CreateEntityProps<T> {
@@ -24,6 +25,7 @@ export abstract class Entity<EntityProps> implements TimeStamp, PrimaryKey {
     const now = new Date()
     this._createdAt = createdAt || now
     this._updatedAt = updatedAt || now
+    this._deletedAt = null
     this.props = props
     this.validate()
   }
@@ -35,6 +37,8 @@ export abstract class Entity<EntityProps> implements TimeStamp, PrimaryKey {
   private readonly _createdAt: Date
 
   private _updatedAt: Date
+
+  private _deletedAt: Date | null
 
   get id(): AggregateID {
     return this._id
@@ -50,6 +54,10 @@ export abstract class Entity<EntityProps> implements TimeStamp, PrimaryKey {
 
   get updatedAt(): Date {
     return this._updatedAt
+  }
+
+  get deletedAt(): Date | null {
+    return this._deletedAt
   }
 
   static isEntity(entity: unknown): entity is Entity<unknown> {
@@ -86,6 +94,7 @@ export abstract class Entity<EntityProps> implements TimeStamp, PrimaryKey {
       id: this._id,
       createdAt: this._createdAt,
       updatedAt: this._updatedAt,
+      deletedAt: this._deletedAt,
       ...this.props,
     }
     return Object.freeze(propsCopy)

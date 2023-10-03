@@ -16,8 +16,7 @@ async function bootstrap() {
   const app = container.get<IServer>(TYPES.SERVER).create()
   const redis = container.get<AuthServicePort>(USER_TYPES.AUTH_SERVICE)
 
-  if (envCongig.isProduction) await redis.connect()
-  await redis.connect()
+  envCongig.isProduction ? await redis.connect() : redis.connect()
 
   accociate()
   // await sequelize.sync({ force: true, alter: true })

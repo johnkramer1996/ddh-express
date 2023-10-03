@@ -8,10 +8,10 @@ import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-requ
 import { UserTokensResponseDto } from '@src/modules/user/dtos/user-tokens.response.dto'
 import { UserController } from '@src/modules/user/infra/models/user.controller.base'
 import { ControllerPost } from '@src/shared/infra/http/decorators/controller'
-import { routesV1 } from '@src/configs/routes'
+import { routes } from '@src/configs/routes'
 
 @injectable()
-@ControllerPost(routesV1.user.refreshToken)
+@ControllerPost(routes.user.refreshToken)
 export class RefreshTokenController extends UserController {
   @ValidateRequest([['body', RefreshTokenRequestDto]])
   async executeImpl(req: RequestDecoded, res: Response): Promise<any> {

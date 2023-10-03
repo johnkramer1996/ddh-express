@@ -3,6 +3,7 @@ import { Mapper } from '../../../shared/domain/mapper.interface'
 import { PostEntity } from './post.entity'
 import { PostModelAttributes, PostType } from './post.types'
 import { PostResponseDto } from '../dtos/response.dto'
+import { Slug } from './value-objects/slug.value-object'
 
 @injectable()
 export class PostMapper implements Mapper<PostEntity, PostModelAttributes, PostResponseDto> {
@@ -10,16 +11,19 @@ export class PostMapper implements Mapper<PostEntity, PostModelAttributes, PostR
     const copy = entity.getProps()
     const record: PostModelAttributes = {
       id: copy.id,
+      userId: copy.userId,
       createdAt: copy.createdAt,
       updatedAt: copy.updatedAt,
+      deletedAt: copy.deletedAt,
       type: copy.type,
       title: copy.title,
       text: copy.text,
       link: copy.link,
-      slug: copy.slug,
+      slug: copy.slug.value,
       points: copy.points,
       totalNumComments: copy.totalNumComments,
     }
+    console.log(record)
     return record
   }
 
@@ -29,14 +33,20 @@ export class PostMapper implements Mapper<PostEntity, PostModelAttributes, PostR
       createdAt: new Date(record.createdAt),
       updatedAt: new Date(record.updatedAt),
       props: {
+        userId: record.userId,
         type: record.type as PostType,
         title: record.title,
         text: record.text,
         link: record.link,
-        user: record.user,
-        slug: record.slug,
+        slug: new Slug({ value: record.slug }),
         points: record.points,
         totalNumComments: record.totalNumComments,
+        user: record.user
+          ? {
+              email: record.user?.email,
+              reputation: undefined,
+            }
+          : undefined,
       },
     })
     return entity
@@ -44,6 +54,6 @@ export class PostMapper implements Mapper<PostEntity, PostModelAttributes, PostR
 
   public toResponse(entity: PostEntity): PostResponseDto {
     const copy = entity.getProps()
-    return new PostResponseDto(copy)
+    return new PostResponseDto({ ...copy, slug: copy.slug.value })
   }
 }

@@ -3,7 +3,7 @@ import { UserEntity } from '../domain/user.entity'
 import { UserModelAttributes } from '../domain/user.types'
 
 export interface FindUsersParams extends QueryParams {
-  readonly where: Partial<UserModelAttributes>
+  // readonly where: Partial<UserModelAttributes>
 }
 
 export interface UserRepositoryPort extends RepositoryPort<UserEntity> {

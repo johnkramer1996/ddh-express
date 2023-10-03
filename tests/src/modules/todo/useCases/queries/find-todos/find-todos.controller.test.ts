@@ -5,13 +5,13 @@ import { container } from '@src/shared/infra/di/container'
 import { TYPES } from '@src/shared/infra/di/types'
 import { IServer } from '@src/shared/infra/http/server'
 import request from 'supertest'
-import { routesV1 } from '@src/configs/routes'
+import { routes } from '@src/configs/routes'
 import { mock, mockTodo } from '../../todos'
 import { TODO_TYPES } from '@src/modules/todo/infra/di/types'
 import { TodoMapper } from '@src/modules/todo/domain/todo.mapper'
 
 describe('Find Todos Controller', () => {
-  const route = routesV1.todo.findAll
+  const route = routes.todo.findAll
   container.rebind(TYPES.QUERY_BUS).toConstantValue(mock.queryBus)
   const app = container.get<IServer>(TYPES.SERVER).create('/')
   const mapper = container.get<TodoMapper>(TODO_TYPES.MAPPER)

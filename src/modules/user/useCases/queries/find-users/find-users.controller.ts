@@ -7,11 +7,11 @@ import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-requ
 import { PaginatedQueryRequestDto } from '@src/shared/api/paginated-query.request.dto'
 import { UserPaginatedResponseDto } from '@src/modules/user/dtos/user.paginated.response.dto.ts'
 import { UserController } from '@src/modules/user/infra/models/user.controller.base'
-import { routesV1 } from '@src/configs/routes'
+import { routes } from '@src/configs/routes'
 import { ControllerGet } from '@src/shared/infra/http/decorators/controller'
 
 @injectable()
-@ControllerGet(routesV1.user.findAll)
+@ControllerGet(routes.user.findAll)
 export class FindUsersController extends UserController {
   @ValidateRequest([
     ['body', FindUsersRequestDto],
@@ -21,7 +21,7 @@ export class FindUsersController extends UserController {
     const body = plainToClass(FindUsersRequestDto, req.body)
     const params = plainToClass(PaginatedQueryRequestDto, req.query)
 
-    const query = new FindUsersQuery({ where: { ...body }, ...params })
+    const query = new FindUsersQuery(params)
     const result = await this.queryBus.execute(query)
 
     if (!result.isSuccess) return this.handleError(res, result.getValue())

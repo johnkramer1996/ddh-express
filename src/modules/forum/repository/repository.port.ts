@@ -5,4 +5,6 @@ export interface FindPostsParams extends QueryParams {
   // readonly where: Partial<PostModelAttributes>
 }
 
-export interface PostRepositoryPort extends RepositoryPort<PostEntity> {}
+export interface PostRepositoryPort extends RepositoryPort<PostEntity> {
+  findOneBySlug(slug: string): Promise<PostEntity | null>
+}

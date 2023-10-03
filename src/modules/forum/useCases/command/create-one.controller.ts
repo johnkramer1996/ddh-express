@@ -7,16 +7,21 @@ import { CreateOneCommand } from './create-one.command'
 import { IdResponse } from '@src/shared/api/id.response.dto'
 import { TodoController } from '@src/modules/todo/infra/models/todo.controller'
 import { ControllerPost } from '@src/shared/infra/http/decorators/controller'
-import { routesV1 } from '@src/configs/routes'
+import { routes } from '@src/configs/routes'
+import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
+import { RequestDecoded } from '@src/shared/infra/http/models/controller.base'
+import { UserRequestDto } from '@src/modules/user/dtos/user.request.dto'
 
 @injectable()
-@ControllerPost(routesV1.post.createOne)
+@ControllerPost(routes.post.createOne)
 export class CreateOneController extends TodoController {
+  @UseGuard(AuthGuard)
   @ValidateRequest([['body', CreateOneRequestDto]])
-  async executeImpl(req: Request, res: Response): Promise<any> {
-    const request = plainToClass(CreateOneRequestDto, req.body)
+  async executeImpl(req: RequestDecoded, res: Response): Promise<any> {
+    const body = plainToClass(CreateOneRequestDto, req.body)
+    const decoded = plainToClass(UserRequestDto, req.decoded)
 
-    const command = new CreateOneCommand(request)
+    const command = new CreateOneCommand({ ...body, userId: decoded.id })
     const result = await this.commandBus.execute(command)
 
     if (!result.isSuccess) return this.handleError(res, result.getValue())
