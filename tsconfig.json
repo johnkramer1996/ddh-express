@@ -28,6 +28,15 @@
       "@tests/*": ["tests/*"]
     }
   },
-  "include": ["src/*.ts", "src/**/*.ts", "src/**/*.js", "scripts/**/*.ts", "tests/**/*.ts"],
+  "include": [
+    "src/*.ts",
+    "src/**/*.ts",
+    "src/**/*.js",
+    "scripts/**/*.ts",
+    "tests/**/*.ts",
+    "src/shared/infra/database/sequelize/init/user.init.js",
+    "src/shared/infra/database/sequelize/migrations/time-stamp.init.js",
+    "src/shared/infra/database/sequelize/migrations/init.mjs"
+  ],
   "exclude": ["node_modules", "src/**/*.spec.ts", "src/**/*.spec.js"]
 }

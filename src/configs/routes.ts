@@ -41,6 +41,8 @@ export const routes = {
     findOne: `/${postsRoot}/:postId`,
     findOneBySlug: `/${postsRoot}/:slug`,
     createOne: `/${postsRoot}`,
+    upvote: `/${postsRoot}/:slug/upvote`,
+    downvote: `/${postsRoot}/:slug/downvote`,
     updateOne: `/${postsRoot}/:postId`,
     deleteOne: `/${postsRoot}/:postId`,
   },

@@ -6,16 +6,15 @@ import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-requ
 import { routes } from '@src/configs/routes'
 import { ControllerGet } from '@src/shared/infra/http/decorators/controller'
 import { PostPaginatedResponseDto } from '@src/modules/forum/dtos/paginated.response.dto.ts'
-import { PostsController } from '@src/modules/forum/useCases/controller.base'
+import { PostController } from '@src/modules/forum/useCases/controller.base'
 import { FindAllPaginatedQueryRequestDto } from '@src/modules/forum/dtos/paginated-query.request.dto'
 
 @injectable()
 @ControllerGet(routes.post.findAll)
-export class FindPostsController extends PostsController {
+export class FindPostsController extends PostController {
   @ValidateRequest([['query', FindAllPaginatedQueryRequestDto]])
   async executeImpl(req: Request, res: Response): Promise<any> {
     const params = plainToClass(FindAllPaginatedQueryRequestDto, req.query)
-    console.log(params)
     const query = new FindPostsQuery(params)
     const result = await this.queryBus.execute(query)
 

@@ -2,12 +2,12 @@ import { ICommandBus } from '@src/shared/core/cqs/command-bus'
 import { IQueryBus } from '@src/shared/core/cqs/query-bus'
 import { BaseController } from '@src/shared/infra/http/models/controller.base'
 import { inject } from 'inversify'
-import { TYPES } from '@src/shared/infra/di/types'
+import { TYPES } from '@src/shared/di/types'
 import { Response } from 'express'
 import { PostMapper } from '../domain/post.mapper'
 import { POST_TYPES } from '../di/types'
 
-export abstract class PostsController extends BaseController {
+export abstract class PostController extends BaseController {
   declare mapper: PostMapper
 
   constructor(

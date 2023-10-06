@@ -12,11 +12,11 @@ export type DeleteUserServiceResponse = ResultWithError<Return>
 @CommandHandler(DeleteUserCommand)
 export class DeleteUserService extends UserService<DeleteUserCommand, Return> {
   async executeImpl(command: DeleteUserCommand): Promise<Return> {
-    const user = await this.repository.findOneById(command.todoId)
+    const user = await this.postRepo.findOneById(command.todoId)
     if (!user) throw new NotFoundException()
 
     user.delete()
 
-    await this.repository.delete(user)
+    await this.postRepo.delete(user)
   }
 }

@@ -1,7 +1,7 @@
 import express, { Router } from 'express'
 import { injectable } from 'inversify'
 import { BaseController } from '../models/controller.base'
-import { container } from '../../di/container'
+import { container } from '../../../di/container'
 import { routes } from '../decorators/controller'
 
 @injectable()

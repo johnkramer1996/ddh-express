@@ -13,7 +13,7 @@ export type CurrentUserServiceResponse = ResultWithError<Return>
 @QueryHandler(CurrentUserQuery)
 export class CurrentUserService extends UserService<CurrentUserQuery, Return> {
   async executeImpl(query: CurrentUserQuery): Promise<Return> {
-    const user = await this.repository.findOneById(query.id)
+    const user = await this.postRepo.findOneById(query.id)
     if (!user) throw new NotFoundException()
 
     return user

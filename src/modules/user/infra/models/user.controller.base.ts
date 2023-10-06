@@ -4,7 +4,7 @@ import { BaseController } from '@src/shared/infra/http/models/controller.base'
 import { inject } from 'inversify'
 import { UserMapper } from '../../domain/user.mapper'
 import { USER_TYPES } from '../di/types'
-import { TYPES } from '@src/shared/infra/di/types'
+import { TYPES } from '@src/shared/di/types'
 import { PasswordDoesntMatchException } from '../../domain/user.errors'
 import { Response } from 'express'
 

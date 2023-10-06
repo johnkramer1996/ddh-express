@@ -6,11 +6,11 @@ import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-requ
 import { ControllerGet } from '@src/shared/infra/http/decorators/controller'
 import { routes } from '@src/configs/routes'
 import { SlugRequestDto } from '@src/modules/forum/dtos/slug.request.dto'
-import { PostsController } from '../../controller.base'
+import { PostController } from '../../controller.base'
 
 @injectable()
 @ControllerGet(routes.post.findOneBySlug)
-export class FindBySlugController extends PostsController {
+export class FindBySlugController extends PostController {
   @ValidateRequest([['params', SlugRequestDto]])
   async executeImpl(req: Request, res: Response): Promise<any> {
     const params = plainToClass(SlugRequestDto, req.params)

@@ -13,6 +13,7 @@ export class TodoMapper implements Mapper<TodoEntity, TodoModelAttributes, TodoR
       id: copy.id,
       createdAt: copy.createdAt,
       updatedAt: copy.updatedAt,
+      deletedAt: copy.deletedAt,
       text: copy.text.value,
       completed: copy.completed,
     }

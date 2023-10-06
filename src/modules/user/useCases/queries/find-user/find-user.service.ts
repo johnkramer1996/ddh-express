@@ -13,7 +13,7 @@ export type FindUserServiceResponse = ResultWithError<FindUsersServiceReturn>
 @QueryHandler(FindUserQuery)
 export class FindUserService extends UserService<FindUserQuery, FindUsersServiceReturn> {
   protected async executeImpl(query: FindUserQuery): Promise<FindUsersServiceReturn> {
-    const todo = await this.repository.findOneById(query.userId)
+    const todo = await this.postRepo.findOneById(query.userId)
     if (!todo) throw new NotFoundException()
 
     return todo

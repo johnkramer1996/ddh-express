@@ -1,8 +1,16 @@
+import { v4 } from 'uuid'
 import { PrimaryKey } from '../core/primary-key'
 import { TimeStamp } from '../core/time-stamp'
 import { convertPropsToObject } from '../utils/convert-props-to-object.util'
 
 export type AggregateID = string
+
+export interface CreationEntityProps<T> {
+  id?: AggregateID
+  props: T
+  createdAt?: Date
+  updatedAt?: Date
+}
 
 export interface BaseEntityProps {
   id: AggregateID
@@ -10,16 +18,9 @@ export interface BaseEntityProps {
   updatedAt: Date
   deletedAt: Date | null
 }
-
-export interface CreateEntityProps<T> {
-  id: AggregateID
-  props: T
-  createdAt?: Date
-  updatedAt?: Date
-}
-
-export abstract class Entity<EntityProps> implements TimeStamp, PrimaryKey {
-  constructor({ id, createdAt, updatedAt, props }: CreateEntityProps<EntityProps>) {
+// PrimaryKey
+export abstract class Entity<EntityProps> implements TimeStamp {
+  constructor({ id, createdAt, updatedAt, props }: CreationEntityProps<EntityProps>) {
     this.setId(id)
     this.validateProps(props)
     const now = new Date()
@@ -44,8 +45,8 @@ export abstract class Entity<EntityProps> implements TimeStamp, PrimaryKey {
     return this._id
   }
 
-  private setId(id: AggregateID): void {
-    this._id = id
+  private setId(id?: AggregateID): void {
+    this._id = id ?? v4()
   }
 
   get createdAt(): Date {

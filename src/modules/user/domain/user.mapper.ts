@@ -14,6 +14,7 @@ export class UserMapper implements Mapper<UserEntity, UserModelAttributes, UserR
       id: copy.id,
       createdAt: copy.createdAt,
       updatedAt: copy.updatedAt,
+      deletedAt: copy.deletedAt,
       email: copy.email,
       password: copy.password.value,
       username: copy.username,

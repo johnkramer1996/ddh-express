@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
 import { RequestDecoded } from '../models/controller.base'
 import { AuthServicePort } from '@src/modules/user/services/auth.service.port'
-import { container } from '../../di/container'
+import { container } from '../../../di/container'
 import { getStringFromUnknown } from '@src/shared/utils/get-error'
 
 export function UseGuard(func: Function, ...args: any[]): MethodDecorator {
@@ -19,7 +19,6 @@ export function UseGuard(func: Function, ...args: any[]): MethodDecorator {
       } catch (e) {
         return res.status(403).send({ message: getStringFromUnknown(e) })
       }
-      console.log('value')
       return original.apply(this, arguments)
     }
   }

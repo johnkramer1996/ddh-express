@@ -1,6 +1,6 @@
 import '@src/shared/utils/dotenv' // load jest
 import { FindTodosService } from '@src/modules/todo/useCases/queries/find-todos/find-todos.service'
-import { container } from '@src/shared/infra/di/container'
+import { container } from '@src/shared/di/container'
 import { mock, mockTodo } from '../../todos'
 import { FindTodosQuery } from '@src/modules/todo/useCases/queries/find-todos/find-todos.query'
 import { TodoSequelizeRepository } from '@src/modules/todo/repository/repository'

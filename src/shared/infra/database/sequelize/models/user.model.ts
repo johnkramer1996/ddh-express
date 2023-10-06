@@ -1,10 +1,10 @@
 import { DataTypes, Model, Association, HasOneGetAssociationMixin, HasOneSetAssociationMixin, HasOneCreateAssociationMixin, NonAttribute } from 'sequelize'
 import { sequelize } from '../config/connection'
-import { TimeStamp } from '../../../../core/time-stamp'
 import { injectable } from 'inversify'
 import { UserModelAttributes, UserModelCreationAttributes } from '@src/modules/user/domain/user.types'
-import CommentModel from './comment.model'
 import PostModel from './post.model'
+import { DB_TABLES } from '@src/configs/dbtables'
+import userInit from '../init/user.init.js'
 
 @injectable()
 class UserModel extends Model<UserModelAttributes, UserModelCreationAttributes> {
@@ -25,7 +25,7 @@ class UserModel extends Model<UserModelAttributes, UserModelCreationAttributes> 
   // declare setddress: HasOneSetAssociationMixin<AddressModel, number>
   // declare createAddress: HasOneCreateAssociationMixin<AddressModel>
 
-  declare comments?: NonAttribute<CommentModel[]>
+  // declare comments?: NonAttribute<CommentModel[]>
   declare posts?: NonAttribute<PostModel[]>
 
   // declare static associations: {
@@ -34,55 +34,13 @@ class UserModel extends Model<UserModelAttributes, UserModelCreationAttributes> 
   // }
 }
 
-UserModel.init(
-  {
-    id: {
-      type: DataTypes.UUID,
-      allowNull: false,
-      primaryKey: true,
-    },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    username: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    isEmailVerified: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false,
-    },
-    isAdminUser: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false,
-    },
-    isDeleted: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false,
-    },
-    lastLogin: {
-      type: DataTypes.DATE,
-      allowNull: true,
-    },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE,
+UserModel.init(userInit, {
+  tableName: DB_TABLES.USER,
+  sequelize,
+  defaultScope: {
+    // include: [{ model: PostModel, as: 'posts' }],
   },
-  {
-    tableName: 'users',
-    sequelize,
-    defaultScope: {
-      // include: [{ model: PostModel, as: 'posts' }],
-    },
-    hooks: {},
-  }
-)
+  hooks: {},
+})
 
 export default UserModel

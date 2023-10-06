@@ -1,6 +1,6 @@
 import '@src/shared/utils/dotenv' // load jest
-import { container } from '@src/shared/infra/di/container'
-import { TYPES } from '@src/shared/infra/di/types'
+import { container } from '@src/shared/di/container'
+import { TYPES } from '@src/shared/di/types'
 import { TodoRepositoryPort } from '@src/modules/todo/repository/repository.port'
 import { CreateTodoService } from '@src/modules/todo/useCases/commands/create-todo/create-todo.service'
 import { CreateTodoCommand } from '@src/modules/todo/useCases/commands/create-todo/create-todo.command'

@@ -19,7 +19,7 @@ export class CreateUserService extends UserService<CreateUserCommand, Return> {
       password: new Password({ value: command.password }),
     })
 
-    await this.repository.save(todo)
+    await this.postRepo.save(todo)
 
     return todo.id
   }

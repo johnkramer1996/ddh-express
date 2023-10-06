@@ -3,6 +3,7 @@ import { sequelize } from '../config/connection'
 import { TimeStamp } from '../../../../core/time-stamp'
 import { AddressModelAttributes, AddressModelCreationAttributes } from '@src/modules/user/domain/value-objects/address.value-object'
 import UserModel from './user.model'
+import userAdderessInit from '../init/user-adderess.init'
 
 export class AddressModel extends Model<Omit<AddressModelAttributes, 'userId'>, AddressModelCreationAttributes> {
   declare userId: ForeignKey<UserModel['id']>
@@ -15,30 +16,7 @@ export class AddressModel extends Model<Omit<AddressModelAttributes, 'userId'>, 
   declare deletedAt: Date | null
 }
 
-AddressModel.init(
-  {
-    id: {
-      type: DataTypes.UUID,
-      allowNull: false,
-      primaryKey: true,
-    },
-    country: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    postalCode: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    street: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE,
-  },
-  {
-    tableName: 'user_addresses',
-    sequelize,
-  }
-)
+AddressModel.init(userAdderessInit, {
+  tableName: 'user_addresses',
+  sequelize,
+})

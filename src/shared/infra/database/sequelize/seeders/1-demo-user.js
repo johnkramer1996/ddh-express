@@ -33,6 +33,7 @@ module.exports = {
     await queryInterface.bulkInsert(
       'user_addresses',
       users.map((i, index) => ({
+        id: uuid.v4(),
         user_id: i.id,
         country: 'country ' + index,
         street: 'street ' + index,

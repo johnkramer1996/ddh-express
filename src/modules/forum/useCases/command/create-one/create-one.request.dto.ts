@@ -1,5 +1,5 @@
 import { IsString, IsOptional, IsEnum, ValidateIf, IsEmpty } from 'class-validator'
-import { PostType } from '../../domain/post.types'
+import { PostType } from '../../../domain/post.types'
 
 export class CreateOneRequestDto {
   @IsEnum(PostType)

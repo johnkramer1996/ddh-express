@@ -2,6 +2,7 @@ import { CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, 
 import { sequelize } from '../config/connection'
 import { injectable } from 'inversify'
 import { TodoModelAttributes, TodoModelCreationAttributes } from '@src/modules/todo/domain/todo.types'
+import { DB_TABLES } from '@src/configs/dbtables'
 
 @injectable()
 class TodoModel extends Model<TodoModelAttributes, TodoModelCreationAttributes> {
@@ -29,11 +30,24 @@ TodoModel.init(
       type: new DataTypes.BOOLEAN(),
       allowNull: false,
     },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE,
+    createdAt: {
+      field: 'created_at',
+      allowNull: false,
+      type: DataTypes.DATE,
+    },
+    updatedAt: {
+      field: 'updated_at',
+      allowNull: false,
+      type: DataTypes.DATE,
+    },
+    deletedAt: {
+      field: 'deleted_at',
+      allowNull: true,
+      type: DataTypes.DATE,
+    },
   },
   {
-    tableName: 'todos',
+    tableName: DB_TABLES.TODO,
     sequelize,
   }
 )

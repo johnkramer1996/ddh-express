@@ -3,8 +3,8 @@ import { InternalServerErrorException } from '../exceptions/exceptions'
 import { getStringFromUnknown } from '../utils/get-error'
 import { Result, ResultWithError } from './result'
 
-export abstract class Service<T1, T2> {
-  constructor(protected repository: RepositoryPort<any>) {}
+export abstract class ServiceBase<T1, T2> {
+  constructor(protected postRepo: RepositoryPort<any>) {}
 
   protected abstract executeImpl(param: T1): Promise<T2>
 

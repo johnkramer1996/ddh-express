@@ -1,6 +1,6 @@
 import express, { Application, Router } from 'express'
 import { inject, injectable } from 'inversify'
-import { TYPES } from '../di/types'
+import { TYPES } from '../../di/types'
 import HTTPRouter from './api/v1'
 import morgan from 'morgan'
 import cookieParser from 'cookie-parser'

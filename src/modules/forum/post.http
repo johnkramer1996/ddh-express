@@ -1,6 +1,6 @@
 
 ### GET LIST
-GET http://localhost:8086/api/v1/posts?page=1
+GET http://localhost:8086/api/v1/posts
 
 
 ### GET POPULAR
@@ -12,14 +12,20 @@ GET http://localhost:8086/api/v1/posts/?order=recent
 
 
 ### GET BY SLUG
-GET http://localhost:8086/api/v1/posts/slug2
+GET http://localhost:8086/api/v1/posts/slug-test
+
+### UPVOTE
+POST http://localhost:8086/api/v1/posts/slug-test/upvote
+
+### DOWNVOTE
+POST http://localhost:8086/api/v1/posts/slug-test/downvote
 
 ### CREATE ONE
 POST http://localhost:8086/api/v1/posts/
 Content-Type: application/json
 
 {
-    "title": "NEW POST ",
+    "title": "NEW POST",
     "text": "Text post",
     "type": "text"
 }

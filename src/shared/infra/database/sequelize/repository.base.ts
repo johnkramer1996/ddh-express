@@ -1,4 +1,4 @@
-import { ModelDefined } from 'sequelize'
+import { ModelDefined, DestroyOptions } from 'sequelize'
 import { AggregateRoot } from '../../../domain/aggregate-root.base'
 import { Mapper } from '../../../domain/mapper.interface'
 import { Paginated, QueryParams, RepositoryPort } from '../../../domain/repository.port'
@@ -9,6 +9,10 @@ import { ObjectLiteral } from '@src/shared/types/object-literal.type'
 @injectable()
 export abstract class SequelizeRepositoryBase<Aggregate extends AggregateRoot<any>, DbModel extends { id: string }> implements RepositoryPort<Aggregate> {
   constructor(protected readonly mapper: Mapper<Aggregate, DbModel>, protected readonly model: ModelDefined<any, any>) {}
+
+  protected destroyOptions(): DestroyOptions {
+    return {}
+  }
 
   public async findAll(): Promise<Aggregate[]> {
     const posts = await this.model.findAll()
@@ -29,7 +33,7 @@ export abstract class SequelizeRepositoryBase<Aggregate extends AggregateRoot<an
   }
 
   public async delete(entity: Aggregate): Promise<boolean> {
-    await this.model.destroy({ where: { id: entity.id } })
+    await this.model.destroy({ where: { id: entity.id }, ...this.destroyOptions() })
 
     await entity.publishEvents()
 
@@ -42,16 +46,20 @@ export abstract class SequelizeRepositoryBase<Aggregate extends AggregateRoot<an
     return Boolean(found)
   }
 
+  async saveBulk(entiries: Aggregate[]): Promise<any> {
+    for (const entity of entiries) await this.save(entity)
+  }
+
+  async deleteBulk(entiries: Aggregate[]): Promise<any> {
+    for (const entity of entiries) await this.delete(entity)
+  }
+
   public async save(entity: Aggregate): Promise<void> {
     const rawSequelizePost = this.mapper.toPersistence(entity) as any
     const exists = await this.exists(entity.id)
     const isNewPost = !exists
 
-    try {
-      isNewPost ? await this.model.create(rawSequelizePost) : await this.model.update(rawSequelizePost, { where: { id: entity.id } })
-      await entity.publishEvents()
-    } catch (err) {
-      throw new Error(getStringFromUnknown(err))
-    }
+    isNewPost ? await this.model.create(rawSequelizePost) : await this.model.update(rawSequelizePost, { where: { id: entity.id } })
+    await entity.publishEvents()
   }
 }

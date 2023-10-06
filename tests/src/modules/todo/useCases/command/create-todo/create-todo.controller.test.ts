@@ -1,7 +1,7 @@
 import '@src/shared/utils/dotenv' // load jest
 import { Result } from '@src/shared/core/result'
-import { container } from '@src/shared/infra/di/container'
-import { TYPES } from '@src/shared/infra/di/types'
+import { container } from '@src/shared/di/container'
+import { TYPES } from '@src/shared/di/types'
 import { IServer } from '@src/shared/infra/http/server'
 import request from 'supertest'
 import { CreateTodoService } from '@src/modules/todo/useCases/commands/create-todo/create-todo.service'

@@ -4,6 +4,7 @@ import { PostEntity } from './post.entity'
 import { PostModelAttributes, PostType } from './post.types'
 import { PostResponseDto } from '../dtos/response.dto'
 import { Slug } from './value-objects/slug.value-object'
+import { Votes } from './value-objects/votes.value-objcect'
 
 @injectable()
 export class PostMapper implements Mapper<PostEntity, PostModelAttributes, PostResponseDto> {
@@ -12,9 +13,6 @@ export class PostMapper implements Mapper<PostEntity, PostModelAttributes, PostR
     const record: PostModelAttributes = {
       id: copy.id,
       userId: copy.userId,
-      createdAt: copy.createdAt,
-      updatedAt: copy.updatedAt,
-      deletedAt: copy.deletedAt,
       type: copy.type,
       title: copy.title,
       text: copy.text,
@@ -22,8 +20,10 @@ export class PostMapper implements Mapper<PostEntity, PostModelAttributes, PostR
       slug: copy.slug.value,
       points: copy.points,
       totalNumComments: copy.totalNumComments,
+      createdAt: copy.createdAt,
+      updatedAt: copy.updatedAt,
+      deletedAt: copy.deletedAt,
     }
-    console.log(record)
     return record
   }
 
@@ -41,6 +41,8 @@ export class PostMapper implements Mapper<PostEntity, PostModelAttributes, PostR
         slug: new Slug({ value: record.slug }),
         points: record.points,
         totalNumComments: record.totalNumComments,
+        votes: new Votes(),
+        votesUsers: [],
         user: record.user
           ? {
               email: record.user?.email,

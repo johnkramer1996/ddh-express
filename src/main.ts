@@ -1,9 +1,9 @@
 import 'reflect-metadata'
 import './shared/utils/dotenv'
-import { TYPES } from './shared/infra/di/types'
+import { TYPES } from './shared/di/types'
 import { IServer } from './shared/infra/http/server'
 import { PORT, envCongig } from './configs/config'
-import { container } from './shared/infra/di/container'
+import { container } from './shared/di/container'
 
 import './modules/todo'
 import { USER_TYPES } from './modules/user/infra/di/types'

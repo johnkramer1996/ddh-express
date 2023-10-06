@@ -19,7 +19,7 @@ export class CreateTodoService extends TodoService<CreateTodoCommand, Return> {
       completed: command.completed,
     })
 
-    await this.repository.save(todo)
+    await this.postRepo.save(todo)
 
     return todo.id
   }

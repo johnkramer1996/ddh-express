@@ -20,7 +20,7 @@ export class RefreshTokenService extends UserService<RefreshTokenCommand, Return
   }
   async executeImpl(command: RefreshTokenCommand): Promise<Return> {
     const email = await this.authService.getEmailFromRefreshToken(command.refreshToken)
-    const user = await this.repository.findOneByEmail(email)
+    const user = await this.postRepo.findOneByEmail(email)
     if (!user) throw new NotFoundException()
 
     const accessToken = this.authService.signJWT({

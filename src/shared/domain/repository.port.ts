@@ -34,6 +34,8 @@ export interface RepositoryPort<Entity> {
   delete(entity: Entity): Promise<boolean>
   exists(id: string): Promise<boolean>
   save(entity: Entity): Promise<void>
+  saveBulk(entiries: Entity[]): Promise<any>
+  deleteBulk(entiries: Entity[]): Promise<any>
 
   // insert(entity: Entity | Entity[]): Promise<void>
   //   transaction<T>(handler: () => Promise<T>): Promise<T>

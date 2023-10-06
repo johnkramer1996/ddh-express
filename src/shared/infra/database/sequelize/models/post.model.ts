@@ -3,11 +3,14 @@ import { sequelize } from '../config/connection'
 import { injectable } from 'inversify'
 import { PostModelAttributes, PostModelCreationAttributes } from '@src/modules/forum/domain/post.types'
 import UserModel from './user.model'
+import { DB_TABLES } from '@src/configs/dbtables'
+import postInit from '../init/post.init'
 
 @injectable()
 class PostModel extends Model<PostModelAttributes, PostModelCreationAttributes> {
-  declare text: string
+  declare id: string
   declare userId: ForeignKey<UserModel['id']>
+  declare text: string
 
   declare user?: NonAttribute<UserModel>
 
@@ -16,79 +19,12 @@ class PostModel extends Model<PostModelAttributes, PostModelCreationAttributes> 
   declare deletedAt: Date | null
 }
 
-PostModel.init(
-  {
-    id: {
-      primaryKey: true,
-      allowNull: false,
-      type: DataTypes.UUID,
-    },
-    userId: {
-      field: 'user_id',
-      allowNull: false,
-      type: DataTypes.UUID,
-      references: {
-        model: {
-          tableName: 'users',
-          schema: 'public',
-        },
-        key: 'id',
-      },
-    },
-    type: {
-      allowNull: false,
-      type: DataTypes.STRING,
-    },
-    title: {
-      allowNull: false,
-      type: DataTypes.STRING,
-    },
-    text: {
-      allowNull: true,
-      type: DataTypes.STRING,
-    },
-    link: {
-      allowNull: true,
-      type: DataTypes.STRING,
-    },
-    slug: {
-      allowNull: false,
-      type: DataTypes.STRING,
-    },
-    points: {
-      allowNull: false,
-      type: DataTypes.INTEGER,
-    },
-    totalNumComments: {
-      field: 'total_num_comments',
-      allowNull: false,
-      type: DataTypes.INTEGER,
-    },
-    createdAt: {
-      field: 'created_at',
-      allowNull: false,
-      type: DataTypes.DATE,
-    },
-    updatedAt: {
-      field: 'updated_at',
-      allowNull: false,
-      type: DataTypes.DATE,
-    },
-    deletedAt: {
-      field: 'deleted_at',
-      allowNull: true,
-      type: DataTypes.DATE,
-    },
+PostModel.init(postInit, {
+  tableName: DB_TABLES.POST,
+  sequelize,
+  defaultScope: {
+    include: [{ model: UserModel, as: 'user' }],
   },
-  {
-    tableName: 'posts',
-    sequelize,
-    defaultScope: {
-      // include: [{ model: UserModel, as: 'user' }],
-    },
-  }
-)
-
-//has many vote
+})
 
 export default PostModel

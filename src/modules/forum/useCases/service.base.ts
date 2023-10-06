@@ -1,10 +1,10 @@
 import { inject } from 'inversify'
 import { POST_TYPES } from '../di/types'
-import { Service } from '@src/shared/core/service'
-import { PostRepositoryPort } from '../repository/repository.port'
+import { ServiceBase } from '@src/shared/core/service.base'
+import { PostRepositoryPort } from '../repository/post.repository.port'
 
-export abstract class PostService<T1, T2> extends Service<T1, T2> {
-  constructor(@inject(POST_TYPES.REPOSITORY) protected repository: PostRepositoryPort) {
-    super(repository)
+export abstract class PostServiceBase<T1, T2> extends ServiceBase<T1, T2> {
+  constructor(@inject(POST_TYPES.REPOSITORY) protected postRepo: PostRepositoryPort) {
+    super(postRepo)
   }
 }

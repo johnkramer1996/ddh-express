@@ -5,16 +5,16 @@ import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-requ
 import { CreateOneRequestDto } from './create-one.request.dto'
 import { CreateOneCommand } from './create-one.command'
 import { IdResponse } from '@src/shared/api/id.response.dto'
-import { TodoController } from '@src/modules/todo/infra/models/todo.controller'
 import { ControllerPost } from '@src/shared/infra/http/decorators/controller'
 import { routes } from '@src/configs/routes'
 import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
 import { RequestDecoded } from '@src/shared/infra/http/models/controller.base'
 import { UserRequestDto } from '@src/modules/user/dtos/user.request.dto'
+import { PostController } from '../../controller.base'
 
 @injectable()
 @ControllerPost(routes.post.createOne)
-export class CreateOneController extends TodoController {
+export class CreateOneController extends PostController {
   @UseGuard(AuthGuard)
   @ValidateRequest([['body', CreateOneRequestDto]])
   async executeImpl(req: RequestDecoded, res: Response): Promise<any> {
