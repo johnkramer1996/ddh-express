@@ -2,7 +2,7 @@ import { Address, AddressModelAttributes } from '@src/modules/user/domain/value-
 import { PrimaryKey } from '@src/shared/core/primary-key'
 import { TimeStamp } from '@src/shared/core/time-stamp'
 import { Password } from './value-objects/password.value-object'
-import { PostModelAttributes } from '@src/modules/forum/domain/post.types'
+import { PostModelAttributes } from '@src/modules/forum/domain/entity/post/types'
 
 export interface UserEntityCreationProps {
   email: string

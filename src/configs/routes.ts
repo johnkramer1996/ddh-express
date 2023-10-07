@@ -24,6 +24,7 @@ export const userUrls = {
 const todosRoot = 'todos'
 const postsRoot = 'posts'
 const usersRoot = 'users'
+const commentsRoot = 'comments'
 
 // Api Versions
 const v1 = 'v1'
@@ -45,6 +46,9 @@ export const routes = {
     downvote: `/${postsRoot}/:slug/downvote`,
     updateOne: `/${postsRoot}/:postId`,
     deleteOne: `/${postsRoot}/:postId`,
+  },
+  postComments: {
+    findAll: `/${postsRoot}/:slug/${commentsRoot}/`,
   },
   user: {
     findAll: `/${usersRoot}`,

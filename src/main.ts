@@ -9,7 +9,7 @@ import './modules/todo'
 import { USER_TYPES } from './modules/user/infra/di/types'
 import { AuthServicePort } from './modules/user/services/auth.service.port'
 import { sequelize } from './shared/infra/database/sequelize/config/connection'
-import accociate from './shared/infra/database/sequelize/models/accociate'
+import associate from './shared/infra/database/sequelize/models/accociate'
 import { v4 } from 'uuid'
 
 async function bootstrap() {
@@ -18,7 +18,7 @@ async function bootstrap() {
 
   envCongig.isProduction ? await redis.connect() : redis.connect()
 
-  accociate()
+  associate()
   // await sequelize.sync({ force: true, alter: true })
   // const user = await UserModel.create({ email: 'vitalii@gmail.com', id: v4(), password: '12345' }, { raw: true })
 

@@ -13,12 +13,12 @@ export type UpdateTodoServiceResponse = ResultWithError<Return>
 @CommandHandler(UpdateTodoCommand)
 export class UpdateTodoService extends TodoService<UpdateTodoCommand, Return> {
   async executeImpl(command: UpdateTodoCommand): Promise<Return> {
-    const todo = await this.postRepo.findOneById(command.todoId)
+    const todo = await this.commentRepo.findOneById(command.todoId)
     if (!todo) throw new NotFoundException()
 
     if (command.text !== undefined) todo.updateText({ text: new Text({ value: command.text }) })
     if (command.completed !== undefined) todo.updateCompleted(command.completed)
 
-    await this.postRepo.save(todo)
+    await this.commentRepo.save(todo)
   }
 }

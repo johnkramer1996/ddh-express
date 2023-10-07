@@ -1,25 +1,23 @@
 import { injectable } from 'inversify'
-import { VoteEntity, VoteType } from '../vote.entity'
-import { PostVoteEntity } from '../post-vote.envity'
-import { PostEntity } from '../post.entity'
+import { VoteType } from '../entity/vote.base.entity'
+import { PostVoteEntity } from '../entity/post-vote/entity'
+import { PostEntity } from '../entity/post/entity'
 import { UserEntity } from '@src/modules/user/domain/user.entity'
 
 @injectable()
 export class PostService {
-  public addVote(post: PostEntity, member: UserEntity, vote: VoteEntity | null, type: VoteType): void {
+  public addVoteToPost(post: PostEntity, member: UserEntity, vote: PostVoteEntity | null, type: VoteType): void {
     if (!vote) {
       const vote = PostVoteEntity.create({ postId: post.id, userId: member.id, type })
-      post.addVote(vote, member)
+      post.addVote(vote)
       return
     }
-    // console.log(type === VoteType['upvote'], voteOnPostByMember.isDownvote())
-    // console.log(type === VoteType['downvote'], voteOnPostByMember.isUpvote())
     if (type === VoteType['upvote'] && vote.isDownvote()) {
-      post.removeVote(vote, member)
+      post.removeVote(vote)
       return
     }
     if (type === VoteType['downvote'] && vote.isUpvote()) {
-      post.removeVote(vote, member)
+      post.removeVote(vote)
       return
     }
   }

@@ -21,7 +21,7 @@ export class LoginService extends UserService<LoginCommand, Return> {
   }
 
   async executeImpl(command: LoginCommand): Promise<Return> {
-    const user = await this.postRepo.findOneByEmail(command.email)
+    const user = await this.commentRepo.findOneByEmail(command.email)
     if (!user) throw new NotFoundException()
 
     const passwordValid = await user.comparePassword(command.password)
@@ -36,7 +36,7 @@ export class LoginService extends UserService<LoginCommand, Return> {
 
     await this.authService.saveAuthenticatedUser(user.email, accessToken, refreshToken)
 
-    await this.postRepo.save(user)
+    await this.commentRepo.save(user)
 
     return { accessToken, refreshToken }
   }

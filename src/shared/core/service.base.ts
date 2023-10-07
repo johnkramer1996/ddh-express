@@ -4,7 +4,7 @@ import { getStringFromUnknown } from '../utils/get-error'
 import { Result, ResultWithError } from './result'
 
 export abstract class ServiceBase<T1, T2> {
-  constructor(protected postRepo: RepositoryPort<any>) {}
+  constructor(protected commentRepo: RepositoryPort<any>) {}
 
   protected abstract executeImpl(param: T1): Promise<T2>
 

@@ -2,14 +2,14 @@ import { inject, injectable } from 'inversify'
 import { VoteCommand } from './vote.command'
 import { CommandHandler } from '@src/shared/core/cqs/command-handler'
 import { ResultWithError } from '@src/shared/core/result'
-import { PostServiceBase } from '../../service.base'
+import { PostServiceBase } from '../../base.service'
 import { NotFoundException } from '@src/shared/exceptions/exceptions'
 import { POST_TYPES, POST_VOTE_TYPES } from '@src/modules/forum/di/types'
-import { PostRepositoryPort } from '@src/modules/forum/repository/post.repository.port'
-import { PostVoteRepositoryPort } from '@src/modules/forum/repository/post-vote.repository.port'
+import { PostRepositoryPort } from '@src/modules/forum/repository/post/post.repository.port'
 import { PostService } from '@src/modules/forum/domain/service/post.service'
 import { UserRepositoryPort } from '@src/modules/user/repository/repository.port'
 import { USER_TYPES } from '@src/modules/user/infra/di/types'
+import { PostVoteRepositoryPort } from '@src/modules/forum/repository/post-vote/post-vote.repository.port'
 
 type Return = number
 export type VoteServiceResponse = ResultWithError<Return>
@@ -18,16 +18,16 @@ export type VoteServiceResponse = ResultWithError<Return>
 @CommandHandler(VoteCommand)
 export class VoteService extends PostServiceBase<VoteCommand, Return> {
   constructor(
-    @inject(POST_TYPES.REPOSITORY) protected postRepo: PostRepositoryPort,
+    @inject(POST_TYPES.REPOSITORY) protected commentRepo: PostRepositoryPort,
     @inject(USER_TYPES.REPOSITORY) protected userRepo: UserRepositoryPort,
     @inject(POST_VOTE_TYPES.REPOSITORY) protected upvoteRepo: PostVoteRepositoryPort,
     protected postService: PostService
   ) {
-    super(postRepo)
+    super(commentRepo)
   }
 
   async executeImpl(command: VoteCommand): Promise<Return> {
-    const post = await this.postRepo.findOneBySlug(command.slug)
+    const post = await this.commentRepo.findOneBySlug(command.slug)
     if (!post) throw new NotFoundException()
 
     const user = await this.userRepo.findOneById(command.userId)
@@ -35,9 +35,9 @@ export class VoteService extends PostServiceBase<VoteCommand, Return> {
 
     const vote = await this.upvoteRepo.findOneByPostIdAndUserId(post.id, command.userId)
 
-    this.postService.addVote(post, user, vote, command.type)
+    this.postService.addVoteToPost(post, user, vote, command.type)
 
-    await this.postRepo.save(post)
+    await this.commentRepo.save(post)
 
     return post.points
   }

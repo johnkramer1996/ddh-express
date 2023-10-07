@@ -32,8 +32,8 @@ module.exports = {
     },
   },
   type: {
-    type: DataTypes.STRING,
     allowNull: false,
+    type: DataTypes.STRING,
   },
   ...timeStamp,
 }

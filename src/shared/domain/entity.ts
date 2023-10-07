@@ -2,6 +2,8 @@ import { v4 } from 'uuid'
 import { PrimaryKey } from '../core/primary-key'
 import { TimeStamp } from '../core/time-stamp'
 import { convertPropsToObject } from '../utils/convert-props-to-object.util'
+import { Guard } from '../core/guard'
+import { ArgumentInvalidException, ArgumentNotProvidedException, ArgumentOutOfRangeException } from '../exceptions/exceptions'
 
 export type AggregateID = string
 
@@ -85,11 +87,10 @@ export abstract class Entity<EntityProps> implements TimeStamp {
     return this.id ? this.id === object.id : false
   }
 
-  /**
-   * Returns entity properties.
-   * @return {*}  {Props & EntityProps}
-   * @memberof Entity
-   */
+  protected _getProps(): Partial<EntityProps> {
+    return {}
+  }
+
   public getProps(): EntityProps & BaseEntityProps {
     const propsCopy = {
       id: this._id,
@@ -97,6 +98,7 @@ export abstract class Entity<EntityProps> implements TimeStamp {
       updatedAt: this._updatedAt,
       deletedAt: this._deletedAt,
       ...this.props,
+      ...this._getProps(),
     }
     return Object.freeze(propsCopy)
   }
@@ -128,14 +130,14 @@ export abstract class Entity<EntityProps> implements TimeStamp {
   private validateProps(props: EntityProps): void {
     const MAX_PROPS = 50
 
-    // if (Guard.isEmpty(props)) {
-    //   throw new ArgumentNotProvidedException('Entity props should not be empty')
-    // }
-    // if (typeof props !== 'object') {
-    //   throw new ArgumentInvalidException('Entity props should be an object')
-    // }
-    // if (Object.keys(props as any).length > MAX_PROPS) {
-    //   throw new ArgumentOutOfRangeException(`Entity props should not have more than ${MAX_PROPS} properties`)
-    // }
+    if (Guard.isEmpty(props)) {
+      throw new ArgumentNotProvidedException('Entity props should not be empty')
+    }
+    if (typeof props !== 'object') {
+      throw new ArgumentInvalidException('Entity props should be an object')
+    }
+    if (Object.keys(props as any).length > MAX_PROPS) {
+      throw new ArgumentOutOfRangeException(`Entity props should not have more than ${MAX_PROPS} properties`)
+    }
   }
 }

@@ -12,11 +12,11 @@ export type DeleteTodoServiceResponse = ResultWithError<Return>
 @CommandHandler(DeleteTodoCommand)
 export class DeleteTodoService extends TodoService<DeleteTodoCommand, Return> {
   async executeImpl(command: DeleteTodoCommand): Promise<Return> {
-    const todo = await this.postRepo.findOneById(command.todoId)
+    const todo = await this.commentRepo.findOneById(command.todoId)
     if (!todo) throw new NotFoundException()
 
     todo.delete()
 
-    await this.postRepo.delete(todo)
+    await this.commentRepo.delete(todo)
   }
 }

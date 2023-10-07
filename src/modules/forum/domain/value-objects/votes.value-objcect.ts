@@ -1,16 +1,13 @@
 import { WatchedList } from '@src/shared/domain/watched-list'
-import { VoteEntity } from '../vote.entity'
+import { VoteEntity } from '../entity/vote.base.entity'
+import { PostVoteEntity } from '../entity/post-vote/entity'
 
-export class Votes extends WatchedList<VoteEntity> {
-  constructor(initialVotes?: VoteEntity[]) {
+export class Votes<T extends VoteEntity> extends WatchedList<T> {
+  constructor(initialVotes?: T[]) {
     super(initialVotes)
   }
 
-  public static create(initialVotes?: VoteEntity[]): Votes {
-    return new Votes(initialVotes ? initialVotes : [])
-  }
-
-  public compareItems(a: VoteEntity, b: VoteEntity): boolean {
+  public compareItems(a: T, b: T): boolean {
     return a.equals(b)
   }
 
@@ -27,5 +24,11 @@ export class Votes extends WatchedList<VoteEntity> {
     console.log({ newUpvote, newDownvote, removedUpvote, removedDownvote })
 
     return newUpvote - newDownvote - removedUpvote + removedDownvote
+  }
+}
+
+export class PostVotes extends Votes<PostVoteEntity> {
+  public static create(initialVotes: PostVoteEntity[] = []): PostVotes {
+    return new PostVotes(initialVotes)
   }
 }

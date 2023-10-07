@@ -13,7 +13,7 @@ export type FindTodoServiceResponse = ResultWithError<TodoEntity>
 @QueryHandler(FindTodoQuery)
 export class FindTodoService extends TodoService<FindTodoQuery, Return> {
   async executeImpl(query: FindTodoQuery): Promise<Return> {
-    const todo = await this.postRepo.findOneById(query.todoId)
+    const todo = await this.commentRepo.findOneById(query.todoId)
     if (!todo) throw new NotFoundException()
 
     return todo

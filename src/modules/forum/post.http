@@ -14,6 +14,9 @@ GET http://localhost:8086/api/v1/posts/?order=recent
 ### GET BY SLUG
 GET http://localhost:8086/api/v1/posts/slug-test
 
+### GET COMMENTS
+GET http://localhost:8086/api/v1/posts/slug-test/comments
+
 ### UPVOTE
 POST http://localhost:8086/api/v1/posts/slug-test/upvote
 

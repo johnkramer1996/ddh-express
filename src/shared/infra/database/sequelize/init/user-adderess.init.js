@@ -7,7 +7,8 @@ module.exports = {
     allowNull: false,
     primaryKey: true,
   },
-  user_id: {
+  userId: {
+    field: 'user_id',
     primaryKey: true,
     type: DataTypes.UUID,
     onDelete: 'CASCADE',

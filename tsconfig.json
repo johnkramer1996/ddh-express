@@ -36,7 +36,8 @@
     "tests/**/*.ts",
     "src/shared/infra/database/sequelize/init/user.init.js",
     "src/shared/infra/database/sequelize/migrations/time-stamp.init.js",
-    "src/shared/infra/database/sequelize/migrations/init.mjs"
+    "src/shared/infra/database/sequelize/migrations/init.mjs",
+    "src/modules/forum/domain/entity/post-vote/entity.ts"
   ],
   "exclude": ["node_modules", "src/**/*.spec.ts", "src/**/*.spec.js"]
 }

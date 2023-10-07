@@ -19,7 +19,7 @@ export class LogoutService extends UserService<LogoutCommand, Return> {
   }
 
   async executeImpl(command: LogoutCommand): Promise<Return> {
-    const user = await this.postRepo.findOneById(command.id)
+    const user = await this.commentRepo.findOneById(command.id)
     if (!user) throw new NotFoundException()
 
     await this.authService.deAuthenticateUser(user.email)

@@ -1,7 +1,7 @@
 import { DataTypes, Model, ForeignKey, NonAttribute } from 'sequelize'
 import { sequelize } from '../config/connection'
 import { injectable } from 'inversify'
-import { PostModelAttributes, PostModelCreationAttributes } from '@src/modules/forum/domain/post.types'
+import { PostModelAttributes, PostModelCreationAttributes } from '@src/modules/forum/domain/entity/post/types'
 import UserModel from './user.model'
 import { DB_TABLES } from '@src/configs/dbtables'
 import postInit from '../init/post.init'

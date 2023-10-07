@@ -3,10 +3,10 @@ import { CreateOneCommand } from './create-one.command'
 import { AggregateID } from '@src/shared/domain/entity'
 import { CommandHandler } from '@src/shared/core/cqs/command-handler'
 import { ResultWithError } from '@src/shared/core/result'
-import { PostServiceBase } from '../../service.base'
-import { PostEntity } from '../../../domain/post.entity'
+import { PostServiceBase } from '../../base.service'
+import { PostEntity } from '../../../domain/entity/post/entity'
 import { Slug } from '../../../domain/value-objects/slug.value-object'
-import { PostType } from '../../../domain/post.types'
+import { PostType } from '../../../domain/entity/post/types'
 
 type Return = AggregateID
 export type CreateOneServiceResponse = ResultWithError<Return>
@@ -24,7 +24,7 @@ export class CreateOneService extends PostServiceBase<CreateOneCommand, Return> 
       slug: Slug.create({ value: command.title }),
     })
 
-    await this.postRepo.save(post)
+    await this.commentRepo.save(post)
 
     return post.id
   }

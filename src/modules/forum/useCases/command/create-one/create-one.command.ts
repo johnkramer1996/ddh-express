@@ -1,6 +1,6 @@
 import { ICommand } from '@src/shared/core/cqs/command.interface'
 import { CreateOneServiceResponse } from './create-one.service'
-import { PostType } from '../../../domain/post.types'
+import { PostType } from '../../../domain/entity/post/types'
 
 export class CreateOneCommand implements ICommand<CreateOneServiceResponse> {
   declare response?: CreateOneServiceResponse

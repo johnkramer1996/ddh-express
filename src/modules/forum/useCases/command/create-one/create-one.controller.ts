@@ -10,11 +10,11 @@ import { routes } from '@src/configs/routes'
 import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
 import { RequestDecoded } from '@src/shared/infra/http/models/controller.base'
 import { UserRequestDto } from '@src/modules/user/dtos/user.request.dto'
-import { PostController } from '../../controller.base'
+import { PostControllerBase } from '../../base.controller'
 
 @injectable()
 @ControllerPost(routes.post.createOne)
-export class CreateOneController extends PostController {
+export class CreateOneController extends PostControllerBase {
   @UseGuard(AuthGuard)
   @ValidateRequest([['body', CreateOneRequestDto]])
   async executeImpl(req: RequestDecoded, res: Response): Promise<any> {

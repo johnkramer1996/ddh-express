@@ -13,7 +13,7 @@ export type FindTodosServiceResponse = ResultWithError<Return>
 @QueryHandler(FindTodosQuery)
 export class FindTodosService extends TodoService<FindTodosQuery, Return> {
   async executeImpl(query: FindTodosQuery): Promise<Return> {
-    const todos = await this.postRepo.findAllPaginated(query)
+    const todos = await this.commentRepo.findAllPaginated(query)
 
     return todos
   }

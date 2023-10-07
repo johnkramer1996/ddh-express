@@ -9,13 +9,13 @@ import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
 import { RequestDecoded } from '@src/shared/infra/http/models/controller.base'
 import { UserRequestDto } from '@src/modules/user/dtos/user.request.dto'
 import { SlugRequestDto } from '@src/modules/forum/dtos/slug.request.dto'
-import { PostController } from '../../controller.base'
-import { VoteType } from '@src/modules/forum/domain/vote.entity'
+import { PostControllerBase } from '../../base.controller'
+import { VoteType } from '@src/modules/forum/domain/entity/vote.base.entity'
 
 @injectable()
 @ControllerPost(routes.post.upvote)
 @ControllerPost(routes.post.downvote)
-export class UpvoteController extends PostController {
+export class UpvoteController extends PostControllerBase {
   @UseGuard(AuthGuard)
   @ValidateRequest([['params', SlugRequestDto]])
   async executeImpl(req: RequestDecoded, res: Response): Promise<any> {

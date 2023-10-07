@@ -5,7 +5,7 @@ import UserModel from './user.model'
 import { DB_TABLES } from '@src/configs/dbtables'
 import PostModel from './post.model'
 import postVoteInit from '../init/post-vote.init'
-import { PostVoteModelAttributes, PostVoteModelCreationAttributes } from '@src/modules/forum/domain/post-vote.envity'
+import { PostVoteModelAttributes, PostVoteModelCreationAttributes } from '@src/modules/forum/domain/entity/post-vote/types'
 
 @injectable()
 class PostVoteModel extends Model<PostVoteModelAttributes, PostVoteModelCreationAttributes> {
@@ -18,9 +18,6 @@ class PostVoteModel extends Model<PostVoteModelAttributes, PostVoteModelCreation
   declare deletedAt: Date | null
 }
 
-PostVoteModel.init(postVoteInit, {
-  tableName: DB_TABLES.POST_VOTE,
-  sequelize,
-})
+PostVoteModel.init(postVoteInit, { tableName: DB_TABLES.POST_VOTE, sequelize })
 
 export default PostVoteModel

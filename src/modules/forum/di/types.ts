@@ -1,13 +1,25 @@
 const POST_TYPES = {
-  MAPPER: Symbol.for('POST_MAPPER'),
-  REPOSITORY: Symbol.for('POST_REPOSITORY'),
-  SEQUELIZE_MODEL: Symbol.for('POST_SEQUELIZE_MODEL'),
+  MAPPER: Symbol(),
+  REPOSITORY: Symbol(),
+  SEQUELIZE_MODEL: Symbol(),
 }
 
 const POST_VOTE_TYPES = {
-  MAPPER: Symbol.for('POST_VOTE_MAPPER'),
-  REPOSITORY: Symbol.for('POST_VOTE_REPOSITORY'),
-  SEQUELIZE_MODEL: Symbol.for('POST_VOTE_SEQUELIZE_MODEL'),
+  MAPPER: Symbol(),
+  REPOSITORY: Symbol(),
+  SEQUELIZE_MODEL: Symbol(),
 }
 
-export { POST_TYPES, POST_VOTE_TYPES }
+const COMMENT_TYPES = {
+  MAPPER: Symbol(),
+  REPOSITORY: Symbol(),
+  SEQUELIZE_MODEL: Symbol(),
+}
+
+const COMMENT_VOTE_TYPES = {
+  MAPPER: Symbol(),
+  REPOSITORY: Symbol(),
+  SEQUELIZE_MODEL: Symbol(),
+}
+
+export { POST_TYPES, POST_VOTE_TYPES, COMMENT_TYPES, COMMENT_VOTE_TYPES }
