@@ -3,11 +3,11 @@ import { Result, ResultWithError } from '../../../../../shared/core/result'
 import { RefreshTokenCommand } from './refresh-token.command'
 import { NotFoundException } from '@src/shared/exceptions/exceptions'
 import { UserRepositoryPort } from '@src/modules/user/repository/repository.port'
-import { USER_TYPES } from '@src/modules/user/infra/di/types'
+import { USER_TYPES } from '@src/modules/user/di/types'
 import { AuthServicePort } from '@src/modules/user/services/auth.service.port'
 import { CommandHandler } from '@src/shared/core/cqs/command-handler'
 import { JWTToken } from '@src/shared/core/jwt'
-import { UserService } from '../../models/user.service.base'
+import { UserService } from '../../base.service'
 
 type Return = JWTToken
 export type RefreshTokenServiceResponse = ResultWithError<Return>

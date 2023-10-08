@@ -7,7 +7,7 @@ import { LoginRequestDto } from './login.request.dto'
 import { LoginCommand } from './login.command'
 import { ICommand } from '@src/shared/core/cqs/command.interface'
 import { UserTokensResponseDto } from '@src/modules/user/dtos/user-tokens.response.dto'
-import { UserController } from '@src/modules/user/infra/models/user.controller.base'
+import { UserController } from '@src/modules/user/useCases/base.controller'
 import { routes } from '@src/configs/routes'
 import { ControllerPost } from '@src/shared/infra/http/decorators/controller'
 
@@ -16,9 +16,9 @@ import { ControllerPost } from '@src/shared/infra/http/decorators/controller'
 export class LoginController extends UserController {
   @ValidateRequest([['body', LoginRequestDto]])
   async executeImpl(req: Request, res: Response): Promise<any> {
-    const request = plainToClass(LoginRequestDto, req.body)
+    const body = plainToClass(LoginRequestDto, req.body)
 
-    const command = new LoginCommand(request)
+    const command = new LoginCommand(body)
     const result = await this.commandBus.execute(command)
 
     if (!result.isSuccess) return this.handleError(res, result.getValue())

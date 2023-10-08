@@ -1,27 +1,12 @@
 
-### GET LIST
-GET http://localhost:8086/api/v1/posts
-
-
-### GET POPULAR
+### GET LIST ?order=popular ?order=recent
 GET http://localhost:8086/api/v1/posts?order=popular
-
-
-### GET RECENT
-GET http://localhost:8086/api/v1/posts/?order=recent
-
 
 ### GET BY SLUG
 GET http://localhost:8086/api/v1/posts/slug-test
 
-### GET COMMENTS
-GET http://localhost:8086/api/v1/posts/slug-test/comments
-
-### UPVOTE
+### UPVOTE/DOWNVOTE /upvote /downvote
 POST http://localhost:8086/api/v1/posts/slug-test/upvote
-
-### DOWNVOTE
-POST http://localhost:8086/api/v1/posts/slug-test/downvote
 
 ### CREATE ONE
 POST http://localhost:8086/api/v1/posts/

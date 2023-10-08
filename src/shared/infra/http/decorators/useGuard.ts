@@ -1,10 +1,11 @@
-import { USER_TYPES } from '@src/modules/user/infra/di/types'
+import { USER_TYPES } from '@src/modules/user/di/types'
 import { NextFunction, Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
 import { RequestDecoded } from '../models/controller.base'
 import { AuthServicePort } from '@src/modules/user/services/auth.service.port'
 import { container } from '../../../di/container'
 import { getStringFromUnknown } from '@src/shared/utils/get-error'
+import { ForbiddenException } from '@src/shared/exceptions/exceptions'
 
 export function UseGuard(func: Function, ...args: any[]): MethodDecorator {
   return function (target: Object, propertyKey: string | symbol, descriptor: PropertyDescriptor) {
@@ -14,11 +15,7 @@ export function UseGuard(func: Function, ...args: any[]): MethodDecorator {
       const instance = container.get(func as Function)
       if (!(instance instanceof Guard)) return
 
-      try {
-        await instance.execute(req, args)
-      } catch (e) {
-        return res.status(403).send({ message: getStringFromUnknown(e) })
-      }
+      await instance.execute(req, ...args)
       return original.apply(this, arguments)
     }
   }
@@ -37,11 +34,11 @@ export class AuthGuard extends Guard {
     return req.headers['authorization'] ? req.headers['authorization'].split(' ')[1] : req.cookies['accessToken'] ? req.cookies['accessToken'] : ''
   }
 
-  error(message: string): boolean {
-    throw new Error(message)
+  public error(message: string): boolean {
+    throw new ForbiddenException(message)
   }
 
-  public async execute(req: Request, ensure: boolean): Promise<boolean> {
+  public async execute(req: Request, ensure = true): Promise<boolean> {
     const token = this.getTokenFromRequest(req)
     if (!token) return ensure ? this.error('No access token provided') : true
 

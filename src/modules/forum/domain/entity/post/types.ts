@@ -3,6 +3,9 @@ import { PrimaryKey } from '@src/shared/core/primary-key'
 import { UserModelAttributes } from '@src/modules/user/domain/user.types'
 import { PostVotes, Votes } from '../../value-objects/votes.value-objcect'
 import { Slug } from '../../value-objects/slug.value-object'
+import { PostVoteModelAttributes } from '../post-vote/types'
+import { CommentModelAttributes } from '../comments/types'
+import { CommentEntity } from '../comments/entity'
 
 export interface PostEntityCreationProps {
   type: PostType
@@ -18,6 +21,7 @@ export interface PostEntityCreationProps {
 export interface PostEntityProps extends PostEntityCreationProps {
   points: number
   totalNumComments: number
+  comments: CommentEntity[]
   votes: PostVotes
   user?: { [key: string]: any }
 }
@@ -35,6 +39,8 @@ export interface PostModelCreationAttributes extends PrimaryKey {
 
 export interface PostModelAttributes extends PostModelCreationAttributes, TimeStamp {
   user?: UserModelAttributes
+  comments?: CommentModelAttributes[]
+  votes?: PostVoteModelAttributes[]
 }
 
 export enum PostType {

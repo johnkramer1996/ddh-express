@@ -31,11 +31,11 @@ export interface RepositoryPort<Entity> {
   findOneById(id: string): Promise<Entity | null>
   findAll(): Promise<Entity[]>
   findAllPaginated(params: QueryParams): Promise<Paginated<Entity>>
-  delete(entity: Entity): Promise<boolean>
+  delete(entity: Entity, force?: boolean): Promise<boolean>
   exists(id: string): Promise<boolean>
   save(entity: Entity): Promise<void>
   saveBulk(entiries: Entity[]): Promise<any>
-  deleteBulk(entiries: Entity[]): Promise<any>
+  deleteBulk(entiries: Entity[], force?: boolean): Promise<any>
 
   // insert(entity: Entity | Entity[]): Promise<void>
   //   transaction<T>(handler: () => Promise<T>): Promise<T>

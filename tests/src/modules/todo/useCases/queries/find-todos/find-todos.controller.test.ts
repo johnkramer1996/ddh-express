@@ -24,10 +24,10 @@ describe('Find Todos Controller', () => {
 
   test('Should return list items', async () => {
     //arrange
-    const responseData = { data: mockTodo.map(mapper.toDomain), count: 1, limit: 1, page: 1 }
+    const responseData = { data: mockTodo.map(mapper.toDomain.bind(mapper)), count: 1, limit: 1, page: 1 }
     const expectedData = new TodoPaginatedResponseDto({
       ...responseData,
-      data: responseData.data.map(mapper.toResponse),
+      data: responseData.data.map(mapper.toResponse.bind(mapper)),
     })
 
     mock.queryBus.execute.mockResolvedValue(Result.ok(responseData))

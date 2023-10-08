@@ -6,7 +6,7 @@ import { RefreshTokenCommand } from './refresh-token.command'
 import { RefreshTokenRequestDto } from './refresh-token.request.dto'
 import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-request'
 import { UserTokensResponseDto } from '@src/modules/user/dtos/user-tokens.response.dto'
-import { UserController } from '@src/modules/user/infra/models/user.controller.base'
+import { UserController } from '@src/modules/user/useCases/base.controller'
 import { ControllerPost } from '@src/shared/infra/http/decorators/controller'
 import { routes } from '@src/configs/routes'
 

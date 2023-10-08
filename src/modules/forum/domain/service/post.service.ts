@@ -3,6 +3,8 @@ import { VoteType } from '../entity/vote.base.entity'
 import { PostVoteEntity } from '../entity/post-vote/entity'
 import { PostEntity } from '../entity/post/entity'
 import { UserEntity } from '@src/modules/user/domain/user.entity'
+import { CommentEntity } from '../entity/comments/entity'
+import { CommentVoteEntity } from '../entity/comment-vote/entity'
 
 @injectable()
 export class PostService {
@@ -18,6 +20,25 @@ export class PostService {
     }
     if (type === VoteType['downvote'] && vote.isUpvote()) {
       post.removeVote(vote)
+      return
+    }
+  }
+
+  public addVoteToComment(post: PostEntity, member: UserEntity, comment: CommentEntity, vote: CommentVoteEntity | null, type: VoteType): void {
+    if (!vote) {
+      const vote = CommentVoteEntity.create({ commentId: comment.id, userId: member.id, type })
+      comment.addVote(vote)
+      post.updateComment(comment)
+      return
+    }
+    if (type === VoteType['upvote'] && vote.isDownvote()) {
+      comment.removeVote(vote)
+      post.updateComment(comment)
+      return
+    }
+    if (type === VoteType['downvote'] && vote.isUpvote()) {
+      comment.removeVote(vote)
+      post.updateComment(comment)
       return
     }
   }

@@ -5,7 +5,7 @@ import { AggregateID } from '@src/shared/domain/entity'
 import { CommandHandler } from '@src/shared/core/cqs/command-handler'
 import { UserEntity } from '@src/modules/user/domain/user.entity'
 import { Password } from '@src/modules/user/domain/value-objects/password.value-object'
-import { UserService } from '../../models/user.service.base'
+import { UserService } from '../../base.service'
 
 type Return = AggregateID
 export type CreateUserServiceResponse = ResultWithError<Return>

@@ -42,9 +42,26 @@ module.exports = {
       ],
       {}
     )
+
+    await queryInterface.bulkInsert(
+      'post_votes',
+      [
+        {
+          id: '11111111-1111-1111-1111-111111111111',
+          user_id: '11111111-1111-1111-1111-111111111111',
+          post_id: '11111111-1111-1111-1111-111111111111',
+          type: `upvote`,
+          created_at: new Date(),
+          updated_at: new Date(),
+          deleted_at: null,
+        },
+      ],
+      {}
+    )
   },
 
   async down(queryInterface, Sequelize) {
+    await queryInterface.bulkDelete('post_votes', null, {})
     await queryInterface.bulkDelete('posts', null, {})
   },
 }

@@ -4,7 +4,7 @@ import { CurrentUserQuery } from './current-user.query'
 import { NotFoundException } from '@src/shared/exceptions/exceptions'
 import { UserEntity } from '@src/modules/user/domain/user.entity'
 import { QueryHandler } from '@src/shared/core/cqs/query-handler'
-import { UserService } from '../../models/user.service.base'
+import { UserService } from '../../base.service'
 
 type Return = UserEntity
 export type CurrentUserServiceResponse = ResultWithError<Return>

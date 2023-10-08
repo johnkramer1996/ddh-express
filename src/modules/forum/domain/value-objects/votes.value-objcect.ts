@@ -1,6 +1,7 @@
 import { WatchedList } from '@src/shared/domain/watched-list'
 import { VoteEntity } from '../entity/vote.base.entity'
 import { PostVoteEntity } from '../entity/post-vote/entity'
+import { CommentVoteEntity } from '../entity/comment-vote/entity'
 
 export class Votes<T extends VoteEntity> extends WatchedList<T> {
   constructor(initialVotes?: T[]) {
@@ -30,5 +31,11 @@ export class Votes<T extends VoteEntity> extends WatchedList<T> {
 export class PostVotes extends Votes<PostVoteEntity> {
   public static create(initialVotes: PostVoteEntity[] = []): PostVotes {
     return new PostVotes(initialVotes)
+  }
+}
+
+export class CommentVotes extends Votes<CommentVoteEntity> {
+  public static create(initialVotes: CommentVoteEntity[] = []): CommentVotes {
+    return new CommentVotes(initialVotes)
   }
 }

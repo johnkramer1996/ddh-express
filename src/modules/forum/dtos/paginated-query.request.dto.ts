@@ -14,7 +14,7 @@ const orderMap: { [key in keyof typeof Order]: keyof PostModelAttributes } = {
   recent: 'createdAt',
 }
 
-export class FindAllPaginatedQueryRequestDto extends PaginatedQueryRequestDto {
+export class PostPaginatedQueryRequestDto extends PaginatedQueryRequestDto {
   @IsOptional()
   @IsEnum(Order)
   @Transform(

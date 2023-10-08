@@ -3,7 +3,7 @@ import { ResultWithError } from '../../../../../shared/core/result'
 import { DeleteUserCommand } from './delete-user.command'
 import { NotFoundException } from '@src/shared/exceptions/exceptions'
 import { CommandHandler } from '@src/shared/core/cqs/command-handler'
-import { UserService } from '../../models/user.service.base'
+import { UserService } from '../../base.service'
 
 type Return = void
 export type DeleteUserServiceResponse = ResultWithError<Return>

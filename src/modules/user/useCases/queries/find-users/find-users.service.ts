@@ -4,7 +4,7 @@ import { injectable } from 'inversify'
 import { FindUsersQuery } from './find-users.query'
 import { UserEntity } from '@src/modules/user/domain/user.entity'
 import { QueryHandler } from '@src/shared/core/cqs/query-handler'
-import { UserService } from '../../models/user.service.base'
+import { UserService } from '../../base.service'
 
 type FindUsersServiceReturn = Paginated<UserEntity>
 export type FindUsersServiceResponse = ResultWithError<FindUsersServiceReturn>

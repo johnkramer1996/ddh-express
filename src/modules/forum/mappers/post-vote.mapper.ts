@@ -1,6 +1,6 @@
 import { injectable } from 'inversify'
 import { Mapper } from '../../../shared/domain/mapper.interface'
-import { PostVoteResponseDto } from '../dtos/post-vote.response.dto'
+import { PostVoteResponseDto } from '../dtos/post-vote/post-vote.response.dto'
 import { VoteType } from '../domain/entity/vote.base.entity'
 import { PostVoteEntity } from '../domain/entity/post-vote/entity'
 import { PostVoteModelAttributes } from '../domain/entity/post-vote/types'

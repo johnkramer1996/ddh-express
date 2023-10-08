@@ -10,7 +10,7 @@ import { CreateUserServiceResponse } from './create-user.service'
 import { ControllerPost } from '@src/shared/infra/http/decorators/controller'
 import { routes } from '@src/configs/routes'
 import { ArgumentOutOfRangeException } from '@src/shared/exceptions/exceptions'
-import { UserController } from '@src/modules/user/infra/models/user.controller.base'
+import { UserController } from '@src/modules/user/useCases/base.controller'
 
 @injectable()
 @ControllerPost(routes.user.createOne)

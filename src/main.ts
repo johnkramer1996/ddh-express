@@ -6,7 +6,7 @@ import { PORT, envCongig } from './configs/config'
 import { container } from './shared/di/container'
 
 import './modules/todo'
-import { USER_TYPES } from './modules/user/infra/di/types'
+import { USER_TYPES } from './modules/user/di/types'
 import { AuthServicePort } from './modules/user/services/auth.service.port'
 import { sequelize } from './shared/infra/database/sequelize/config/connection'
 import associate from './shared/infra/database/sequelize/models/accociate'

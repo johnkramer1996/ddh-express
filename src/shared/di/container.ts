@@ -4,11 +4,12 @@ import { TYPES } from './types'
 import Server, { IServer } from '../infra/http/server'
 import HTTPRouter from '../infra/http/api/v1'
 import todoModule from '@src/modules/todo/infra/di/container'
-import userModule from '@src/modules/user/infra/di/container'
+import userModule from '@src/modules/user/di/container'
 import { QueryBus } from '@src/shared/core/cqs/query-bus'
 import { CommandBus } from '@src/shared/core/cqs/command-bus'
 import { AuthGuard } from '../infra/http/decorators/useGuard'
-import postModule from '@src/modules/forum/di/container'
+import postModule from '@src/modules/forum/di/post.container'
+import commentModule from '@src/modules/forum/di/comment.container'
 
 const container = new Container({ defaultScope: 'Singleton', skipBaseClassChecks: true })
 
@@ -22,5 +23,6 @@ container.bind(Container).toDynamicValue((ctx) => ctx.container as Container)
 todoModule(container)
 userModule(container)
 postModule(container)
+commentModule(container)
 
 export { container }

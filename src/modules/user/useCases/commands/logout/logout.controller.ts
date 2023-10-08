@@ -4,7 +4,7 @@ import { RequestDecoded } from '../../../../../shared/infra/http/models/controll
 import { plainToClass } from 'class-transformer'
 import { LogoutCommand } from './logout.command'
 import { UserRequestDto } from '@src/modules/user/dtos/user.request.dto'
-import { UserController } from '@src/modules/user/infra/models/user.controller.base'
+import { UserController } from '@src/modules/user/useCases/base.controller'
 import { ControllerPost } from '@src/shared/infra/http/decorators/controller'
 import { routes } from '@src/configs/routes'
 import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'

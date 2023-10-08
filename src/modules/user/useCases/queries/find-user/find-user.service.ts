@@ -4,7 +4,7 @@ import { FindUserQuery } from './find-user.query'
 import { NotFoundException } from '@src/shared/exceptions/exceptions'
 import { QueryHandler } from '../../../../../shared/core/cqs/query-handler'
 import { UserEntity } from '@src/modules/user/domain/user.entity'
-import { UserService } from '../../models/user.service.base'
+import { UserService } from '../../base.service'
 
 type FindUsersServiceReturn = UserEntity
 export type FindUserServiceResponse = ResultWithError<FindUsersServiceReturn>

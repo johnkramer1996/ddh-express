@@ -6,7 +6,7 @@ import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-requ
 import { ControllerGet } from '@src/shared/infra/http/decorators/controller'
 import { routes } from '@src/configs/routes'
 import { UserIdRequestDto } from '@src/modules/user/dtos/user-id.request.dto'
-import { UserController } from '@src/modules/user/infra/models/user.controller.base'
+import { UserController } from '@src/modules/user/useCases/base.controller'
 
 @injectable()
 @ControllerGet(routes.user.findOne)

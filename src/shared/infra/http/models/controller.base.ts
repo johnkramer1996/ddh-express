@@ -9,10 +9,15 @@ import { IQueryBus } from '@src/shared/core/cqs/query-bus'
 import { Mapper } from '@src/shared/domain/mapper.interface'
 import { Entity } from '@src/shared/domain/entity'
 import { ObjectLiteral } from '@src/shared/types/object-literal.type'
-import { NotFoundException } from '@src/shared/exceptions/exceptions'
+import { ForbiddenException, NotFoundException } from '@src/shared/exceptions/exceptions'
+import { ExceptionBase } from '@src/shared/exceptions/exception.base'
 
 export interface RequestDecoded extends Request {
   decoded: JWTClaims
+}
+
+export interface RequestDecodedIfExist extends Request {
+  decoded?: JWTClaims
 }
 
 @injectable()
@@ -25,21 +30,26 @@ export abstract class BaseController {
     try {
       return await this.executeImpl(req as RequestDecoded, res)
     } catch (err) {
+      if (err instanceof ForbiddenException) {
+        this.forbidden(res, err)
+        return
+      }
       if (envCongig.isDevelopment) {
         console.log(`[BaseController]: Uncaught controller error`)
         console.log(err)
       }
+
       this.fail(res, 'An unexpected error occurred')
     }
   }
 
   protected handleError(res: Response, value: Error) {
-    if (value instanceof NotFoundException) return this.notFound(res, value.message)
+    if (value instanceof NotFoundException) return this.notFound(res, value)
     return this.fail(res, value.message)
   }
 
-  public static jsonResponse(res: Response, code: number, message: string) {
-    return res.status(code).json({ message })
+  public static jsonResponse(res: Response, code: number, error: string | ExceptionBase) {
+    return res.status(code).json(error instanceof ExceptionBase ? error.toJSON() : { message: error })
   }
 
   public static dtoResponse<T extends object>(res: Response, code: number, dto?: T) {
@@ -55,36 +65,36 @@ export abstract class BaseController {
     return BaseController.dtoResponse(res, 201, dto)
   }
 
-  public clientError(res: Response, message?: string) {
-    return BaseController.jsonResponse(res, 400, message ? message : 'Unauthorized')
+  public clientError(res: Response, error?: ExceptionBase) {
+    return BaseController.jsonResponse(res, 400, error ? error : 'Unauthorized')
   }
 
-  public unauthorized(res: Response, message?: string) {
-    return BaseController.jsonResponse(res, 401, message ? message : 'Unauthorized')
+  public unauthorized(res: Response, error?: ExceptionBase) {
+    return BaseController.jsonResponse(res, 401, error ? error : 'Unauthorized')
   }
 
-  public paymentRequired(res: Response, message?: string) {
-    return BaseController.jsonResponse(res, 402, message ? message : 'Payment required')
+  public paymentRequired(res: Response, error?: ExceptionBase) {
+    return BaseController.jsonResponse(res, 402, error ? error : 'Payment required')
   }
 
-  public forbidden(res: Response, message?: string) {
-    return BaseController.jsonResponse(res, 403, message ? message : 'Forbidden')
+  public forbidden(res: Response, error?: ExceptionBase) {
+    return BaseController.jsonResponse(res, 403, error ? error : 'Forbidden')
   }
 
-  public notFound(res: Response, message?: string) {
-    return BaseController.jsonResponse(res, 404, message ? message : 'Not found')
+  public notFound(res: Response, error?: ExceptionBase) {
+    return BaseController.jsonResponse(res, 404, error ? error : 'Not found')
   }
 
-  public conflict(res: Response, message?: string) {
-    return BaseController.jsonResponse(res, 409, message ? message : 'Conflict')
+  public conflict(res: Response, error?: ExceptionBase) {
+    return BaseController.jsonResponse(res, 409, error ? error : 'Conflict')
   }
 
-  public tooMany(res: Response, message?: string) {
-    return BaseController.jsonResponse(res, 429, message ? message : 'Too many requests')
+  public tooMany(res: Response, error?: ExceptionBase) {
+    return BaseController.jsonResponse(res, 429, error ? error : 'Too many requests')
   }
 
   public fail(res: Response, error: Error | string) {
     if (envCongig.isDevelopment) console.log(error)
-    return res.status(500).json({ message: getStringFromUnknown(error) })
+    return BaseController.jsonResponse(res, 500, getStringFromUnknown(error))
   }
 }

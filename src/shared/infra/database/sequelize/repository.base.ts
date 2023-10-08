@@ -1,39 +1,33 @@
-import { ModelDefined, DestroyOptions } from 'sequelize'
+import { ModelDefined, DestroyOptions, Model, BuildOptions, WhereOptions, ModelCtor } from 'sequelize'
 import { AggregateRoot } from '../../../domain/aggregate-root.base'
 import { Mapper } from '../../../domain/mapper.interface'
 import { Paginated, QueryParams, RepositoryPort } from '../../../domain/repository.port'
 import { injectable } from 'inversify'
-import { getStringFromUnknown } from '../../../utils/get-error'
-import { ObjectLiteral } from '@src/shared/types/object-literal.type'
 
 @injectable()
 export abstract class SequelizeRepositoryBase<Aggregate extends AggregateRoot<any>, DbModel extends { id: string }> implements RepositoryPort<Aggregate> {
   constructor(protected readonly mapper: Mapper<Aggregate, DbModel>, protected readonly model: ModelDefined<any, any>) {}
 
-  protected destroyOptions(): DestroyOptions {
-    return {}
-  }
-
   public async findAll(): Promise<Aggregate[]> {
-    const posts = await this.model.findAll()
+    const rows = await this.model.findAll()
 
-    return posts.map(this.mapper.toDomain)
+    return rows.map(this.mapper.toDomain.bind(this.mapper))
   }
 
   public async findAllPaginated(params: QueryParams): Promise<Paginated<Aggregate>> {
-    const { rows: items, count } = await this.model.findAndCountAll({ limit: params.limit, offset: params.offset, order: params.order })
+    const { rows, count } = await this.model.findAndCountAll({ limit: params.limit, offset: params.offset, order: params.order })
 
-    return new Paginated({ data: items.map(this.mapper.toDomain), count, limit: params.limit, page: params.page })
+    return new Paginated({ data: rows.map(this.mapper.toDomain.bind(this.mapper)), count, limit: params.limit, page: params.page })
   }
 
   public async findOneById(id: string): Promise<Aggregate | null> {
-    const post = await this.model.findOne({ where: { id } })
+    const row = await this.model.findOne({ where: { id } })
 
-    return post ? this.mapper.toDomain(post) : post
+    return row ? this.mapper.toDomain(row) : row
   }
 
-  public async delete(entity: Aggregate): Promise<boolean> {
-    await this.model.destroy({ where: { id: entity.id }, ...this.destroyOptions() })
+  public async delete(entity: Aggregate, force = false): Promise<boolean> {
+    await this.model.destroy({ where: { id: entity.id }, force })
 
     await entity.publishEvents()
 
@@ -46,16 +40,16 @@ export abstract class SequelizeRepositoryBase<Aggregate extends AggregateRoot<an
     return Boolean(found)
   }
 
-  async saveBulk(entiries: Aggregate[]): Promise<any> {
+  public async saveBulk(entiries: Aggregate[]): Promise<any> {
     for (const entity of entiries) await this.save(entity)
   }
 
-  async deleteBulk(entiries: Aggregate[]): Promise<any> {
-    for (const entity of entiries) await this.delete(entity)
+  public async deleteBulk(entiries: Aggregate[], force = false): Promise<any> {
+    for (const entity of entiries) await this.delete(entity, force)
   }
 
   public async save(entity: Aggregate): Promise<void> {
-    const rawSequelizePost = this.mapper.toPersistence(entity) as any
+    const rawSequelizePost = this.mapper.toPersistence(entity)
     const exists = await this.exists(entity.id)
     const isNewPost = !exists
 

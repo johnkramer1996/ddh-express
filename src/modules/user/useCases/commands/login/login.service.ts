@@ -3,12 +3,12 @@ import { ResultWithError } from '../../../../../shared/core/result'
 import { LoginCommand } from './login.command'
 import { NotFoundException } from '@src/shared/exceptions/exceptions'
 import { UserRepositoryPort } from '@src/modules/user/repository/repository.port'
-import { USER_TYPES } from '@src/modules/user/infra/di/types'
+import { USER_TYPES } from '@src/modules/user/di/types'
 import { UserTokensResponseDto } from '../../../dtos/user-tokens.response.dto'
 import { AuthServicePort } from '@src/modules/user/services/auth.service.port'
 import { PasswordDoesntMatchException } from '@src/modules/user/domain/user.errors'
 import { CommandHandler } from '@src/shared/core/cqs/command-handler'
-import { UserService } from '../../models/user.service.base'
+import { UserService } from '../../base.service'
 
 export type Return = UserTokensResponseDto
 export type LoginServiceResponse = ResultWithError<Return>

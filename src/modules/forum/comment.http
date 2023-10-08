@@ -1,0 +1,11 @@
+### GET COMMENTS BY POST SLUG
+GET http://localhost:8086/api/v1/posts/slug-test/comments
+
+### DELETE ONE
+DELETE http://localhost:8086/api/v1/posts/slug-test/comments/d607d218-08be-4cf5-9c85-7b791df5103f
+
+### UPVOTE/DOWNVOTE /upvote /downvote
+POST http://localhost:8086/api/v1/posts/slug-test/comments/d0ba0dff-c671-4efa-98ae-cde90affdfe7/upvote
+
+### UPVOTE/DOWNVOTE /upvote /downvote
+POST http://localhost:8086/api/v1/posts/slug-test/comments/d0ba0dff-c671-4efa-98ae-cde90affdfe7/downvote

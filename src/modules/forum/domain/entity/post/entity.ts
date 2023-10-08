@@ -8,17 +8,22 @@ import { PostVoteEntity } from '../post-vote/entity'
 import { PostDeletedDomainEvent } from './events/deleted.domain-event'
 import { PostCreatedDomainEvent } from './events/created.domain-event'
 import { PostVoteChangedCreatedDomainEvent } from './events/vote-changed.domain-event'
+import { CommentEntity } from '../comments/entity'
 
 export class PostEntity extends AggregateRoot<PostEntityProps> {
   protected readonly _id!: AggregateID
 
   static create(create: PostEntityCreationProps): PostEntity {
-    const props: PostEntityProps = { ...create, points: 0, totalNumComments: 0, votes: PostVotes.create() }
+    const props: PostEntityProps = { ...create, points: 0, totalNumComments: 0, comments: [], votes: PostVotes.create() }
     const entity = new PostEntity({ props })
 
     entity.addEvent(new PostCreatedDomainEvent({ entity }))
 
     return entity
+  }
+
+  get comments(): CommentEntity[] {
+    return this.props.comments
   }
 
   get votes(): PostVotes {
@@ -37,6 +42,19 @@ export class PostEntity extends AggregateRoot<PostEntityProps> {
   public removeVote(vote: PostVoteEntity): void {
     this.props.votes.remove(vote)
     this.addEvent(new PostVoteChangedCreatedDomainEvent({ entity: this, vote }))
+  }
+
+  public addComment(comment: CommentEntity): void {
+    // this.removeCommentIfExists(comment);
+    this.props.comments.push(comment)
+    this.props.totalNumComments++
+    // this.addEvent(new CommentPosted(this, comment));
+  }
+
+  public updateComment(comment: CommentEntity): void {
+    // this.removeCommentIfExists(comment);
+    this.props.comments.push(comment)
+    // this.addEvent(new CommentVotesChanged(this, comment));
   }
 
   protected _getProps(): Partial<PostEntityProps> {

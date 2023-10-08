@@ -5,6 +5,7 @@ import { PostModelAttributes, PostModelCreationAttributes } from '@src/modules/f
 import UserModel from './user.model'
 import { DB_TABLES } from '@src/configs/dbtables'
 import postInit from '../init/post.init'
+import PostVoteModel from './post-vote.model'
 
 @injectable()
 class PostModel extends Model<PostModelAttributes, PostModelCreationAttributes> {
@@ -12,6 +13,7 @@ class PostModel extends Model<PostModelAttributes, PostModelCreationAttributes> 
   declare userId: ForeignKey<UserModel['id']>
   declare text: string
 
+  declare votes?: NonAttribute<PostVoteModel>
   declare user?: NonAttribute<UserModel>
 
   declare createdAt: Date

@@ -1,8 +1,8 @@
-type Controller = { target: Function; method: 'post' | 'get' | 'put' | 'delete'; path: string }
+type Controller = { target: Function; method: 'post' | 'get' | 'patch' | 'delete'; path: string }
 
 export const routes: Controller[] = []
 
-export function Controller(method: 'post' | 'get' | 'put' | 'delete', path: string): ClassDecorator {
+export function Controller(method: 'post' | 'get' | 'patch' | 'delete', path: string): ClassDecorator {
   return function (target: any) {
     routes.push({ method, path, target })
   }
@@ -10,5 +10,5 @@ export function Controller(method: 'post' | 'get' | 'put' | 'delete', path: stri
 
 export const ControllerGet = (path: string) => Controller('get', path)
 export const ControllerPost = (path: string) => Controller('post', path)
-export const ControllerPut = (path: string) => Controller('put', path)
+export const ControllerPatch = (path: string) => Controller('patch', path)
 export const ControllerDelete = (path: string) => Controller('delete', path)

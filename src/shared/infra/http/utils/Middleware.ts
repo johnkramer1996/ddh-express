@@ -1,5 +1,5 @@
 import { envCongig } from '@src/configs/config'
-import { USER_TYPES } from '@src/modules/user/infra/di/types'
+import { USER_TYPES } from '@src/modules/user/di/types'
 import { AuthServicePort } from '@src/modules/user/services/auth.service.port'
 import { NextFunction, Request, Response } from 'express'
 import { inject, injectable } from 'inversify'

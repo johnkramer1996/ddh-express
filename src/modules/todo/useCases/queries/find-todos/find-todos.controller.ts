@@ -34,7 +34,7 @@ export class FindTodosController extends TodoController {
       res,
       new TodoPaginatedResponseDto({
         ...paginated,
-        data: paginated.data.map(this.mapper.toResponse),
+        data: paginated.data.map(this.mapper.toResponse.bind(this.mapper)),
       })
     )
   }

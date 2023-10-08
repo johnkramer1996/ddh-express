@@ -5,7 +5,7 @@ import { UserModelAttributes } from '../domain/user.types'
 import { UserRepositoryPort } from './repository.port'
 import { UserMapper } from '../domain/user.mapper'
 import { ModelDefined } from 'sequelize'
-import { USER_TYPES } from '../infra/di/types'
+import { USER_TYPES } from '../di/types'
 
 @injectable()
 export class UserSequelizeRepository extends SequelizeRepositoryBase<UserEntity, UserModelAttributes> implements UserRepositoryPort {

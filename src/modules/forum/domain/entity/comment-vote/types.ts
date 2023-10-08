@@ -3,7 +3,7 @@ import { VoteEntityCreationProps, VoteModelCreationAttributes } from '../vote.ba
 
 export interface CommentVoteEntityCreationProps extends VoteEntityCreationProps {
   userId: string
-  comemntId: string
+  commentId: string
 }
 
 export interface CommentVoteEntityProps extends CommentVoteEntityCreationProps {}
