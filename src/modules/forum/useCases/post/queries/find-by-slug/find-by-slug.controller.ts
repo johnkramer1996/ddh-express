@@ -9,10 +9,10 @@ import { SlugRequestDto } from '@src/modules/forum/dtos/slug.request.dto'
 import { PostControllerBase } from '../../base.controller'
 import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
 import { UserRequestDto } from '@src/modules/user/dtos/user.request.dto'
-import { RequestDecoded } from '@src/shared/infra/http/models/controller.base'
+import { RequestDecoded } from '@src/shared/infra/http/models/base.controller'
 
 @injectable()
-@ControllerGet(routes.post.findOneBySlug)
+@ControllerGet(routes.post.findBySlug)
 export class FindBySlugController extends PostControllerBase {
   @UseGuard(AuthGuard)
   @ValidateRequest([['params', SlugRequestDto]])
@@ -27,6 +27,6 @@ export class FindBySlugController extends PostControllerBase {
 
     const item = result.getValue()
 
-    return this.ok(res, this.mapper.toResponse(item))
+    return this.ok(res, this.getResponseMapper(req)(item))
   }
 }

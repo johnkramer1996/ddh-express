@@ -3,6 +3,7 @@ import { PrimaryKey } from '@src/shared/core/primary-key'
 import { TimeStamp } from '@src/shared/core/time-stamp'
 import { Password } from './value-objects/password.value-object'
 import { PostModelAttributes } from '@src/modules/forum/domain/entity/post/types'
+import { PostEntity } from '@src/modules/forum/domain/entity/post/entity'
 
 export interface UserEntityCreationProps {
   email: string
@@ -15,8 +16,8 @@ export interface UserEntityProps extends UserEntityCreationProps {
   isAdminUser: boolean
   isDeleted: boolean
   lastLogin: Date | null
-  address: Address
-  posts?: any[]
+  address: Address | null
+  posts?: PostEntity[]
 }
 
 export interface UserModelCreationAttributes extends PrimaryKey {

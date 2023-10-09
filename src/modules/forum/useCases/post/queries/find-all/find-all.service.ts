@@ -13,7 +13,7 @@ export type FindPostsServiceResponse = ResultWithError<Return>
 @QueryHandler(PostFindAllQuery)
 export class PostFindAllService extends PostServiceBase<PostFindAllQuery, Return> {
   async executeImpl(query: PostFindAllQuery): Promise<Return> {
-    const items = await this.commentRepo.findAllPaginated(query)
+    const items = await this.postRepo.findAllPaginated(query)
 
     return items
   }

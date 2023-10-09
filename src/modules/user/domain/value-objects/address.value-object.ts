@@ -41,7 +41,7 @@ export class Address extends ValueObject<AddressProps> {
     if (props.street && !Guard.lengthIsBetween(props.street, 2, 50)) {
       throw new ArgumentOutOfRangeException('street is out of range')
     }
-    if (props.postalCode && !Guard.lengthIsBetween(props.postalCode, 2, 10)) {
+    if (props.postalCode && !Guard.lengthIsBetween(props.postalCode, 2, 50)) {
       throw new ArgumentOutOfRangeException('postalCode is out of range')
     }
   }

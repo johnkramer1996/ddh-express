@@ -6,11 +6,12 @@ import { PORT, envCongig } from './configs/config'
 import { container } from './shared/di/container'
 
 import './modules/todo'
-import { USER_TYPES } from './modules/user/di/types'
+import { USER_TYPES } from './modules/user/di/user.types'
 import { AuthServicePort } from './modules/user/services/auth.service.port'
 import { sequelize } from './shared/infra/database/sequelize/config/connection'
 import associate from './shared/infra/database/sequelize/models/accociate'
 import { v4 } from 'uuid'
+import CommentModel from './shared/infra/database/sequelize/models/comment.model'
 
 async function bootstrap() {
   const app = container.get<IServer>(TYPES.SERVER).create()
@@ -20,6 +21,7 @@ async function bootstrap() {
 
   associate()
   // await sequelize.sync({ force: true, alter: true })
+
   // const user = await UserModel.create({ email: 'vitalii@gmail.com', id: v4(), password: '12345' }, { raw: true })
 
   app.listen(PORT, () => {

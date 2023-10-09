@@ -1,11 +1,11 @@
 import { ICommandBus } from '@src/shared/core/cqs/command-bus'
 import { IQueryBus } from '@src/shared/core/cqs/query-bus'
-import { BaseController } from '@src/shared/infra/http/models/controller.base'
+import { BaseController } from '@src/shared/infra/http/models/base.controller'
 import { inject } from 'inversify'
-import { UserMapper } from '../domain/user.mapper'
-import { USER_TYPES } from '../di/types'
+import { UserMapper } from '../mappers/user.mapper'
+import { USER_TYPES } from '../di/user.types'
 import { TYPES } from '@src/shared/di/types'
-import { PasswordDoesntMatchException } from '../domain/user.errors'
+import { PasswordDoesntMatchException, UserAlreadyExistsError } from '../domain/user.errors'
 import { Response } from 'express'
 
 export abstract class UserController extends BaseController {
@@ -21,6 +21,7 @@ export abstract class UserController extends BaseController {
 
   protected handleError(res: Response, value: Error) {
     if (value instanceof PasswordDoesntMatchException) return this.clientError(res, value)
+    if (value instanceof UserAlreadyExistsError) return this.clientError(res, value)
     return super.handleError(res, value)
   }
 }

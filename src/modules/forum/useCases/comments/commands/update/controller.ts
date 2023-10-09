@@ -4,23 +4,30 @@ import { plainToClass } from 'class-transformer'
 import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-request'
 import { CommentUpdateRequestDto } from './request.dto'
 import { CommentUpdateCommand } from './command'
-import { TodoIdRequestDto } from '@src/modules/todo/dtos/todo-id.request.dto'
-import { ControllerPost } from '@src/shared/infra/http/decorators/controller'
+import { ControllerPatch, ControllerPost } from '@src/shared/infra/http/decorators/controller'
 import { routes } from '@src/configs/routes'
 import { CommentControllerBase } from '../../base.controller'
+import { SlugRequestDto } from '@src/modules/forum/dtos/slug.request.dto'
+import { CommentIdRequestDto } from '@src/modules/forum/dtos/comment/id.request.dto'
+import { RequestDecoded } from '@src/shared/infra/http/models/base.controller'
+import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
 
 @injectable()
-@ControllerPost(routes.postComments.updateOne)
+@ControllerPatch(routes.postComments.updateById)
 export class CommentUpdateController extends CommentControllerBase {
+  @UseGuard(AuthGuard)
   @ValidateRequest([
     ['body', CommentUpdateRequestDto],
-    ['params', TodoIdRequestDto],
+    ['params', SlugRequestDto],
+    ['params', CommentIdRequestDto],
   ])
-  async executeImpl(req: Request, res: Response): Promise<any> {
+  async executeImpl(req: RequestDecoded, res: Response): Promise<any> {
     const body = plainToClass(CommentUpdateRequestDto, req.body)
-    const params = plainToClass(TodoIdRequestDto, req.params)
+    const params = plainToClass(CommentIdRequestDto, req.params)
+    const postParams = plainToClass(SlugRequestDto, req.params)
+    const decoded = req.decoded
 
-    const command = new CommentUpdateCommand({ ...body, ...params })
+    const command = new CommentUpdateCommand({ ...params, ...postParams, ...body, userId: decoded.id })
     const result = await this.commandBus.execute(command)
 
     if (!result.isSuccess) return this.handleError(res, result.getValue())

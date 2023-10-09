@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify'
-import { SequelizeRepositoryBase } from '../../../shared/infra/database/sequelize/repository.base'
+import { SequelizeRepositoryBase } from '../../../shared/infra/database/sequelize/base.repository'
 import { TodoEntity } from '../domain/todo.entity'
 import { TodoRepositoryPort } from './repository.port'
 import { TodoMapper } from '../domain/todo.mapper'

@@ -14,21 +14,27 @@ export class ArgumentOutOfRangeException extends ExceptionBase {
 }
 
 export class ConflictException extends ExceptionBase {
-  readonly code = CONFLICT
+  static readonly message = 'Conflict'
+
+  constructor(message = ConflictException.message, readonly code = CONFLICT) {
+    super(message)
+  }
 }
 
 export class ForbiddenException extends ExceptionBase {
-  readonly code = FORBIDEN
+  static readonly message = 'Not access'
+
+  constructor(message = ForbiddenException.message, readonly code = FORBIDEN) {
+    super(message)
+  }
 }
 
 export class NotFoundException extends ExceptionBase {
   static readonly message = 'Not found'
 
-  constructor(message = NotFoundException.message) {
+  constructor(message = NotFoundException.message, readonly code = NOT_FOUND) {
     super(message)
   }
-
-  readonly code = NOT_FOUND
 }
 
 /**
@@ -40,9 +46,7 @@ export class NotFoundException extends ExceptionBase {
 export class InternalServerErrorException extends ExceptionBase {
   static readonly message = 'Internal server error'
 
-  constructor(message = InternalServerErrorException.message) {
+  constructor(message = InternalServerErrorException.message, readonly code = INTERNAL_SERVER_ERROR) {
     super(message)
   }
-
-  readonly code = INTERNAL_SERVER_ERROR
 }

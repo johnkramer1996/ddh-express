@@ -6,6 +6,8 @@ import { Slug } from '../../value-objects/slug.value-object'
 import { PostVoteModelAttributes } from '../post-vote/types'
 import { CommentModelAttributes } from '../comments/types'
 import { CommentEntity } from '../comments/entity'
+import { PostComments } from '../../value-objects/comments.value-objcect'
+import { UserEntity } from '@src/modules/user/domain/user.entity'
 
 export interface PostEntityCreationProps {
   type: PostType
@@ -21,9 +23,9 @@ export interface PostEntityCreationProps {
 export interface PostEntityProps extends PostEntityCreationProps {
   points: number
   totalNumComments: number
-  comments: CommentEntity[]
+  comments: PostComments
   votes: PostVotes
-  user?: { [key: string]: any }
+  user: UserEntity | null
 }
 
 export interface PostModelCreationAttributes extends PrimaryKey {

@@ -1,6 +1,5 @@
 import { injectable } from 'inversify'
 import { CommentUpdateCommand } from './command'
-import { Text } from '@src/modules/todo/domain/value-objects/text.value-object'
 import { NotFoundException } from '@src/shared/exceptions/exceptions'
 import { CommandHandler } from '@src/shared/core/cqs/command-handler'
 import { CommentServiceBase } from '../../base.service'
@@ -11,13 +10,19 @@ export type CommentUpdateServiceResponse = ResultWithError<Return>
 
 @injectable()
 @CommandHandler(CommentUpdateCommand)
-export class UpdateTodoService extends CommentServiceBase<CommentUpdateCommand, Return> {
+export class CommentUpdateService extends CommentServiceBase<CommentUpdateCommand, Return> {
   async executeImpl(command: CommentUpdateCommand): Promise<Return> {
-    const entity = await this.commentRepo.findOneById(command.todoId)
-    if (!entity) throw new NotFoundException()
+    const post = await this.postRepo.findBySlug(command.slug)
+    if (!post) throw new NotFoundException()
 
-    if (command.text !== undefined) entity.updateText({ text: command.text })
+    const comment = await this.commentRepo.findOneById(command.commentId)
+    if (!comment) throw new NotFoundException()
 
-    await this.commentRepo.save(entity)
+    const user = await this.userRepo.findOneById(command.userId)
+    if (!user) throw new NotFoundException()
+
+    this.postService.updateComment(post, user, comment, command.text)
+
+    await this.postRepo.save(post)
   }
 }

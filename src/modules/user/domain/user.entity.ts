@@ -56,6 +56,10 @@ export class UserEntity extends AggregateRoot<UserEntityProps> {
     this._refreshToken = refreshToken
   }
 
+  public hasAccess(user: UserEntity) {
+    return user.id === this.id
+  }
+
   public getJWTClaims(): JWTClaims {
     return {
       id: this.id,
@@ -74,9 +78,14 @@ export class UserEntity extends AggregateRoot<UserEntityProps> {
     this.props.lastLogin = new Date()
   }
 
+  public restore(): void {
+    // this.addEvent(new UserDeletedDomainEvent({ entity: this }))
+    // this.props.isDeleted = false
+  }
+
   public delete(): void {
     this.addEvent(new UserDeletedDomainEvent({ entity: this }))
-    this.props.isDeleted = true
+    // this.props.isDeleted = true
   }
 
   public validate(): void {

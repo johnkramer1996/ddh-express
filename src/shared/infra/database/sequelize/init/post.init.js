@@ -18,6 +18,8 @@ module.exports = {
       },
       key: 'id',
     },
+    onDelete: 'cascade',
+    onUpdate: 'cascade',
   },
   type: {
     allowNull: false,

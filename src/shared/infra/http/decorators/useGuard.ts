@@ -1,7 +1,7 @@
-import { USER_TYPES } from '@src/modules/user/di/types'
+import { USER_TYPES } from '@src/modules/user/di/user.types'
 import { NextFunction, Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
-import { RequestDecoded } from '../models/controller.base'
+import { RequestDecoded } from '../models/base.controller'
 import { AuthServicePort } from '@src/modules/user/services/auth.service.port'
 import { container } from '../../../di/container'
 import { getStringFromUnknown } from '@src/shared/utils/get-error'
@@ -20,6 +20,8 @@ export function UseGuard(func: Function, ...args: any[]): MethodDecorator {
     }
   }
 }
+
+@injectable()
 export abstract class Guard {
   abstract execute(req: Request, ...args: any[]): Promise<any>
 }

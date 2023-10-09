@@ -1,0 +1,5 @@
+export const POST_TYPES = {
+  MAPPER: Symbol('POST_MAPPER'),
+  REPOSITORY: Symbol('POST_REPOSITORY'),
+  SEQUELIZE_MODEL: Symbol('POST_SEQUELIZE_MODEL'),
+}

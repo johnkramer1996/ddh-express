@@ -10,4 +10,5 @@ export interface FindCommentsParams extends QueryParams {
 
 export interface CommentRepositoryPort extends RepositoryPort<CommentEntity> {
   findAllByPostSlug(slug: FindCommentsParams): Promise<Paginated<CommentEntity>>
+  findByIdWithDetail(id: string, userId?: string): Promise<CommentEntity | null>
 }

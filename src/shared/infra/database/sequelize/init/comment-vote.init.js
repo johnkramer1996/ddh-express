@@ -18,6 +18,8 @@ module.exports = {
       },
       key: 'id',
     },
+    onDelete: 'cascade',
+    onUpdate: 'cascade',
   },
   commentId: {
     field: 'comment_id',
@@ -30,6 +32,8 @@ module.exports = {
       },
       key: 'id',
     },
+    onDelete: 'cascade',
+    onUpdate: 'cascade',
   },
   type: {
     type: DataTypes.STRING,

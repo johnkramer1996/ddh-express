@@ -8,12 +8,12 @@ import { IdResponse } from '@src/shared/api/id.response.dto'
 import { ControllerPost } from '@src/shared/infra/http/decorators/controller'
 import { routes } from '@src/configs/routes'
 import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
-import { RequestDecoded } from '@src/shared/infra/http/models/controller.base'
+import { RequestDecoded } from '@src/shared/infra/http/models/base.controller'
 import { UserRequestDto } from '@src/modules/user/dtos/user.request.dto'
 import { PostControllerBase } from '../../base.controller'
 
 @injectable()
-@ControllerPost(routes.post.createOne)
+@ControllerPost(routes.post.create)
 export class PostCreateOneController extends PostControllerBase {
   @UseGuard(AuthGuard)
   @ValidateRequest([['body', CreateOneRequestDto]])

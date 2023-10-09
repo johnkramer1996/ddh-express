@@ -63,6 +63,10 @@ export abstract class Entity<EntityProps> implements TimeStamp {
     return this._deletedAt
   }
 
+  set deletedAt(date: Date | null) {
+    this._deletedAt = date
+  }
+
   static isEntity(entity: unknown): entity is Entity<unknown> {
     return entity instanceof Entity
   }

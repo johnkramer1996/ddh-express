@@ -18,6 +18,8 @@ module.exports = {
       },
       key: 'id',
     },
+    onDelete: 'cascade',
+    onUpdate: 'cascade',
   },
   postId: {
     field: 'post_id',
@@ -30,6 +32,8 @@ module.exports = {
       },
       key: 'id',
     },
+    onDelete: 'cascade',
+    onUpdate: 'cascade',
   },
   type: {
     allowNull: false,

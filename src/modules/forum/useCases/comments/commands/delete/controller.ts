@@ -7,15 +7,24 @@ import { ControllerDelete } from '@src/shared/infra/http/decorators/controller'
 import { routes } from '@src/configs/routes'
 import { UserController } from '@src/modules/user/useCases/base.controller'
 import { CommentIdRequestDto } from '@src/modules/forum/dtos/comment/id.request.dto'
+import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
+import { SlugRequestDto } from '@src/modules/forum/dtos/slug.request.dto'
+import { RequestDecoded } from '@src/shared/infra/http/models/base.controller'
 
 @injectable()
-@ControllerDelete(routes.postComments.deleteOne)
-export class CommentDeleteOneController extends UserController {
-  @ValidateRequest([['params', CommentIdRequestDto]])
-  async executeImpl(req: Request, res: Response): Promise<any> {
+@ControllerDelete(routes.postComments.deleteById)
+export class CommentDeleteByIdController extends UserController {
+  @UseGuard(AuthGuard)
+  @ValidateRequest([
+    ['params', SlugRequestDto],
+    ['params', CommentIdRequestDto],
+  ])
+  async executeImpl(req: RequestDecoded, res: Response): Promise<any> {
     const params = plainToClass(CommentIdRequestDto, req.params)
+    const postParams = plainToClass(SlugRequestDto, req.params)
+    const decoded = req.decoded
 
-    const command = new CommentDeleteOneCommand(params)
+    const command = new CommentDeleteOneCommand({ ...params, ...postParams, userId: decoded.id })
     const result = await this.commandBus.execute(command)
 
     if (!result.isSuccess) return this.handleError(res, result.getValue())

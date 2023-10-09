@@ -3,18 +3,18 @@ import { AggregateRoot } from '../../../../../shared/domain/aggregate-root.base'
 import { AggregateID } from '../../../../../shared/domain/entity'
 import { PostEntityCreationProps, PostEntityProps } from './types'
 import { PostVotes, Votes } from '../../value-objects/votes.value-objcect'
-import { VoteEntity } from '../vote.base.entity'
 import { PostVoteEntity } from '../post-vote/entity'
 import { PostDeletedDomainEvent } from './events/deleted.domain-event'
 import { PostCreatedDomainEvent } from './events/created.domain-event'
 import { PostVoteChangedCreatedDomainEvent } from './events/vote-changed.domain-event'
 import { CommentEntity } from '../comments/entity'
+import { PostComments } from '../../value-objects/comments.value-objcect'
 
 export class PostEntity extends AggregateRoot<PostEntityProps> {
   protected readonly _id!: AggregateID
 
   static create(create: PostEntityCreationProps): PostEntity {
-    const props: PostEntityProps = { ...create, points: 0, totalNumComments: 0, comments: [], votes: PostVotes.create() }
+    const props: PostEntityProps = { ...create, points: 0, totalNumComments: 0, comments: new PostComments(), votes: PostVotes.create(), user: null }
     const entity = new PostEntity({ props })
 
     entity.addEvent(new PostCreatedDomainEvent({ entity }))
@@ -22,7 +22,7 @@ export class PostEntity extends AggregateRoot<PostEntityProps> {
     return entity
   }
 
-  get comments(): CommentEntity[] {
+  get comments(): PostComments {
     return this.props.comments
   }
 
@@ -45,15 +45,19 @@ export class PostEntity extends AggregateRoot<PostEntityProps> {
   }
 
   public addComment(comment: CommentEntity): void {
-    // this.removeCommentIfExists(comment);
-    this.props.comments.push(comment)
+    this.props.comments.add(comment)
     this.props.totalNumComments++
     // this.addEvent(new CommentPosted(this, comment));
   }
 
+  public removeComment(comment: CommentEntity): void {
+    this.props.comments.remove(comment)
+    this.props.totalNumComments--
+    // this.addEvent(new CommentPosted(this, comment));
+  }
+
   public updateComment(comment: CommentEntity): void {
-    // this.removeCommentIfExists(comment);
-    this.props.comments.push(comment)
+    this.props.comments.update(comment)
     // this.addEvent(new CommentVotesChanged(this, comment));
   }
 

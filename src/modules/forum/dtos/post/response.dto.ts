@@ -15,7 +15,7 @@ export class PostResponseDto extends ResponseBase {
   // public readonly comments?: CommentResponseDto[]
   public readonly wasUpvotedByMe?: boolean
   public readonly wasDownvotedByMe?: boolean
-  // public readonly user?: any
+  public readonly user?: UserResponseDto
 
   constructor(props: ResponseBaseProps<PostResponseDto>) {
     super(props)
@@ -26,6 +26,7 @@ export class PostResponseDto extends ResponseBase {
     this.slug = props.slug
     this.points = props.points
     this.totalNumComments = props.totalNumComments
+    this.user = props.user
     this.wasUpvotedByMe = props.wasUpvotedByMe
     this.wasDownvotedByMe = props.wasDownvotedByMe
     // this.votes = props.votes

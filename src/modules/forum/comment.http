@@ -1,11 +1,46 @@
 ### GET COMMENTS BY POST SLUG
 GET http://localhost:8086/api/v1/posts/slug-test/comments
 
-### DELETE ONE
-DELETE http://localhost:8086/api/v1/posts/slug-test/comments/d607d218-08be-4cf5-9c85-7b791df5103f
+### GET BY ID
+GET  http://localhost:8086/api/v1/posts/slug-test/comments/f653f5cf-71fe-4f89-94d0-f6a25ccc178b
+
+### CREATE
+POST http://localhost:8086/api/v1/posts/slug-test/comments/
+Content-Type: application/json
+
+{
+    "text": "hello, world!!! comment with parentId",
+    "parentId": "f653f5cf-71fe-4f89-94d0-f6a25ccc178b"
+}
+### UPDATE BY ID
+PATCH http://localhost:8086/api/v1/posts/slug-test/comments/f653f5cf-71fe-4f89-94d0-f6a25ccc178b
+Content-Type: application/json
+
+{
+    "text": "hello, world!!! 09.10.23 UPDATED1"
+}
+
+### DELETE BY ID
+DELETE http://localhost:8086/api/v1/posts/slug-test/comments/f653f5cf-71fe-4f89-94d0-f6a25ccc178b
 
 ### UPVOTE/DOWNVOTE /upvote /downvote
-POST http://localhost:8086/api/v1/posts/slug-test/comments/d0ba0dff-c671-4efa-98ae-cde90affdfe7/upvote
+POST http://localhost:8086/api/v1/posts/slug-test/comments/f653f5cf-71fe-4f89-94d0-f6a25ccc178b/upvote
 
 ### UPVOTE/DOWNVOTE /upvote /downvote
-POST http://localhost:8086/api/v1/posts/slug-test/comments/d0ba0dff-c671-4efa-98ae-cde90affdfe7/downvote
+POST http://localhost:8086/api/v1/posts/slug-test/comments/f653f5cf-71fe-4f89-94d0-f6a25ccc178b/downvote
+
+
+
+
+router.post('/:postId/comments/', authMiddleware(true), commentController.create)
+router.put('/:postId/comments/:commentId', authMiddleware(true), commentController.update)
+
+
+///admin context 
+router.post('/role', adminController.addRole.bind(adminController))
+router.post('/users/:userId/setRole', authMiddleware(true), adminController.setRole.bind(adminController))
+router.get('/users/:userId/loginAsUser', authMiddleware(true), adminController.loginAsUser.bind(adminController))
+
+router.post('/setting', authMiddleware(true), cabinetController.setting.bind(cabinetController))
+router.get('/posts', authMiddleware(true), postController.getAllByAuthUser.bind(postController))
+router.get('/posts/:postId', authMiddleware(true), postController.getByAuthUser.bind(postController))

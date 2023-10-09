@@ -1,12 +1,13 @@
+import { UserEntity } from '@src/modules/user/domain/user.entity'
 import { AggregateRoot } from '../../../../../shared/domain/aggregate-root.base'
 import { AggregateID } from '../../../../../shared/domain/entity'
 import { CommentVotes } from '../../value-objects/votes.value-objcect'
 import { CommentVoteEntity } from '../comment-vote/entity'
-import { TemplateCreatedDomainEvent } from './events/created.domain-event'
-import { TemplateDeletedDomainEvent } from './events/deleted.domain-event'
+import { CommentCreatedDomainEvent } from './events/created.domain-event'
+import { CommentDeletedDomainEvent } from './events/deleted.domain-event'
 import { CommentEntityCreationProps, CommentEntityProps } from './types'
 
-type UpdateTextProps = {
+export type CommentUpdateTextProps = {
   text: string
 }
 
@@ -14,12 +15,20 @@ export class CommentEntity extends AggregateRoot<CommentEntityProps> {
   protected readonly _id!: AggregateID
 
   static create(create: CommentEntityCreationProps): CommentEntity {
-    const props: CommentEntityProps = { ...create, votes: new CommentVotes() }
+    const props: CommentEntityProps = { ...create, votes: new CommentVotes(), user: null }
     const entity = new CommentEntity({ props })
 
-    entity.addEvent(new TemplateCreatedDomainEvent({ entity }))
+    entity.addEvent(new CommentCreatedDomainEvent({ entity }))
 
     return entity
+  }
+
+  public hasAccess(user: UserEntity) {
+    return user.id === this.props.userId
+  }
+
+  get points(): number {
+    return this.props.points + this.votes.points
   }
 
   get votes(): CommentVotes {
@@ -36,7 +45,7 @@ export class CommentEntity extends AggregateRoot<CommentEntityProps> {
     // this.addEvent(new PostVoteChangedCreatedDomainEvent({ entity: this, vote }))
   }
 
-  public updateText(props: UpdateTextProps): void {
+  public updateText(props: CommentUpdateTextProps): void {
     if (props.text === this.props.text) return
 
     const newText = props.text
@@ -44,8 +53,12 @@ export class CommentEntity extends AggregateRoot<CommentEntityProps> {
     this.props.text = newText
   }
 
+  protected _getProps(): Partial<CommentEntityProps> {
+    return { points: this.points }
+  }
+
   public delete(): void {
-    this.addEvent(new TemplateDeletedDomainEvent({ entity: this }))
+    this.addEvent(new CommentDeletedDomainEvent({ entity: this }))
   }
 
   public validate(): void {}

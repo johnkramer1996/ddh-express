@@ -1,6 +1,6 @@
 import { injectable } from 'inversify'
 import { CommentFindAllQuery } from './query'
-import { Request, Response } from 'express'
+import { Response } from 'express'
 import { plainToClass } from 'class-transformer'
 import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-request'
 import { routes } from '@src/configs/routes'
@@ -10,8 +10,7 @@ import { CommentPaginatedResponseDto } from '@src/modules/forum/dtos/comment/pag
 import { SlugRequestDto } from '@src/modules/forum/dtos/slug.request.dto'
 import { PaginatedQueryRequestDto } from '@src/shared/api/paginated-query.request.dto'
 import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
-import { UserRequestDto } from '@src/modules/user/dtos/user.request.dto'
-import { RequestDecoded, RequestDecodedIfExist } from '@src/shared/infra/http/models/controller.base'
+import { RequestDecodedIfExist } from '@src/shared/infra/http/models/base.controller'
 
 @injectable()
 @ControllerGet(routes.postComments.findAll)
@@ -37,8 +36,7 @@ export class CommentFindAllController extends CommentControllerBase {
       res,
       new CommentPaginatedResponseDto({
         ...paginated,
-        // toDetailResponse
-        data: paginated.data.map(decoded ? this.mapper.toResponseDetail.bind(this.mapper) : this.mapper.toResponse.bind(this.mapper)),
+        data: paginated.data.map(this.getResponseMapper(req)),
       })
     )
   }

@@ -8,4 +8,5 @@ export interface FindUsersParams extends QueryParams {
 
 export interface UserRepositoryPort extends RepositoryPort<UserEntity> {
   findOneByEmail(email: string): Promise<UserEntity | null>
+  restore(entity: UserEntity): Promise<boolean>
 }

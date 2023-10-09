@@ -5,6 +5,7 @@ import { AbstractRedisClient } from './redis/redis-client.base'
 import jwt from 'jsonwebtoken'
 import { authConfig } from '@src/configs/config'
 import { injectable } from 'inversify'
+import { UserEntity } from '../domain/user.entity'
 
 @injectable()
 export class RedisAuthService extends AbstractRedisClient implements AuthServicePort {
@@ -25,12 +26,13 @@ export class RedisAuthService extends AbstractRedisClient implements AuthService
     return key.substring(key.indexOf(this.jwtHashName) + this.jwtHashName.length + 1)
   }
 
-  public async saveAuthenticatedUser(email: string, accessToken: string, refreshToken: RefreshToken): Promise<void> {
-    await this.addToken(email, refreshToken, accessToken)
+  public async saveAuthenticatedUser(user: UserEntity): Promise<void> {
+    if (!(user.refreshToken && user.accessToken)) return
+    await this.addToken(user.email, user.refreshToken, user.accessToken)
   }
 
-  public async deAuthenticateUser(username: string): Promise<void> {
-    await this.clearAllSessions(username)
+  public async deAuthenticateUser(user: UserEntity): Promise<void> {
+    await this.clearAllSessions(user.email)
   }
 
   public createRefreshToken(): RefreshToken {

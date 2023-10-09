@@ -3,11 +3,12 @@ import { VoteCommand } from './command'
 import { CommandHandler } from '@src/shared/core/cqs/command-handler'
 import { ResultWithError } from '@src/shared/core/result'
 import { NotFoundException } from '@src/shared/exceptions/exceptions'
-import { POST_TYPES, POST_VOTE_TYPES } from '@src/modules/forum/di/types'
+import { POST_TYPES } from '@src/modules/forum/di/post.types'
+import { POST_VOTE_TYPES } from '@src/modules/forum/di/post-vote.types'
 import { PostRepositoryPort } from '@src/modules/forum/repository/post/repository.port'
 import { PostService } from '@src/modules/forum/domain/service/post.service'
 import { UserRepositoryPort } from '@src/modules/user/repository/repository.port'
-import { USER_TYPES } from '@src/modules/user/di/types'
+import { USER_TYPES } from '@src/modules/user/di/user.types'
 import { PostVoteRepositoryPort } from '@src/modules/forum/repository/post-vote/repository.port'
 import { PostServiceBase } from '../../base.service'
 
@@ -18,16 +19,16 @@ export type VoteServiceResponse = ResultWithError<Return>
 @CommandHandler(VoteCommand)
 export class PostVoteService extends PostServiceBase<VoteCommand, Return> {
   constructor(
-    @inject(POST_TYPES.REPOSITORY) protected commentRepo: PostRepositoryPort,
+    @inject(POST_TYPES.REPOSITORY) protected postRepo: PostRepositoryPort,
     @inject(USER_TYPES.REPOSITORY) protected userRepo: UserRepositoryPort,
     @inject(POST_VOTE_TYPES.REPOSITORY) protected upvoteRepo: PostVoteRepositoryPort,
     protected postService: PostService
   ) {
-    super(commentRepo)
+    super(postRepo)
   }
 
   async executeImpl(command: VoteCommand): Promise<Return> {
-    const post = await this.commentRepo.findOneBySlug(command.slug)
+    const post = await this.postRepo.findBySlugDetail(command.slug)
     if (!post) throw new NotFoundException()
 
     const user = await this.userRepo.findOneById(command.userId)
@@ -37,7 +38,7 @@ export class PostVoteService extends PostServiceBase<VoteCommand, Return> {
 
     this.postService.addVoteToPost(post, user, vote, command.type)
 
-    await this.commentRepo.save(post)
+    await this.postRepo.save(post)
 
     return post.points
   }

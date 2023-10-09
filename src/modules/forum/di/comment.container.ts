@@ -1,19 +1,28 @@
 import { Container } from 'inversify'
-import { COMMENT_TYPES, COMMENT_VOTE_TYPES, POST_TYPES, POST_VOTE_TYPES } from './types'
+import { POST_TYPES } from './post.types'
+import { COMMENT_VOTE_TYPES } from './comment-vote.types'
+import { COMMENT_TYPES } from './comment.types'
+import { POST_VOTE_TYPES } from './post-vote.types'
 import { CommentFindAllController } from '../useCases/comments/queries/find-all/controller'
 import { CommentFindAllService } from '../useCases/comments/queries/find-all/service'
 import { CommentRepositoryPort } from '../repository/comment/repository.port'
 import CommentVoteModel from '@src/shared/infra/database/sequelize/models/comment-vote.model'
 import { CommentSequelizeRepository } from '../repository/comment/repository.sequelize'
-import { CommentMapper } from '../mappers/comment.mapper'
+import { CommentMapper } from '../mappers/comment/mapper'
 import CommentModel from '@src/shared/infra/database/sequelize/models/comment.model'
-import { CommentVoteMapper } from '../mappers/comment-vote.mapper'
+import { CommentVoteMapper } from '../mappers/comment-vote/mapper'
 import { CommentVoteSequelizeRepository } from '../repository/comment-vote/repository.sequelize'
 import { CommentVoteRepositoryPort } from '../repository/comment-vote/repository.port'
-import { CommentDeleteOneController } from '../useCases/comments/commands/delete/controller'
+import { CommentDeleteByIdController } from '../useCases/comments/commands/delete/controller'
 import { CommentDeleteOneService } from '../useCases/comments/commands/delete/service'
 import { CommentVoteController } from '../useCases/comments/commands/vote/controller'
 import { CommentVoteService } from '../useCases/comments/commands/vote/service'
+import { CommentFindByIdController } from '../useCases/comments/queries/find-by-id/controller'
+import { CommentFindByIdService } from '../useCases/comments/queries/find-by-id/service'
+import { CommentCreateController } from '../useCases/comments/commands/create/controller'
+import { CommentCreateService } from '../useCases/comments/commands/create/service'
+import { CommentUpdateService } from '../useCases/comments/commands/update/service'
+import { CommentUpdateController } from '../useCases/comments/commands/update/controller'
 
 const commentModule = (container: Container) => {
   container.bind(COMMENT_TYPES.MAPPER).to(CommentMapper)
@@ -27,7 +36,16 @@ const commentModule = (container: Container) => {
   container.bind(CommentFindAllController).toSelf()
   container.bind(CommentFindAllService).toSelf()
 
-  container.bind(CommentDeleteOneController).toSelf()
+  container.bind(CommentFindByIdController).toSelf()
+  container.bind(CommentFindByIdService).toSelf()
+
+  container.bind(CommentCreateController).toSelf()
+  container.bind(CommentCreateService).toSelf()
+
+  container.bind(CommentUpdateController).toSelf()
+  container.bind(CommentUpdateService).toSelf()
+
+  container.bind(CommentDeleteByIdController).toSelf()
   container.bind(CommentDeleteOneService).toSelf()
 
   container.bind(CommentVoteController).toSelf()

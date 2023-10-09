@@ -6,10 +6,11 @@ type UserResponseDtoProps<T> = Omit<T, 'lastLogin'> & {
 
 export class UserResponseDto extends ResponseBase {
   public readonly email: string
-  public readonly country: string | null
-  public readonly postalCode: string | null
-  public readonly street: string | null
+  public readonly country?: string | null
+  public readonly postalCode?: string | null
+  public readonly street?: string | null
   public readonly lastLogin: string | null
+  public readonly isDeleted?: boolean | null
   public readonly posts?: any[]
 
   constructor(props: UserResponseDtoProps<ResponseBaseProps<UserResponseDto>>) {
@@ -19,6 +20,7 @@ export class UserResponseDto extends ResponseBase {
     this.postalCode = props.postalCode
     this.street = props.street
     this.posts = props.posts
+    this.isDeleted = props.isDeleted
     this.lastLogin = props.lastLogin ? new Date(props.lastLogin).toISOString() : props.lastLogin
   }
 }

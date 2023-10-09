@@ -26,6 +26,6 @@ Content-Type: application/json
     "completed": true
 }
 
-### DELETE ONE
+### DELETE BY ID
 DELETE http://localhost:8086/api/v1/todos/8fed232a-1870-4635-958f-53314a0a3149
 

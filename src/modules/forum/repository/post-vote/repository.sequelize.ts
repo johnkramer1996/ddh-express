@@ -1,10 +1,10 @@
 import { inject, injectable } from 'inversify'
-import { SequelizeRepositoryBase } from '../../../../shared/infra/database/sequelize/repository.base'
+import { SequelizeRepositoryBase } from '../../../../shared/infra/database/sequelize/base.repository'
 import { ModelDefined } from 'sequelize'
-import { POST_VOTE_TYPES } from '../../di/types'
+import { POST_VOTE_TYPES } from '../../di/post-vote.types'
 import { PostVoteRepositoryPort } from './repository.port'
 import { PostVoteModelAttributes } from '../../domain/entity/post-vote/types'
-import { PostVoteMapper } from '../../mappers/post-vote.mapper'
+import { PostVoteMapper } from '../../mappers/post-vote/mapper'
 import { PostVoteEntity } from '../../domain/entity/post-vote/entity'
 
 @injectable()

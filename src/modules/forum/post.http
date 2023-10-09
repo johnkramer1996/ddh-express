@@ -1,12 +1,12 @@
 
 ### GET LIST ?order=popular ?order=recent
-GET http://localhost:8086/api/v1/posts?order=popular
+GET http://localhost:8086/api/v1/posts?order=recent
 
 ### GET BY SLUG
 GET http://localhost:8086/api/v1/posts/slug-test
 
 ### UPVOTE/DOWNVOTE /upvote /downvote
-POST http://localhost:8086/api/v1/posts/slug-test/upvote
+POST http://localhost:8086/api/v1/posts/4865768-new-post/downvote
 
 ### CREATE ONE
 POST http://localhost:8086/api/v1/posts/

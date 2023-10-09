@@ -1,10 +1,11 @@
 import { inject, injectable } from 'inversify'
-import { SequelizeRepositoryBase } from '../../../../shared/infra/database/sequelize/repository.base'
+import { SequelizeRepositoryBase } from '../../../../shared/infra/database/sequelize/base.repository'
 import { ModelDefined } from 'sequelize'
-import { COMMENT_VOTE_TYPES, POST_VOTE_TYPES } from '../../di/types'
+import { COMMENT_VOTE_TYPES } from '../../di/comment-vote.types'
+import { POST_VOTE_TYPES } from '../../di/post-vote.types'
 import { CommentVoteRepositoryPort } from './repository.port'
 import { CommentVoteEntity } from '../../domain/entity/comment-vote/entity'
-import { CommentVoteMapper } from '../../mappers/comment-vote.mapper'
+import { CommentVoteMapper } from '../../mappers/comment-vote/mapper'
 import { CommentVoteModelAttributes } from '../../domain/entity/comment-vote/types'
 
 @injectable()

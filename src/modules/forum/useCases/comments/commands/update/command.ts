@@ -3,13 +3,15 @@ import { CommentUpdateServiceResponse } from './service'
 
 export class CommentUpdateCommand implements ICommand<CommentUpdateServiceResponse> {
   declare response?: CommentUpdateServiceResponse
-  readonly todoId: string
+  readonly userId: string
+  readonly slug: string
+  readonly commentId: string
   readonly text?: string
-  readonly completed?: boolean
 
   constructor(props: CommentUpdateCommand) {
-    this.todoId = props.todoId
+    this.userId = props.userId
+    this.slug = props.slug
+    this.commentId = props.commentId
     this.text = props.text
-    this.completed = props.completed
   }
 }

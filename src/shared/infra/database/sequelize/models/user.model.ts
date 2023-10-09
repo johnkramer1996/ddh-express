@@ -5,6 +5,7 @@ import { UserModelAttributes, UserModelCreationAttributes } from '@src/modules/u
 import PostModel from './post.model'
 import { DB_TABLES } from '@src/configs/dbtables'
 import userInit from '../init/user.init.js'
+import AddressModel from './address.model'
 
 @injectable()
 class UserModel extends Model<UserModelAttributes, UserModelCreationAttributes> {
@@ -38,7 +39,7 @@ UserModel.init(userInit, {
   tableName: DB_TABLES.USER,
   sequelize,
   defaultScope: {
-    // include: [{ model: PostModel, as: 'posts' }],
+    include: [{ model: AddressModel, as: 'address' }],
   },
   hooks: {},
 })

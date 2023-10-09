@@ -6,7 +6,7 @@ import { CommentVoteCommand } from './command'
 import { ControllerPost } from '@src/shared/infra/http/decorators/controller'
 import { routes } from '@src/configs/routes'
 import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
-import { RequestDecoded } from '@src/shared/infra/http/models/controller.base'
+import { RequestDecoded } from '@src/shared/infra/http/models/base.controller'
 import { UserRequestDto } from '@src/modules/user/dtos/user.request.dto'
 import { SlugRequestDto } from '@src/modules/forum/dtos/slug.request.dto'
 import { VoteType } from '@src/modules/forum/domain/entity/vote.base.entity'
@@ -19,12 +19,12 @@ import { CommentIdRequestDto } from '@src/modules/forum/dtos/comment/id.request.
 export class CommentVoteController extends PostControllerBase {
   @UseGuard(AuthGuard)
   @ValidateRequest([
-    // ['params', CommentIdRequestDto],
-    // ['params', SlugRequestDto],
+    ['params', SlugRequestDto],
+    ['params', CommentIdRequestDto],
   ])
   async executeImpl(req: RequestDecoded, res: Response): Promise<any> {
-    const params = plainToClass(CommentIdRequestDto, req.params)
     const postParams = plainToClass(SlugRequestDto, req.params)
+    const params = plainToClass(CommentIdRequestDto, req.params)
     const type = req.url.split('/').pop()?.toLowerCase() as VoteType
     const decoded = req.decoded
 

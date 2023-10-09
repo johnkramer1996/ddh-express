@@ -24,7 +24,7 @@ export class CreateOneService extends PostServiceBase<CreateOneCommand, Return> 
       slug: Slug.create({ value: command.title }),
     })
 
-    await this.commentRepo.save(post)
+    await this.postRepo.save(post)
 
     return post.id
   }

@@ -7,6 +7,6 @@ import { TodoDeletedDomainEvent } from '../../domain/events/deleted.domain-event
 export class LogWhenTodoIsDeletedDomainEventHandler {
   @OnEvent(TodoDeletedDomainEvent.name)
   async handle(event: TodoDeletedDomainEvent): Promise<any> {
-    console.log('LogWhenTodoIsDeletedDomainEventHandler')
+    console.log('[LogWhenTodoIsDeletedDomainEventHandler]: LogWhenTodoIsDeletedDomainEventHandler')
   }
 }

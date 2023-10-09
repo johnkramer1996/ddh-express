@@ -10,7 +10,7 @@ import { PostControllerBase } from '@src/modules/forum/useCases/post/base.contro
 import { PostPaginatedQueryRequestDto } from '@src/modules/forum/dtos/paginated-query.request.dto'
 import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
 import { UserRequestDto } from '@src/modules/user/dtos/user.request.dto'
-import { RequestDecoded, RequestDecodedIfExist } from '@src/shared/infra/http/models/controller.base'
+import { RequestDecoded, RequestDecodedIfExist } from '@src/shared/infra/http/models/base.controller'
 
 @injectable()
 @ControllerGet(routes.post.findAll)
@@ -32,7 +32,7 @@ export class PostFindALlController extends PostControllerBase {
       res,
       new PostPaginatedResponseDto({
         ...paginated,
-        data: paginated.data.map(decoded ? this.mapper.toResponseDetail.bind(this.mapper) : this.mapper.toResponse.bind(this.mapper)),
+        data: paginated.data.map(this.getResponseMapper(req)),
       })
     )
   }

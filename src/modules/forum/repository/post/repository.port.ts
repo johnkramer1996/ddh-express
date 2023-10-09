@@ -4,5 +4,6 @@ import { PostEntity } from '../../domain/entity/post/entity'
 export interface FindPostsParams extends QueryParams {}
 
 export interface PostRepositoryPort extends RepositoryPort<PostEntity> {
-  findOneBySlug(slug: string, userId?: string): Promise<PostEntity | null>
+  findBySlug(slug: string): Promise<PostEntity | null>
+  findBySlugDetail(slug: string, userId?: string): Promise<PostEntity | null>
 }

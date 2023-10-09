@@ -7,6 +7,20 @@ module.exports = {
     allowNull: false,
     type: DataTypes.UUID,
   },
+  parentId: {
+    field: 'parent_id',
+    allowNull: true,
+    type: DataTypes.UUID,
+    references: {
+      model: {
+        tableName: 'comments',
+        schema: 'public',
+      },
+      key: 'id',
+    },
+    onDelete: 'cascade',
+    onUpdate: 'cascade',
+  },
   userId: {
     field: 'user_id',
     allowNull: false,
@@ -18,6 +32,8 @@ module.exports = {
       },
       key: 'id',
     },
+    onDelete: 'cascade',
+    onUpdate: 'cascade',
   },
   postId: {
     field: 'post_id',
@@ -30,10 +46,16 @@ module.exports = {
       },
       key: 'id',
     },
+    onDelete: 'cascade',
+    onUpdate: 'cascade',
   },
   text: {
-    allowNull: true,
+    allowNull: false,
     type: DataTypes.STRING,
+  },
+  points: {
+    allowNull: false,
+    type: DataTypes.INTEGER,
   },
   ...timeStamp,
 }

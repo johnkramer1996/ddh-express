@@ -28,7 +28,7 @@ export type QueryParams = {
 }
 
 export interface RepositoryPort<Entity> {
-  findOneById(id: string): Promise<Entity | null>
+  findOneById(id: string, deleted?: boolean): Promise<Entity | null>
   findAll(): Promise<Entity[]>
   findAllPaginated(params: QueryParams): Promise<Paginated<Entity>>
   delete(entity: Entity, force?: boolean): Promise<boolean>

@@ -72,7 +72,9 @@ export abstract class WatchedList<T> {
   }
 
   public remove(item: T): void {
-    this.removeFromCurrent(item)
+    if (this.isCurrentItem(item)) {
+      this.removeFromCurrent(item)
+    }
 
     if (this.isNewItem(item)) {
       this.removeFromNew(item)
@@ -81,6 +83,20 @@ export abstract class WatchedList<T> {
 
     if (!this.isRemovedItem(item)) {
       this.removed.push(item)
+    }
+  }
+
+  public update(item: T): void {
+    if (this.isRemovedItem(item)) {
+      this.removeFromRemoved(item)
+    }
+
+    if (!this.isNewItem(item)) {
+      this.new.push(item)
+    }
+
+    if (!this.isCurrentItem(item)) {
+      this.currentItems.push(item)
     }
   }
 }

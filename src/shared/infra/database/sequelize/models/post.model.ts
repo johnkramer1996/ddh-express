@@ -25,7 +25,7 @@ PostModel.init(postInit, {
   tableName: DB_TABLES.POST,
   sequelize,
   defaultScope: {
-    include: [{ model: UserModel, as: 'user' }],
+    // include: [{ model: UserModel, as: 'user' }],
   },
 })
 
