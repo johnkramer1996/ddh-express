@@ -4,6 +4,7 @@ import { CommentVoteModelAttributes } from '../comment-vote/types'
 import { CommentVotes } from '../../value-objects/votes.value-objcect'
 import { UserModelAttributes } from '@src/modules/user/domain/user.types'
 import { UserEntity } from '@src/modules/user/domain/user.entity'
+import { CommentEntity } from './entity'
 
 export interface CommentEntityCreationProps {
   parentId: string | null
@@ -16,6 +17,8 @@ export interface CommentEntityCreationProps {
 export interface CommentEntityProps extends CommentEntityCreationProps {
   votes: CommentVotes
   user: UserEntity | null
+  childCount?: number
+  children?: CommentEntity[]
 }
 
 export interface CommentModelCreationAttributes extends PrimaryKey {
@@ -29,4 +32,5 @@ export interface CommentModelCreationAttributes extends PrimaryKey {
 export interface CommentModelAttributes extends CommentModelCreationAttributes, TimeStamp {
   votes?: CommentVoteModelAttributes[]
   user?: UserModelAttributes
+  childCount?: number
 }

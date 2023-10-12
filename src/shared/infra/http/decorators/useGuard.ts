@@ -1,10 +1,9 @@
 import { USER_TYPES } from '@src/modules/user/di/user.types'
-import { NextFunction, Request, Response } from 'express'
+import { Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
 import { RequestDecoded } from '../models/base.controller'
 import { AuthServicePort } from '@src/modules/user/services/auth.service.port'
 import { container } from '../../../di/container'
-import { getStringFromUnknown } from '@src/shared/utils/get-error'
 import { ForbiddenException } from '@src/shared/exceptions/exceptions'
 
 export function UseGuard(func: Function, ...args: any[]): MethodDecorator {
@@ -55,7 +54,7 @@ export class AuthGuard extends Guard {
       ;(req as RequestDecoded).decoded = decoded
       return true
     } catch (e) {
-      return this.error('Token signature expired.')
+      return ensure ? this.error('Token signature expired.') : true
     }
   }
 

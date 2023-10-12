@@ -13,9 +13,14 @@ export class UserSequelizeRepository extends SequelizeRepositoryBase<UserEntity,
     super(mapper, model)
   }
 
+  public async findOneByIdWithDeleted(id: string): Promise<UserEntity | null> {
+    const user = await this.model.findOne({ where: { email: id }, paranoid: true })
+    return user ? this.mapper.toDomain(user) : null
+  }
+
   public async findOneByEmail(email: string): Promise<UserEntity | null> {
     const user = await this.model.findOne({ where: { email } })
-    return user ? this.mapper.toDomain(user) : user
+    return user ? this.mapper.toDomain(user) : null
   }
 
   public async restore(entity: UserEntity): Promise<boolean> {

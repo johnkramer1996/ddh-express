@@ -7,7 +7,6 @@ import { CommentModelAttributes, CommentModelCreationAttributes } from '@src/mod
 import { DB_TABLES } from '@src/configs/dbtables'
 import { BaseModel } from './base.model'
 import PostModel from './post.model'
-import { v4 } from 'uuid'
 
 @injectable()
 class CommentModel extends BaseModel<CommentModelAttributes, CommentModelCreationAttributes> {
@@ -17,8 +16,12 @@ class CommentModel extends BaseModel<CommentModelAttributes, CommentModelCreatio
   declare points: number
 
   declare user?: NonAttribute<UserModel>
+
+  get childCount() {
+    return this.dataValues.childCount
+  }
 }
 
-CommentModel.init(commentInit, { tableName: DB_TABLES.COMMENT, sequelize })
+CommentModel.init(commentInit, { modelName: DB_TABLES.COMMENT, sequelize })
 
 export default CommentModel

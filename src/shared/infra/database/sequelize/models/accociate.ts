@@ -23,11 +23,6 @@ export default function associate() {
   CommentModel.belongsTo(PostModel, { as: 'post', targetKey: 'id', foreignKey: 'postId' })
   CommentModel.hasMany(CommentVoteModel, { as: 'votes', sourceKey: 'id', foreignKey: 'comment_id' })
 
-  // PostVoteModel.belongsTo(UserModel, { as: 'user', targetKey: 'id', foreignKey: 'user_id' })
-  // PostVoteModel.belongsTo(PostModel, { as: 'post', targetKey: 'id', foreignKey: 'post_id' })
-  // PostVoteModel.belongsTo(UserModel, { as: 'user', targetKey: 'id', foreignKey: 'user_id' })
-  // PostVoteModel.belongsTo(PostModel, { as: 'post', targetKey: 'id', foreignKey: 'post_id' })
-
   // UserModel.hasOne(MemberModel, { as: 'member', sourceKey: 'id', foreignKey: 'user_id' })
   // MemberModel.belongsTo(UserModel, { as: 'user', targetKey: 'id', foreignKey: 'user_id' })
 }

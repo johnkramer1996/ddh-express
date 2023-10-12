@@ -76,8 +76,8 @@ export class RedisAuthService extends AbstractRedisClient implements AuthService
     return this.count(`*${this.jwtHashName}*`)
   }
 
-  public async getTokens(username: string): Promise<string[]> {
-    const keyValues = await this.getAllKeyValue(`*${this.jwtHashName}.${username}`)
+  public async getTokens(email: string): Promise<string[]> {
+    const keyValues = await this.getAllKeyValue(`*${this.jwtHashName}.${email}`)
     return keyValues.map((kv) => kv.value)
   }
 
@@ -89,8 +89,8 @@ export class RedisAuthService extends AbstractRedisClient implements AuthService
     return this.deleteOne(this.constructKey(username, refreshToken))
   }
 
-  public async clearAllSessions(username: string): Promise<any> {
-    const keyValues = await this.getAllKeyValue(`*${this.jwtHashName}.${username}`)
+  public async clearAllSessions(email: string): Promise<any> {
+    const keyValues = await this.getAllKeyValue(`*${this.jwtHashName}.${email}`)
     const keys = keyValues.map((kv) => kv.key)
     return Promise.all(keys.map((key) => this.deleteOne(key)))
   }

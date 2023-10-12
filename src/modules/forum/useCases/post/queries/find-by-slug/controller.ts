@@ -1,29 +1,26 @@
 import { injectable } from 'inversify'
-import { CommentFindByIdQuery } from './query'
+import { FindBySlugQuery } from './query'
 import { Request, Response } from 'express'
 import { plainToClass } from 'class-transformer'
 import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-request'
 import { ControllerGet } from '@src/shared/infra/http/decorators/controller'
 import { routes } from '@src/configs/routes'
 import { SlugRequestDto } from '@src/modules/forum/dtos/slug.request.dto'
+import { PostControllerBase } from '../../base.controller'
 import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
 import { UserRequestDto } from '@src/modules/user/dtos/user.request.dto'
-import { RequestDecoded, RequestDecodedIfExist } from '@src/shared/infra/http/models/base.controller'
-import { CommentControllerBase } from '../../base.controller'
-import { CommentIdRequestDto } from '@src/modules/forum/dtos/comment/id.request.dto'
+import { RequestDecoded } from '@src/shared/infra/http/models/base.controller'
 
 @injectable()
-@ControllerGet(routes.postComments.findById)
-export class CommentFindByIdController extends CommentControllerBase {
-  @UseGuard(AuthGuard, false)
-  @ValidateRequest([['params', CommentIdRequestDto]])
-  async executeImpl(req: RequestDecodedIfExist, res: Response): Promise<any> {
-    const params = plainToClass(CommentIdRequestDto, req.params)
-    const decoded = req.decoded
+@ControllerGet(routes.post.findBySlug)
+export class FindBySlugController extends PostControllerBase {
+  @UseGuard(AuthGuard)
+  @ValidateRequest([['params', SlugRequestDto]])
+  async executeImpl(req: RequestDecoded, res: Response): Promise<any> {
+    const params = plainToClass(SlugRequestDto, req.params)
+    const decoded = plainToClass(UserRequestDto, req.decoded)
 
-    console.log(decoded)
-
-    const query = new CommentFindByIdQuery({ ...params, userId: decoded?.id })
+    const query = new FindBySlugQuery({ ...params, userId: decoded.id })
     const result = await this.queryBus.execute(query)
 
     if (!result.isSuccess) return this.handleError(res, result.getValue())

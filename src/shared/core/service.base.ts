@@ -4,6 +4,7 @@ import { InternalServerErrorException } from '../exceptions/exceptions'
 import { getStringFromUnknown } from '../utils/get-error'
 import { Result, ResultWithError } from './result'
 import { envCongig } from '@src/configs/config'
+import { IncludeStrategyPort } from '../domain/repository.port'
 
 @injectable()
 export abstract class ServiceBase<T1, T2> {

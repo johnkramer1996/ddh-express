@@ -3,10 +3,10 @@
 GET http://localhost:8086/api/v1/posts?order=recent
 
 ### GET BY SLUG
-GET http://localhost:8086/api/v1/posts/slug-test
+GET http://localhost:8086/api/v1/posts/7138669-new-post
 
 ### UPVOTE/DOWNVOTE /upvote /downvote
-POST http://localhost:8086/api/v1/posts/4865768-new-post/downvote
+POST http://localhost:8086/api/v1/posts/7138669-new-post/downvote
 
 ### CREATE ONE
 POST http://localhost:8086/api/v1/posts/

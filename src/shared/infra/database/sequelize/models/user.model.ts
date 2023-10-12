@@ -36,11 +36,8 @@ class UserModel extends Model<UserModelAttributes, UserModelCreationAttributes> 
 }
 
 UserModel.init(userInit, {
-  tableName: DB_TABLES.USER,
+  modelName: DB_TABLES.USER,
   sequelize,
-  defaultScope: {
-    include: [{ model: AddressModel, as: 'address' }],
-  },
   hooks: {},
 })
 

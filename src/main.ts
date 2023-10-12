@@ -17,7 +17,15 @@ async function bootstrap() {
   const app = container.get<IServer>(TYPES.SERVER).create()
   const redis = container.get<AuthServicePort>(USER_TYPES.AUTH_SERVICE)
 
-  envCongig.isProduction ? await redis.connect() : redis.connect()
+  try {
+    envCongig.isProduction
+      ? await redis.connect()
+      : redis.connect().catch((e) => {
+          console.log('[redis]: connection error')
+        })
+  } catch {
+    console.log('[redis]: connection error')
+  }
 
   associate()
   // await sequelize.sync({ force: true, alter: true })

@@ -1,27 +1,64 @@
 import { ModelDefined } from 'sequelize'
 import { AggregateRoot } from '../../../domain/aggregate-root.base'
 import { Mapper } from '../../../domain/mapper.interface'
-import { Paginated, QueryParams, RepositoryPort } from '../../../domain/repository.port'
+import { Options, Paginated, QueryParams, RepositoryPort } from '../../../domain/repository.port'
 import { injectable } from 'inversify'
+import { AttributeStrategyPort, IncludeStrategyPort } from '@src/shared/domain/repository.port'
+import { Literal } from 'sequelize/types/utils'
+import { sequelize } from './config/connection'
+import { ObjectLiteral } from '@src/shared/types/object-literal.type'
 
 @injectable()
 export abstract class SequelizeRepositoryBase<Aggregate extends AggregateRoot<any>, DbModel extends { id: string }> implements RepositoryPort<Aggregate> {
   constructor(protected readonly mapper: Mapper<Aggregate, DbModel>, protected readonly model: ModelDefined<any, any>) {}
 
-  public async findAll(): Promise<Aggregate[]> {
-    const rows = await this.model.findAll()
+  public async findAll(options: Options = {}): Promise<Aggregate[]> {
+    const rows = await this.model.findAll({
+      where: options.where ? options.where : {},
+      attributes: {
+        include: options?.attributeStrategies?.map((i) => i.apply().flat()).map((item) => [sequelize.literal(item[0]), item[1]] as [Literal, string]) || [],
+      },
+      include: options?.includeStrategies?.map((i) => i.apply()).flat(),
+    })
 
     return rows.map(this.mapper.toDomain.bind(this.mapper))
   }
 
-  public async findAllPaginated(params: QueryParams): Promise<Paginated<Aggregate>> {
-    const { rows, count } = await this.model.findAndCountAll({ limit: params.limit, offset: params.offset, order: params.order })
+  public async findAllPaginated(params: QueryParams, options: Options = {}): Promise<Paginated<Aggregate>> {
+    const { rows, count } = await this.model.findAndCountAll({
+      where: options.where ? options.where : {},
+      limit: params.limit,
+      offset: params.offset,
+      order: params.order,
+      attributes: {
+        include: options?.attributeStrategies?.map((i) => i.apply().flat()).map((item) => [sequelize.literal(item[0]), item[1]] as [Literal, string]) || [],
+      },
+      include: options?.includeStrategies?.map((i) => i.apply()).flat(),
+    })
 
     return new Paginated({ data: rows.map(this.mapper.toDomain.bind(this.mapper)), count, limit: params.limit, page: params.page })
   }
 
-  public async findOneById(id: string, all = false): Promise<Aggregate | null> {
-    const row = await this.model.findOne({ where: { id }, paranoid: !all })
+  public async findOne(options: Options = {}): Promise<Aggregate | null> {
+    const row = await this.model.findOne({
+      where: options.where ? options.where : {},
+      attributes: {
+        include: options.attributeStrategies?.map((i) => i.apply().flat()).map((item) => [sequelize.literal(item[0]), item[1]] as [Literal, string]) || [],
+      },
+      include: options.includeStrategies?.map((i) => i.apply()).flat(),
+    })
+
+    return row ? this.mapper.toDomain(row) : row
+  }
+
+  public async findOneById(id: string, options: Options = {}): Promise<Aggregate | null> {
+    const row = await this.model.findOne({
+      where: { id },
+      attributes: {
+        include: options.attributeStrategies?.map((i) => i.apply().flat()).map((item) => [sequelize.literal(item[0]), item[1]] as [Literal, string]) || [],
+      },
+      include: options.includeStrategies?.map((i) => i.apply()).flat(),
+    })
 
     return row ? this.mapper.toDomain(row) : row
   }
@@ -52,8 +89,6 @@ export abstract class SequelizeRepositoryBase<Aggregate extends AggregateRoot<an
     const rawSequelizePost = this.mapper.toPersistence(entity)
     const exists = await this.exists(entity.id)
     const isNewPost = !exists
-
-    console.log(rawSequelizePost)
 
     isNewPost ? await this.model.create(rawSequelizePost) : await this.model.update(rawSequelizePost, { where: { id: entity.id } })
     await entity.publishEvents()

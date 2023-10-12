@@ -1,5 +1,5 @@
 import { injectable } from 'inversify'
-import { PostFindAllQuery } from './find-all.query'
+import { PostFindAllQuery } from './query'
 import { Request, Response } from 'express'
 import { plainToClass } from 'class-transformer'
 import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-request'
@@ -20,6 +20,8 @@ export class PostFindALlController extends PostControllerBase {
   async executeImpl(req: RequestDecodedIfExist, res: Response): Promise<any> {
     const params = plainToClass(PostPaginatedQueryRequestDto, req.query)
     const decoded = req.decoded
+
+    console.log(params)
 
     const query = new PostFindAllQuery({ ...params, userId: decoded?.id })
     const result = await this.queryBus.execute(query)

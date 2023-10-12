@@ -1,7 +1,7 @@
-import { ObjectLiteral } from '@src/shared/types/object-literal.type'
-import { Paginated, QueryParams, RepositoryPort } from '../../../../shared/domain/repository.port'
+import { Options, Paginated, QueryParams, RepositoryPort } from '../../../../shared/domain/repository.port'
 import { CommentEntity } from '../../domain/entity/comments/entity'
-import { PostEntity } from '../../domain/entity/post/entity'
+import { AttributeStrategyPort, IncludeStrategyPort } from '@src/shared/domain/repository.port'
+import { CommentFindAllQuery } from '../../useCases/comment/queries/find-all/query'
 
 export interface FindCommentsParams extends QueryParams {
   slug: string
@@ -9,6 +9,6 @@ export interface FindCommentsParams extends QueryParams {
 }
 
 export interface CommentRepositoryPort extends RepositoryPort<CommentEntity> {
-  findAllByPostSlug(slug: FindCommentsParams): Promise<Paginated<CommentEntity>>
-  findByIdWithDetail(id: string, userId?: string): Promise<CommentEntity | null>
+  findAllPaginatedDetail(params: FindCommentsParams): Promise<Paginated<CommentEntity>>
+  findOneByIdWithNestedCommentsDetail(commentId: string, userId?: string): Promise<CommentEntity | null>
 }

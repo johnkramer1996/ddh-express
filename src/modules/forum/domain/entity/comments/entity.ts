@@ -35,6 +35,10 @@ export class CommentEntity extends AggregateRoot<CommentEntityProps> {
     return this.props.votes
   }
 
+  set children(children: CommentEntity[]) {
+    this.props.children = children
+  }
+
   public addVote(vote: CommentVoteEntity): void {
     this.props.votes.add(vote)
     // this.addEvent(new PostVoteChangedCreatedDomainEvent({ entity: this, vote }))

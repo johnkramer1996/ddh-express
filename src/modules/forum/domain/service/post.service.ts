@@ -60,9 +60,6 @@ export class PostService {
       const vote = CommentVoteEntity.create({ commentId: comment.id, userId: member.id, type })
       comment.addVote(vote)
       post.updateComment(comment)
-      console.log(post.comments.getRemovedItems().length)
-      console.log(post.comments.getItems().length)
-      console.log(post.comments.getNewItems().length)
       return
     }
     if (type === VoteType['upvote'] && vote.isDownvote()) {

@@ -25,6 +25,7 @@ export class LoginController extends UserController {
 
     const tokens = result.getValue()
 
-    return this.created(res.cookie('accessToken', tokens.accessToken).cookie('refreshToken', tokens.refreshToken), new UserTokensResponseDto(tokens))
+    res.cookie('accessToken', tokens.accessToken).cookie('refreshToken', tokens.refreshToken)
+    return this.created(res, new UserTokensResponseDto(tokens))
   }
 }

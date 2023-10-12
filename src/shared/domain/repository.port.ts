@@ -1,4 +1,5 @@
 import { repositoryConfig } from '@src/configs/config'
+import { ObjectLiteral } from '../types/object-literal.type'
 
 export class Paginated<T> {
   readonly count: number
@@ -16,9 +17,9 @@ export class Paginated<T> {
 
 export type OrderBy = [string, 'asc' | 'desc']
 
-export type Where<Type> = {
-  [Property in keyof Type]?: string | Type[Property]
-}
+// export type Where<Type> = {
+//   [Property in keyof Type]?: string | Type[Property]
+// }
 
 export type QueryParams = {
   limit: number
@@ -27,10 +28,33 @@ export type QueryParams = {
   order: OrderBy[]
 }
 
+export type Include = { model: any; as: string; where?: any; required?: boolean }
+export type Attribute = [string, string]
+export type Where = ObjectLiteral
+
+export interface IncludeStrategyPort {
+  apply(): Include | Include[]
+}
+
+export interface AttributeStrategyPort {
+  apply(): Attribute | Attribute[]
+}
+
+export interface WhereStrategyPort {
+  apply(): Where
+}
+
+export type Options = {
+  includeStrategies?: IncludeStrategyPort[]
+  attributeStrategies?: AttributeStrategyPort[]
+  where?: ObjectLiteral
+}
+
 export interface RepositoryPort<Entity> {
-  findOneById(id: string, deleted?: boolean): Promise<Entity | null>
-  findAll(): Promise<Entity[]>
-  findAllPaginated(params: QueryParams): Promise<Paginated<Entity>>
+  findOne(options?: Options): Promise<Entity | null>
+  findOneById(id: string, options?: Options): Promise<Entity | null>
+  findAll(options?: Options): Promise<Entity[]>
+  findAllPaginated(params: QueryParams, options?: Options): Promise<Paginated<Entity>>
   delete(entity: Entity, force?: boolean): Promise<boolean>
   exists(id: string): Promise<boolean>
   save(entity: Entity): Promise<void>
@@ -39,4 +63,10 @@ export interface RepositoryPort<Entity> {
 
   // insert(entity: Entity | Entity[]): Promise<void>
   //   transaction<T>(handler: () => Promise<T>): Promise<T>
-}
+} // public class ActiveAccountSpecification : ISpecification<Account>
+// {
+//     public Func<Account, bool> IsSatisfiedBy()
+//     {
+//         return x => x.IsActive && x.Credit > 0;
+//     }
+// }

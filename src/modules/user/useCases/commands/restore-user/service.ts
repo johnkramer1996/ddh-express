@@ -12,7 +12,7 @@ export type RecoverUserServiceResponse = ResultWithError<Return>
 @CommandHandler(RecoverUserCommand)
 export class RecoverUserService extends UserService<RecoverUserCommand, Return> {
   async executeImpl(command: RecoverUserCommand): Promise<Return> {
-    const user = await this.userRepo.findOneById(command.userId, true)
+    const user = await this.userRepo.findOneByIdWithDeleted(command.userId)
     if (!user) throw new NotFoundException()
 
     user.restore()

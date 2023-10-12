@@ -6,7 +6,6 @@ import { CommentResponseDto } from '../../dtos/comment/response.dto'
 import { CommentVotes, PostVotes } from '../../domain/value-objects/votes.value-objcect'
 import { COMMENT_VOTE_TYPES } from '../../di/comment-vote.types'
 import { CommentVoteMapper } from '../comment-vote/mapper'
-import { UserEntity } from '@src/modules/user/domain/user.entity'
 import { USER_TYPES } from '@src/modules/user/di/user.types'
 import { UserMapper } from '@src/modules/user/mappers/user.mapper'
 
@@ -30,9 +29,8 @@ export class CommentMapper implements Mapper<CommentEntity, CommentModelAttribut
     return record
   }
 
-  public toDomain(record: CommentModelAttributes): CommentEntity {
+  public toDomain(record: CommentModelAttributes & { children?: CommentModelAttributes[] }): CommentEntity {
     const votes = record.votes ? record.votes.map(this.commentVoteMapper.toDomain.bind(this.commentVoteMapper)) : []
-
     const entity = new CommentEntity({
       id: record.id,
       createdAt: new Date(record.createdAt),
@@ -45,6 +43,8 @@ export class CommentMapper implements Mapper<CommentEntity, CommentModelAttribut
         points: record.points,
         votes: new CommentVotes(votes),
         user: record.user ? this.userMapper.toDomain(record.user) : null,
+        childCount: record.childCount,
+        children: record.children?.map(this.toDomain.bind(this)),
       },
     })
     return entity
@@ -55,21 +55,24 @@ export class CommentMapper implements Mapper<CommentEntity, CommentModelAttribut
 
     return new CommentResponseDto({
       ...copy,
+      childCount: copy.childCount,
       user: copy.user ? this.userMapper.toResponse(copy.user) : undefined,
+      children: copy.children?.map(this.toResponse.bind(this)),
     })
   }
 
   public toResponseDetail(entity: CommentEntity): CommentResponseDto {
     const copy = entity.getProps()
     const voteEntities = copy.votes.getItems()
+    // console.log(voteEntities)
 
     return new CommentResponseDto({
       ...copy,
       user: copy.user ? this.userMapper.toResponse(copy.user) : undefined,
       wasUpvotedByMe: Boolean(voteEntities.find((v) => v.isUpvote())),
       wasDownvotedByMe: Boolean(voteEntities.find((v) => v.isDownvote())),
+      childCount: copy.childCount,
+      children: copy.children?.map(this.toResponseDetail.bind(this)),
     })
   }
 }
-
-// const votes = copy.votes.getItems().map(this.commentVoteMapper.toResponse.bind(this.commentVoteMapper))

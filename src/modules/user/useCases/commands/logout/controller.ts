@@ -21,6 +21,7 @@ export class LogoutController extends UserController {
 
     if (!result.isSuccess) return this.handleError(res, result.getValue())
 
+    res.clearCookie('accessToken').clearCookie('refreshToken')
     return this.ok(res)
   }
 }

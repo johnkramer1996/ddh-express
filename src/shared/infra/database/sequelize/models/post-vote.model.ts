@@ -18,6 +18,6 @@ class PostVoteModel extends Model<PostVoteModelAttributes, PostVoteModelCreation
   declare deletedAt: Date | null
 }
 
-PostVoteModel.init(postVoteInit, { tableName: DB_TABLES.POST_VOTE, sequelize })
+PostVoteModel.init(postVoteInit, { modelName: DB_TABLES.POST_VOTE, sequelize })
 
 export default PostVoteModel

@@ -1,5 +1,5 @@
 import { IQuery } from '@src/shared/core/cqs/query.interface'
-import { FindBySlugServiceResponse } from './find-by-slug.service'
+import { FindBySlugServiceResponse } from './service'
 
 export class FindBySlugQuery implements IQuery<FindBySlugServiceResponse> {
   declare response?: FindBySlugServiceResponse

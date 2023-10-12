@@ -12,12 +12,15 @@ import { PostRepositoryPort } from './repository.port'
 import { PostVotes } from '../../domain/value-objects/votes.value-objcect'
 import PostVoteModel from '@src/shared/infra/database/sequelize/models/post-vote.model'
 import CommentModel from '@src/shared/infra/database/sequelize/models/comment.model'
-import { Paginated, QueryParams } from '@src/shared/domain/repository.port'
-import { PostFindAllQuery } from '../../useCases/post/queries/find-all/find-all.query'
+import { IncludeStrategyPort, Paginated, QueryParams } from '@src/shared/domain/repository.port'
+import { PostFindAllQuery } from '../../useCases/post/queries/find-all/query'
 import { CommentRepositoryPort } from '../comment/repository.port'
 import { CommentEntity } from '../../domain/entity/comments/entity'
 import { PostComments } from '../../domain/value-objects/comments.value-objcect'
 import UserModel from '@src/shared/infra/database/sequelize/models/user.model'
+import { PostCurrentUserVotesIncludeStrategy } from './include-strategies/PostCurrentUserVotesIncludeStrategy'
+import { PostUserIncludeStrategy } from './include-strategies/PostUserIncludeStrategy'
+import { PostCommentsIncludeStrategy } from './include-strategies/PostCommentsIncludeStrategy'
 
 @injectable()
 export class PostSequelizeRepository extends SequelizeRepositoryBase<PostEntity, PostModelAttributes> implements PostRepositoryPort {
@@ -30,39 +33,27 @@ export class PostSequelizeRepository extends SequelizeRepositoryBase<PostEntity,
     super(mapper, model)
   }
 
-  public async findAllPaginated(params: PostFindAllQuery): Promise<Paginated<PostEntity>> {
-    const { rows, count } = await this.model.findAndCountAll({
-      limit: params.limit,
-      offset: params.offset,
-      order: params.order,
-      include: [
-        { as: 'comments', model: CommentModel },
-        { as: 'votes', model: PostVoteModel, where: params.userId ? { userId: params.userId } : {}, required: false },
-      ],
-    })
+  public async findAllPaginatedDetail(query: PostFindAllQuery): Promise<Paginated<PostEntity>> {
+    const includeStrategies: IncludeStrategyPort[] = []
 
-    return new Paginated({ data: rows.map(this.mapper.toDomain.bind(this.mapper)), count, limit: params.limit, page: params.page })
+    query.userId && includeStrategies.push(new PostCurrentUserVotesIncludeStrategy(query.userId))
+    includeStrategies.push(new PostUserIncludeStrategy())
+
+    return this.findAllPaginated(query, { includeStrategies })
   }
 
   public async findBySlug(slug: string): Promise<PostEntity | null> {
-    const row = await this.model.findOne({
-      where: { slug },
-    })
-
-    return row ? this.mapper.toDomain(row) : row
+    return this.findOne({ where: { slug } })
   }
 
   public async findBySlugDetail(slug: string, userId?: string): Promise<PostEntity | null> {
-    const row = await this.model.findOne({
-      where: { slug },
-      include: [
-        { as: 'comments', model: CommentModel },
-        { as: 'user', model: UserModel },
-        { as: 'votes', model: PostVoteModel, where: userId ? { userId } : {}, required: false },
-      ],
-    })
+    const includeStrategies: IncludeStrategyPort[] = []
 
-    return row ? this.mapper.toDomain(row) : row
+    userId && includeStrategies.push(new PostCurrentUserVotesIncludeStrategy(userId))
+    includeStrategies.push(new PostUserIncludeStrategy())
+    includeStrategies.push(new PostCommentsIncludeStrategy())
+
+    return this.findOne({ where: { slug, includeStrategies } })
   }
 
   private async saveComments(list: PostComments) {

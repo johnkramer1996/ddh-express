@@ -2,15 +2,14 @@
 GET http://localhost:8086/api/v1/posts/slug-test/comments
 
 ### GET BY ID
-GET  http://localhost:8086/api/v1/posts/slug-test/comments/f653f5cf-71fe-4f89-94d0-f6a25ccc178b
+GET  http://localhost:8086/api/v1/posts/slug-test/comments/c039b8d5-5528-49f6-a5bb-8155f1541c8f
 
 ### CREATE
 POST http://localhost:8086/api/v1/posts/slug-test/comments/
 Content-Type: application/json
 
 {
-    "text": "hello, world!!! comment with parentId",
-    "parentId": "f653f5cf-71fe-4f89-94d0-f6a25ccc178b"
+    "text": "hello, world!!! comment with parentId"
 }
 ### UPDATE BY ID
 PATCH http://localhost:8086/api/v1/posts/slug-test/comments/f653f5cf-71fe-4f89-94d0-f6a25ccc178b
@@ -24,16 +23,12 @@ Content-Type: application/json
 DELETE http://localhost:8086/api/v1/posts/slug-test/comments/f653f5cf-71fe-4f89-94d0-f6a25ccc178b
 
 ### UPVOTE/DOWNVOTE /upvote /downvote
-POST http://localhost:8086/api/v1/posts/slug-test/comments/f653f5cf-71fe-4f89-94d0-f6a25ccc178b/upvote
+POST http://localhost:8086/api/v1/posts/slug-test/comments/efcf41a9-9bcc-4988-bc1e-762027eeb16e/upvote
 
 ### UPVOTE/DOWNVOTE /upvote /downvote
-POST http://localhost:8086/api/v1/posts/slug-test/comments/f653f5cf-71fe-4f89-94d0-f6a25ccc178b/downvote
+POST http://localhost:8086/api/v1/posts/slug-test/comments/c039b8d5-5528-49f6-a5bb-8155f1541c8f/downvote
 
 
-
-
-router.post('/:postId/comments/', authMiddleware(true), commentController.create)
-router.put('/:postId/comments/:commentId', authMiddleware(true), commentController.update)
 
 
 ///admin context 

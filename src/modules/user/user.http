@@ -4,7 +4,7 @@ GET http://localhost:8086/api/v1/users
 
 
 ### GET BY ID
-GET http://localhost:8086/api/v1/users/11111111-1111-1111-1111-11111111111
+GET http://localhost:8086/api/v1/users/11111111-1111-1111-1111-111111111111
 
 ### DELETE BY ID
 DELETE http://localhost:8086/api/v1/users/11111111-1111-1111-1111-111111111111
@@ -42,6 +42,6 @@ POST http://localhost:8086/api/v1/users/refreshToken
 Content-Type: application/json
 
 {
-    "refreshToken": "1c42db73-64cd-402d-845c-0300108b51e0"
+    "refreshToken": "5950dd1c-d1d3-46f7-bd2a-ee96c4301aee"
 }
 
