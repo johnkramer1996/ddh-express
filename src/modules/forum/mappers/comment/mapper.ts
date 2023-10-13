@@ -64,7 +64,6 @@ export class CommentMapper implements Mapper<CommentEntity, CommentModelAttribut
   public toResponseDetail(entity: CommentEntity): CommentResponseDto {
     const copy = entity.getProps()
     const voteEntities = copy.votes.getItems()
-    // console.log(voteEntities)
 
     return new CommentResponseDto({
       ...copy,

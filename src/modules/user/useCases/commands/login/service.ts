@@ -17,14 +17,13 @@ export type LoginServiceResponse = ResultWithError<Return>
 @CommandHandler(LoginCommand)
 export class LoginService extends UserService<LoginCommand, Return> {
   async executeImpl(command: LoginCommand): Promise<Return> {
-    const user = await this.userRepo.findOneByEmail(command.email)
+    const user = await this.userRepo.findOneByLogin(command.login)
     if (!user) throw new NotFoundException()
 
-    const passwordValid = await user.comparePassword(command.password)
-    if (!passwordValid) throw new PasswordDoesntMatchException()
+    const validPassword = await user.comparePassword(command.password)
+    if (!validPassword) throw new PasswordDoesntMatchException()
 
-    const JWTClaims = user.getJWTClaims()
-    const accessToken = this.authService.signJWT(JWTClaims)
+    const accessToken = this.authService.signJWT(user)
 
     const refreshToken = this.authService.createRefreshToken()
 

@@ -9,6 +9,7 @@ import memberInit from '../init/member.init'
 class MemberModel extends Model<MemberModelAttributes, MemberModelCreationAttributes> {
   declare userId: ForeignKey<UserModel['id']>
   declare reputation: string
+  declare isBanned: boolean
 
   declare createdAt: Date
   declare updatedAt: Date

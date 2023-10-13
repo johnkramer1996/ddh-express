@@ -17,10 +17,10 @@ export class RedisAuthService extends AbstractRedisClient implements AuthService
     return keys.length !== 0
   }
 
-  public async getEmailFromRefreshToken(refreshToken: RefreshToken): Promise<string> {
+  public async getLoginFromRefreshToken(refreshToken: RefreshToken): Promise<string> {
     const keys = await this.getAllKeys(`*${refreshToken}*`)
     const exists = keys.length !== 0
-    if (!exists) throw new Error('Email not found for refresh token.')
+    if (!exists) throw new Error('Login not found for refresh token.')
 
     const key = keys[0]
     return key.substring(key.indexOf(this.jwtHashName) + this.jwtHashName.length + 1)
@@ -28,24 +28,19 @@ export class RedisAuthService extends AbstractRedisClient implements AuthService
 
   public async saveAuthenticatedUser(user: UserEntity): Promise<void> {
     if (!(user.refreshToken && user.accessToken)) return
-    await this.addToken(user.email, user.refreshToken, user.accessToken)
+    await this.addToken(user.login.value, user.refreshToken, user.accessToken)
   }
 
   public async deAuthenticateUser(user: UserEntity): Promise<void> {
-    await this.clearAllSessions(user.email)
+    await this.clearAllSessions(user.login.value)
   }
 
   public createRefreshToken(): RefreshToken {
     return v4()
   }
 
-  public signJWT(props: JWTClaims): JWTToken {
-    const claims: JWTClaims = {
-      id: props.id,
-      email: props.email,
-    }
-
-    return jwt.sign(claims, authConfig.secret, {
+  public signJWT(user: UserEntity): JWTToken {
+    return jwt.sign(user.getJWTClaims(), authConfig.secret, {
       expiresIn: this.tokenExpiryTime,
     })
   }
@@ -55,12 +50,12 @@ export class RedisAuthService extends AbstractRedisClient implements AuthService
     return decoded as JWTClaims
   }
 
-  private constructKey(email: string, refreshToken: RefreshToken): string {
-    return `refresh-${refreshToken}.${this.jwtHashName}.${email}`
+  private constructKey(login: string, refreshToken: RefreshToken): string {
+    return `refresh-${refreshToken}.${this.jwtHashName}.${login}`
   }
 
-  public addToken(email: string, refreshToken: RefreshToken, token: JWTToken): Promise<any> {
-    return this.set(this.constructKey(email, refreshToken), token)
+  public addToken(login: string, refreshToken: RefreshToken, token: JWTToken): Promise<any> {
+    return this.set(this.constructKey(login, refreshToken), token)
   }
 
   public async clearAllTokens(): Promise<any> {
@@ -76,8 +71,8 @@ export class RedisAuthService extends AbstractRedisClient implements AuthService
     return this.count(`*${this.jwtHashName}*`)
   }
 
-  public async getTokens(email: string): Promise<string[]> {
-    const keyValues = await this.getAllKeyValue(`*${this.jwtHashName}.${email}`)
+  public async getTokens(login: string): Promise<string[]> {
+    const keyValues = await this.getAllKeyValue(`*${this.jwtHashName}.${login}`)
     return keyValues.map((kv) => kv.value)
   }
 
@@ -89,8 +84,8 @@ export class RedisAuthService extends AbstractRedisClient implements AuthService
     return this.deleteOne(this.constructKey(username, refreshToken))
   }
 
-  public async clearAllSessions(email: string): Promise<any> {
-    const keyValues = await this.getAllKeyValue(`*${this.jwtHashName}.${email}`)
+  public async clearAllSessions(login: string): Promise<any> {
+    const keyValues = await this.getAllKeyValue(`*${this.jwtHashName}.${login}`)
     const keys = keyValues.map((kv) => kv.key)
     return Promise.all(keys.map((key) => this.deleteOne(key)))
   }

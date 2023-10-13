@@ -7,6 +7,8 @@ import { UserEntityProps, UserEntityCreationProps } from './user.types'
 import { UserLoggedInDomainEvent } from './events/logged-in.domain-event'
 import { UserCreatedDomainEvent } from './events/created.domain-event'
 import { UserDeletedDomainEvent } from './events/deleted.domain-event'
+import Email from './value-objects/email.value-object'
+import Login from './value-objects/login.value-object'
 
 export class UserEntity extends AggregateRoot<UserEntityProps> {
   protected readonly _id!: AggregateID
@@ -35,7 +37,11 @@ export class UserEntity extends AggregateRoot<UserEntityProps> {
     return user
   }
 
-  get email(): string {
+  get login(): Login {
+    return this.props.login
+  }
+
+  get email(): Email {
     return this.props.email
   }
 
@@ -62,7 +68,8 @@ export class UserEntity extends AggregateRoot<UserEntityProps> {
   public getJWTClaims(): JWTClaims {
     return {
       id: this.id,
-      email: this.props.email,
+      login: this.login.value,
+      email: this.email.value,
     }
   }
 

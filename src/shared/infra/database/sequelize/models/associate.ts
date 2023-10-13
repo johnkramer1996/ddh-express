@@ -20,10 +20,10 @@ export default function associate() {
 
   PostModel.hasMany(PostVoteModel, { as: 'votes', sourceKey: 'id', foreignKey: 'postId' })
   PostModel.hasMany(CommentModel, { as: 'comments', sourceKey: 'id', foreignKey: 'postId' })
-  PostModel.belongsTo(MemberModel, { as: 'user', targetKey: 'id', foreignKey: 'memberId' })
+  PostModel.belongsTo(MemberModel, { as: 'member', targetKey: 'id', foreignKey: 'memberId' })
 
   CommentModel.belongsTo(CommentModel, { as: 'parent', targetKey: 'id', foreignKey: 'parentId' })
-  CommentModel.belongsTo(MemberModel, { as: 'user', targetKey: 'id', foreignKey: 'memberId' })
+  CommentModel.belongsTo(MemberModel, { as: 'member', targetKey: 'id', foreignKey: 'memberId' })
   CommentModel.belongsTo(PostModel, { as: 'post', targetKey: 'id', foreignKey: 'postId' })
   CommentModel.hasMany(CommentVoteModel, { as: 'votes', sourceKey: 'id', foreignKey: 'comment_id' })
 }

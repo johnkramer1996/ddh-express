@@ -2,7 +2,7 @@ import { IsString } from 'class-validator'
 
 export class LoginRequestDto {
   @IsString()
-  readonly email!: string
+  readonly login!: string
 
   @IsString()
   readonly password!: string

@@ -13,8 +13,8 @@ import { VoteType } from '@src/modules/forum/domain/entity/vote.base.entity'
 import { PostControllerBase } from '../../base.controller'
 
 @injectable()
-@ControllerPost(routes.post.upvote)
-@ControllerPost(routes.post.downvote)
+@ControllerPost(routes.post.upvoteBySlug)
+@ControllerPost(routes.post.downvoteBySlug)
 export class PostVoteController extends PostControllerBase {
   @UseGuard(AuthGuard)
   @ValidateRequest([['params', SlugRequestDto]])

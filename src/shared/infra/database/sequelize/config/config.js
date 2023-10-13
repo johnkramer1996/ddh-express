@@ -17,11 +17,13 @@ const config = {
 
 module.exports = {
   development: {
-    username: config.user,
-    password: config.password,
-    database: config.database,
-    host: '127.0.0.1',
-    dialect: 'postgres',
+    // username: config.user,
+    // password: config.password,
+    // database: config.database,
+    // host: '127.0.0.1',
+    storage: 'database.sqlite',
+    dialect: 'sqlite',
+    logging: true,
   },
   test: {
     username: config.user,

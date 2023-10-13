@@ -10,8 +10,8 @@ module.exports = {
       import('../init/comment-vote.init.js'),
     ])
 
-    await queryInterface.createTable('users', userInit.default)
     // TODO: join table with users
+    await queryInterface.createTable('users', userInit.default)
     await queryInterface.createTable('user_addresses', userAddress.default)
     await queryInterface.createTable('members', memberInit.default)
     await queryInterface.createTable('posts', postInit.default)

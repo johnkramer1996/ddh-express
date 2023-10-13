@@ -1,27 +1,32 @@
 import { injectable } from 'inversify'
 import { ResultWithError } from '../../../../../shared/core/result'
-import { UserCreateCommand } from './command'
+import { CreateUserCommand as CreateUserCommand } from './command'
 import { AggregateID } from '@src/shared/domain/entity'
 import { CommandHandler } from '@src/shared/core/cqs/command-handler'
 import { UserEntity } from '@src/modules/user/domain/user.entity'
 import { Password } from '@src/modules/user/domain/value-objects/password.value-object'
 import { UserService } from '../../base.service'
 import { UserAlreadyExistsError } from '@src/modules/user/domain/user.errors'
+import Email from '@src/modules/user/domain/value-objects/email.value-object'
+import Login from '@src/modules/user/domain/value-objects/login.value-object'
 
 type Return = AggregateID
-export type UserCreateServiceResponse = ResultWithError<Return>
+export type CreateUserServiceResponse = ResultWithError<Return>
 
 @injectable()
-@CommandHandler(UserCreateCommand)
-export class UserCreateService extends UserService<UserCreateCommand, Return> {
-  async executeImpl(command: UserCreateCommand): Promise<Return> {
-    const existsUser = await this.userRepo.findOneByEmail(command.email)
-    if (existsUser) throw new UserAlreadyExistsError()
+@CommandHandler(CreateUserCommand)
+export class CreateUserService extends UserService<CreateUserCommand, Return> {
+  async executeImpl(command: CreateUserCommand): Promise<Return> {
+    const existsLogin = await this.userRepo.findOneByLogin(command.login)
+    if (existsLogin) throw new UserAlreadyExistsError('Login already exists')
+
+    const existsEmail = await this.userRepo.findOneByEmail(command.email)
+    if (existsEmail) throw new UserAlreadyExistsError('Email already exists')
 
     const user = UserEntity.create({
-      login: command.login,
-      email: command.email,
-      password: new Password({ value: command.password }),
+      login: Login.create({ value: command.login }),
+      email: Email.create({ value: command.email }),
+      password: Password.create({ value: command.password }),
     })
 
     await this.userRepo.save(user)

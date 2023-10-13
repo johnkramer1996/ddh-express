@@ -1,5 +1,5 @@
 import { injectable } from 'inversify'
-import { PostFindAllQuery } from './query'
+import { FindPostsQuery } from './query'
 import { Request, Response } from 'express'
 import { plainToClass } from 'class-transformer'
 import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-request'
@@ -14,16 +14,14 @@ import { RequestDecoded, RequestDecodedIfExist } from '@src/shared/infra/http/mo
 
 @injectable()
 @ControllerGet(routes.post.findAll)
-export class PostFindALlController extends PostControllerBase {
+export class FindPostsController extends PostControllerBase {
   @UseGuard(AuthGuard, false)
   @ValidateRequest([['query', PostPaginatedQueryRequestDto]])
   async executeImpl(req: RequestDecodedIfExist, res: Response): Promise<any> {
     const params = plainToClass(PostPaginatedQueryRequestDto, req.query)
     const decoded = req.decoded
 
-    console.log(params)
-
-    const query = new PostFindAllQuery({ ...params, userId: decoded?.id })
+    const query = new FindPostsQuery({ ...params, authMemberId: decoded?.id })
     const result = await this.queryBus.execute(query)
 
     if (!result.isSuccess) return this.handleError(res, result.getValue())

@@ -4,11 +4,13 @@ import { TimeStamp } from '@src/shared/core/time-stamp'
 import { Password } from './value-objects/password.value-object'
 import { PostModelAttributes } from '@src/modules/forum/domain/entity/post/types'
 import { PostEntity } from '@src/modules/forum/domain/entity/post/entity'
+import Email from './value-objects/email.value-object'
+import Login from './value-objects/login.value-object'
 
 export interface UserEntityCreationProps {
-  login: string
+  login: Login
   password: Password
-  email: string
+  email: Email
 }
 
 export interface UserEntityProps extends UserEntityCreationProps {

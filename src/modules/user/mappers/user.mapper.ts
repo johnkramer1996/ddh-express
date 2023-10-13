@@ -5,6 +5,8 @@ import { UserEntity } from '../domain/user.entity'
 import { UserModelAttributes } from '../domain/user.types'
 import { Address } from '@src/modules/user/domain/value-objects/address.value-object'
 import { Password } from '../domain/value-objects/password.value-object'
+import Email from '../domain/value-objects/email.value-object'
+import Login from '../domain/value-objects/login.value-object'
 
 @injectable()
 export class UserMapper implements Mapper<UserEntity, UserModelAttributes, UserResponseDto> {
@@ -15,9 +17,9 @@ export class UserMapper implements Mapper<UserEntity, UserModelAttributes, UserR
       createdAt: copy.createdAt,
       updatedAt: copy.updatedAt,
       deletedAt: copy.deletedAt,
-      email: copy.email,
+      email: copy.email.value,
       password: copy.password.value,
-      login: copy.login,
+      login: copy.login.value,
       lastLogin: copy.lastLogin,
       isDeleted: copy.isDeleted,
       isAdminUser: copy.isAdminUser,
@@ -32,9 +34,9 @@ export class UserMapper implements Mapper<UserEntity, UserModelAttributes, UserR
       createdAt: new Date(record.createdAt),
       updatedAt: new Date(record.updatedAt),
       props: {
-        email: record.email,
-        password: new Password({ value: record.password }),
-        login: record.login,
+        email: Email.create({ value: record.email }),
+        password: Password.create({ value: record.password, hashed: true }),
+        login: Login.create({ value: record.login }),
         isDeleted: record.isDeleted,
         isAdminUser: record.isAdminUser,
         isEmailVerified: record.isEmailVerified,
@@ -47,6 +49,7 @@ export class UserMapper implements Mapper<UserEntity, UserModelAttributes, UserR
             })
           : null,
         posts: undefined,
+        // TODO: add posts
         // posts: record.posts,
       },
     })
@@ -57,6 +60,7 @@ export class UserMapper implements Mapper<UserEntity, UserModelAttributes, UserR
     const copy = entity.getProps()
     return new UserResponseDto({
       ...copy,
+      email: copy.email.value,
       country: copy.address?.country,
       postalCode: copy.address?.postalCode,
       street: copy.address?.street,

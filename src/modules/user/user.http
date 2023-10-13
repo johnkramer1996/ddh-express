@@ -3,22 +3,19 @@
 GET http://localhost:8086/api/v1/users
 
 
-### GET BY ID
-GET http://localhost:8086/api/v1/users/11111111-1111-1111-1111-111111111111
+### GET BY LOGIN
+GET http://localhost:8086/api/v1/users/vitalii
 
-### DELETE BY ID
-DELETE http://localhost:8086/api/v1/users/11111111-1111-1111-1111-111111111111
-
-### RECOBER BY ID
-PATCH http://localhost:8086/api/v1/users/11111111-1111-1111-1111-111111111111
+### DELETE BY LOGIN
+DELETE http://localhost:8086/api/v1/users/member-1
 
 ### LOGIN
 POST http://localhost:8086/api/v1/users/login
 Content-Type: application/json
 
 {
-    "email": "user1@gmail.com",
-    "password": "12345"
+    "login": "login-1",
+    "password": "12345678"
 }
 
 ### LOGOUT
@@ -30,8 +27,9 @@ POST http://localhost:8086/api/v1/users/
 Content-Type: application/json
 
 {
-    "email": "vitalii@gmail.com",
-    "password": "12345"
+    "login": "member-11211",
+    "email": "member-1111111111111111@gmail.com",
+    "password": "12345678"
 }
 
 ### CURRENT USER

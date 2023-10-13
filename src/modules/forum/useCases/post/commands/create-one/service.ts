@@ -7,6 +7,7 @@ import { PostEntity } from '@src/modules/forum/domain/entity/post/entity'
 import { PostType } from '@src/modules/forum/domain/entity/post/types'
 import { Slug } from '@src/modules/forum/domain/value-objects/slug.value-object'
 import { PostServiceBase } from '../../base.service'
+import { NotFoundException } from '@src/shared/exceptions/exceptions'
 
 type Return = AggregateID
 export type CreateOneServiceResponse = ResultWithError<Return>
@@ -15,8 +16,11 @@ export type CreateOneServiceResponse = ResultWithError<Return>
 @CommandHandler(CreateOneCommand)
 export class CreateOneService extends PostServiceBase<CreateOneCommand, Return> {
   async executeImpl(command: CreateOneCommand): Promise<Return> {
+    const member = await this.memberRepo.findOneByUserId(command.userId)
+    if (!member) throw new NotFoundException()
+
     const post = PostEntity.create({
-      memberId: command.userId,
+      memberId: member.id,
       title: command.title,
       type: command.type,
       text: command.type === PostType.text ? command.text : null,

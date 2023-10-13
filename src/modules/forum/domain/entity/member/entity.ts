@@ -8,7 +8,7 @@ export class MemberEntity extends AggregateRoot<MemberEntityProps> {
   protected readonly _id!: AggregateID
 
   static create(create: MemberEntityCreationProps): MemberEntity {
-    const props: MemberEntityProps = { ...create, reputation: 0 }
+    const props: MemberEntityProps = { ...create, reputation: 0, isBanned: false, user: null }
     const entity = new MemberEntity({ props })
     entity.addEvent(new MemberCreatedDomainEvent({ entity }))
 

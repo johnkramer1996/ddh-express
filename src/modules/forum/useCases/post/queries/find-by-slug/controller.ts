@@ -18,9 +18,9 @@ export class FindBySlugController extends PostControllerBase {
   @ValidateRequest([['params', SlugRequestDto]])
   async executeImpl(req: RequestDecoded, res: Response): Promise<any> {
     const params = plainToClass(SlugRequestDto, req.params)
-    const decoded = plainToClass(UserRequestDto, req.decoded)
+    const decoded = req.decoded
 
-    const query = new FindBySlugQuery({ ...params, userId: decoded.userId })
+    const query = new FindBySlugQuery({ ...params, userId: decoded.id })
     const result = await this.queryBus.execute(query)
 
     if (!result.isSuccess) return this.handleError(res, result.getValue())

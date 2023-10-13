@@ -8,6 +8,8 @@ export interface FindUsersParams extends QueryParams {
 
 export interface UserRepositoryPort extends RepositoryPort<UserEntity> {
   findOneByIdWithDeleted(id: string): Promise<UserEntity | null>
+  findOneByEmailOrLogin(email: string, login: string): Promise<UserEntity | null>
   findOneByEmail(email: string): Promise<UserEntity | null>
-  restore(entity: UserEntity): Promise<boolean>
+  findOneByLogin(login: string): Promise<UserEntity | null>
+  restore(entity: UserEntity): Promise<void>
 }

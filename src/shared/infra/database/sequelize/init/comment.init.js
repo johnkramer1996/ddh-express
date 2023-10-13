@@ -14,7 +14,7 @@ module.exports = {
     references: {
       model: {
         tableName: 'comments',
-        schema: 'public',
+        // schema: 'public',
       },
       key: 'id',
     },
@@ -28,7 +28,7 @@ module.exports = {
     references: {
       model: {
         tableName: 'members',
-        schema: 'public',
+        // schema: 'public',
       },
       key: 'id',
     },
@@ -42,7 +42,7 @@ module.exports = {
     references: {
       model: {
         tableName: 'posts',
-        schema: 'public',
+        // schema: 'public',
       },
       key: 'id',
     },

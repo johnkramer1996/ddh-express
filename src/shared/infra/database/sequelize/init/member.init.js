@@ -14,7 +14,7 @@ module.exports = {
     references: {
       model: {
         tableName: 'users',
-        schema: 'public',
+        // schema: 'public',
       },
       key: 'id',
     },
@@ -24,6 +24,10 @@ module.exports = {
   reputation: {
     allowNull: false,
     type: DataTypes.INTEGER,
+  },
+  isBanned: {
+    allowNull: false,
+    type: DataTypes.BOOLEAN,
   },
   ...timeStamp,
 }

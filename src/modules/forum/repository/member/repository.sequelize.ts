@@ -13,7 +13,11 @@ import { MemberUserIncludeStrategy } from './include-strategies/member.user.incl
 export class MemberSequelizeRepository extends SequelizeRepositoryBase<MemberEntity, MemberModelAttributes> implements MemberRepositoryPort {
   constructor(@inject(MEMBER_TYPES.MAPPER) mapper: MemberMapper, @inject(MEMBER_TYPES.SEQUELIZE_MODEL) model: ModelDefined<any, any>) {
     super(mapper, model)
-    console.log(typeof this.model.findOne())
+  }
+
+  public async findOneByUserIdIfExists(userId?: string): Promise<MemberEntity | null> {
+    if (!userId) return null
+    return this.findOne({ where: { userId } })
   }
 
   public async findOneByUserId(userId: string): Promise<MemberEntity | null> {

@@ -13,8 +13,8 @@ export class PostVoteSequelizeRepository extends SequelizeRepositoryBase<PostVot
     super(mapper, model)
   }
 
-  public async findOneByPostIdAndUserId(postId: string, userId: string): Promise<PostVoteEntity | null> {
-    const one = await this.model.findOne({ where: { postId, userId } })
+  public async findOneByPostIdAndMemberId(postId: string, memberId: string): Promise<PostVoteEntity | null> {
+    const one = await this.model.findOne({ where: { postId, memberId } })
     return one ? this.mapper.toDomain(one) : null
   }
 }

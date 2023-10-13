@@ -11,12 +11,12 @@ import { inject, injectable } from 'inversify'
 import { FindPostsByMemberParams, FindPostsParams, PostRepositoryPort } from './repository.port'
 import { PostVotes } from '../../domain/value-objects/votes.value-objcect'
 import { IncludeStrategyPort, Paginated } from '@src/shared/domain/repository.port'
-import { PostFindAllQuery } from '../../useCases/post/queries/find-all/query'
+import { FindPostsQuery } from '../../useCases/post/queries/find-all/query'
 import { CommentRepositoryPort } from '../comment/repository.port'
 import { PostComments } from '../../domain/value-objects/comments.value-objcect'
-import { PostCurrentUserVotesIncludeStrategy } from './include-strategies/PostCurrentUserVotesIncludeStrategy'
-import { PostUserIncludeStrategy } from './include-strategies/PostUserIncludeStrategy'
-import { PostCommentsIncludeStrategy } from './include-strategies/PostCommentsIncludeStrategy'
+import { PostVotesByAuthMemberIdIncludeStrategy } from './include-strategies/post.votes-by-auth-member-id.include-strategy'
+import { PostUserIncludeStrategy } from './include-strategies/post.member.include-strategy'
+import { PostCommentsIncludeStrategy } from './include-strategies/post.comments.include-strategy'
 
 @injectable()
 export class PostSequelizeRepository extends SequelizeRepositoryBase<PostEntity, PostModelAttributes> implements PostRepositoryPort {
@@ -32,17 +32,16 @@ export class PostSequelizeRepository extends SequelizeRepositoryBase<PostEntity,
   public async findAllPaginatedDetailByMemberId(query: FindPostsByMemberParams): Promise<Paginated<PostEntity>> {
     const includeStrategies: IncludeStrategyPort[] = []
 
-    query.userId && includeStrategies.push(new PostCurrentUserVotesIncludeStrategy(query.userId))
+    query.authMemberId && includeStrategies.push(new PostVotesByAuthMemberIdIncludeStrategy(query.authMemberId))
     includeStrategies.push(new PostUserIncludeStrategy())
 
-    // TODO: ANY USER ID
     return this.findAllPaginated(query, { where: { memberId: query.memberId }, includeStrategies })
   }
 
   public async findAllPaginatedDetail(query: FindPostsParams): Promise<Paginated<PostEntity>> {
     const includeStrategies: IncludeStrategyPort[] = []
 
-    query.userId && includeStrategies.push(new PostCurrentUserVotesIncludeStrategy(query.userId))
+    query.authMemberId && includeStrategies.push(new PostVotesByAuthMemberIdIncludeStrategy(query.authMemberId))
     includeStrategies.push(new PostUserIncludeStrategy())
 
     return this.findAllPaginated(query, { includeStrategies })
@@ -52,10 +51,10 @@ export class PostSequelizeRepository extends SequelizeRepositoryBase<PostEntity,
     return this.findOne({ where: { slug } })
   }
 
-  public async findBySlugDetail(slug: string, userId?: string): Promise<PostEntity | null> {
+  public async findBySlugDetail(slug: string, authMemberId?: string): Promise<PostEntity | null> {
     const includeStrategies: IncludeStrategyPort[] = []
 
-    userId && includeStrategies.push(new PostCurrentUserVotesIncludeStrategy(userId))
+    authMemberId && includeStrategies.push(new PostVotesByAuthMemberIdIncludeStrategy(authMemberId))
     includeStrategies.push(new PostUserIncludeStrategy())
     includeStrategies.push(new PostCommentsIncludeStrategy())
 

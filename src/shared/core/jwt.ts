@@ -1,6 +1,7 @@
 export interface JWTClaims {
   id: string
   email: string
+  login: string
   // username: string | null
   // isEmailVerified: boolean
   // adminUser: boolean

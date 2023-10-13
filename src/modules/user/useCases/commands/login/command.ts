@@ -3,11 +3,11 @@ import { LoginServiceResponse } from './service'
 
 export class LoginCommand implements ICommand<LoginServiceResponse> {
   declare response?: LoginServiceResponse
-  readonly email: string
+  readonly login: string
   readonly password: string
 
   constructor(props: LoginCommand) {
-    this.email = props.email
+    this.login = props.login
     this.password = props.password
   }
 }

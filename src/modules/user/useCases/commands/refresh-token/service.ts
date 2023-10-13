@@ -16,14 +16,11 @@ export type RefreshTokenServiceResponse = ResultWithError<Return>
 @CommandHandler(RefreshTokenCommand)
 export class RefreshTokenService extends UserService<RefreshTokenCommand, Return> {
   async executeImpl(command: RefreshTokenCommand): Promise<Return> {
-    const email = await this.authService.getEmailFromRefreshToken(command.refreshToken)
-    const user = await this.userRepo.findOneByEmail(email)
+    const login = await this.authService.getLoginFromRefreshToken(command.refreshToken)
+    const user = await this.userRepo.findOneByLogin(login)
     if (!user) throw new NotFoundException()
 
-    const accessToken = this.authService.signJWT({
-      id: user.id,
-      email: user.email,
-    })
+    const accessToken = this.authService.signJWT(user)
 
     const refreshToken = this.authService.createRefreshToken()
 

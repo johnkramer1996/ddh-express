@@ -1,6 +1,9 @@
-### USER
-GET http://localhost:8086/api/v1/members/vitalii
+### GET AUTH MEMBER 
+GET http://localhost:8086/api/v1/members/currentMember
+
+### GET MEMBER BY LOGIN
+GET http://localhost:8086/api/v1/members/login-1
 
 
 ### POSTS
-GET http://localhost:8086/api/v1/members/11111111-1111-1111-1111-111111111111/posts
+GET http://localhost:8086/api/v1/members/login-1/posts

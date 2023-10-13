@@ -3,14 +3,14 @@ import { PaginatedParams, PaginatedQueryBase } from '@src/shared/domain/query.ba
 import { FindPostsServiceByUserResponse } from './service'
 import { FindPostsParams } from '@src/modules/forum/repository/post/repository.port'
 
-export class PostFindAllByMemberQuery extends PaginatedQueryBase implements FindPostsParams, IQuery<FindPostsServiceByUserResponse> {
+export class PostFindAllByLoginQuery extends PaginatedQueryBase implements FindPostsParams, IQuery<FindPostsServiceByUserResponse> {
   declare response?: FindPostsServiceByUserResponse
   readonly login: string
-  readonly userId?: string
+  readonly authMemberId?: string
 
-  constructor(props: PaginatedParams<PostFindAllByMemberQuery>) {
+  constructor(props: PaginatedParams<PostFindAllByLoginQuery>) {
     super(props)
     this.login = props.login
-    this.userId = props.userId
+    this.authMemberId = props.authMemberId
   }
 }

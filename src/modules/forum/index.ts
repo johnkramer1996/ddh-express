@@ -1,0 +1,1 @@
+import './application/event-handlers'

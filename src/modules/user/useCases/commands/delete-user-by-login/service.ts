@@ -12,18 +12,18 @@ export type DeleteUserServiceResponse = ResultWithError<Return>
 @CommandHandler(DeleteUserCommand)
 export class UserDeleteService extends UserService<DeleteUserCommand, Return> {
   async executeImpl(command: DeleteUserCommand): Promise<Return> {
-    const deleteUser = await this.userRepo.findOneById(command.deleteUserId)
-    if (!deleteUser) throw new NotFoundException()
-
     const user = await this.userRepo.findOneById(command.userId)
     if (!user) throw new NotFoundException()
 
-    if (!deleteUser.hasAccess(user)) throw new ForbiddenException()
+    const authUser = await this.userRepo.findOneById(command.authUserId)
+    if (!authUser) throw new NotFoundException()
 
-    this.authService.deAuthenticateUser(deleteUser)
+    if (!user.hasAccess(authUser)) throw new ForbiddenException()
 
-    deleteUser.delete()
+    this.authService.deAuthenticateUser(user)
 
-    await this.userRepo.delete(deleteUser)
+    user.delete()
+
+    await this.userRepo.delete(user)
   }
 }

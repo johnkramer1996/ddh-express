@@ -16,12 +16,12 @@ import { LogoutController } from '../useCases/commands/logout/controller'
 import { LogoutService } from '../useCases/commands/logout/service'
 import { RefreshTokenController } from '../useCases/commands/refresh-token/controller'
 import { RefreshTokenService } from '../useCases/commands/refresh-token/service'
-import { FindUserController } from '../useCases/queries/find-user-by-id/controller'
-import { FindUserByIdService } from '../useCases/queries/find-user-by-id/service'
-import { DeleteUserController } from '../useCases/commands/delete-user/controller'
-import { UserDeleteService } from '../useCases/commands/delete-user/service'
+import { FindUserByLoginController } from '../useCases/queries/find-user-by-login/controller'
+import { FindUserByIdService } from '../useCases/queries/find-user-by-login/service'
+import { DeleteUserController } from '../useCases/commands/delete-user-by-login/controller'
+import { UserDeleteService } from '../useCases/commands/delete-user-by-login/service'
 import { CreateUserController } from '../useCases/commands/create-user/controller'
-import { UserCreateService } from '../useCases/commands/create-user/service'
+import { CreateUserService } from '../useCases/commands/create-user/service'
 import { RecoverUserController } from '../useCases/commands/restore-user/controller'
 import { RecoverUserService } from '../useCases/commands/restore-user/service'
 
@@ -34,11 +34,11 @@ const userModule = (container: Container) => {
   container.bind(FindUsersController).toSelf()
   container.bind(FindUsersService).toSelf()
 
-  container.bind(FindUserController).toSelf()
+  container.bind(FindUserByLoginController).toSelf()
   container.bind(FindUserByIdService).toSelf()
 
   container.bind(CreateUserController).toSelf()
-  container.bind(UserCreateService).toSelf()
+  container.bind(CreateUserService).toSelf()
 
   container.bind(DeleteUserController).toSelf()
   container.bind(UserDeleteService).toSelf()

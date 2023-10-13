@@ -9,7 +9,8 @@ import { UserController } from '@src/modules/user/useCases/base.controller'
 import { UserIdRequestDto } from '@src/modules/user/dtos/user-id.request.dto'
 
 @injectable()
-@ControllerPatch(routes.user.recoverById)
+@ControllerPatch(routes.user.recoverByLogin)
+// TODO: MOVE TO MEMBER
 export class RecoverUserController extends UserController {
   @ValidateRequest([['params', UserIdRequestDto]])
   async executeImpl(req: Request, res: Response): Promise<any> {

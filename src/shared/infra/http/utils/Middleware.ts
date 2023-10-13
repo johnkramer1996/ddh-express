@@ -29,7 +29,6 @@ import { RequestDecoded } from '../models/base.controller'
 //       if (!token) return ensure ? this.endRequest(403, 'No access token provided', res) : next()
 
 //       try {
-//         console.log(token)
 //         const decoded = await this.authService.decodeJWT(token)
 //         const tokens = await this.authService.getTokens(decoded.email)
 

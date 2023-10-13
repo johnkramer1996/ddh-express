@@ -3,11 +3,11 @@ import { DeleteUserServiceResponse } from './service'
 
 export class DeleteUserCommand implements ICommand<DeleteUserServiceResponse> {
   declare response?: DeleteUserServiceResponse
-  readonly deleteUserId: string
   readonly userId: string
+  readonly authUserId: string
 
   constructor(props: DeleteUserCommand) {
-    this.deleteUserId = props.deleteUserId
     this.userId = props.userId
+    this.authUserId = props.authUserId
   }
 }

@@ -1,5 +1,5 @@
 import { injectable } from 'inversify'
-import { PostFindAllByMemberQuery } from './query'
+import { PostFindAllByLoginQuery } from './query'
 import { Request, Response } from 'express'
 import { plainToClass } from 'class-transformer'
 import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-request'
@@ -14,7 +14,7 @@ import { LoginRequestDto } from '@src/modules/forum/dtos/login.request.dto'
 
 @injectable()
 @ControllerGet(routes.member.posts)
-export class PostFindAllByMemberController extends PostControllerBase {
+export class PostFindAllByLoginController extends PostControllerBase {
   @UseGuard(AuthGuard, false)
   @ValidateRequest([['query', PostPaginatedQueryRequestDto]])
   @ValidateRequest([['params', LoginRequestDto]])
@@ -23,7 +23,7 @@ export class PostFindAllByMemberController extends PostControllerBase {
     const params = plainToClass(LoginRequestDto, req.params)
     const decoded = req.decoded
 
-    const postQuery = new PostFindAllByMemberQuery({ ...query, ...params, userId: decoded?.id })
+    const postQuery = new PostFindAllByLoginQuery({ ...query, ...params, authMemberId: decoded?.id })
     const result = await this.queryBus.execute(postQuery)
 
     if (!result.isSuccess) return this.handleError(res, result.getValue())

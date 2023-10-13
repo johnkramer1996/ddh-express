@@ -19,9 +19,9 @@ export class PostCreateOneController extends PostControllerBase {
   @ValidateRequest([['body', CreateOneRequestDto]])
   async executeImpl(req: RequestDecoded, res: Response): Promise<any> {
     const body = plainToClass(CreateOneRequestDto, req.body)
-    const decoded = plainToClass(UserRequestDto, req.decoded)
+    const decoded = req.decoded
 
-    const command = new CreateOneCommand({ ...body, userId: decoded.userId })
+    const command = new CreateOneCommand({ ...body, userId: decoded.id })
     const result = await this.commandBus.execute(command)
 
     if (!result.isSuccess) return this.handleError(res, result.getValue())

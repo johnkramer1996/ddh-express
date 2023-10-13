@@ -13,7 +13,9 @@ export type FindBySlugServiceResponse = ResultWithError<PostEntity>
 @QueryHandler(FindBySlugQuery)
 export class FindBySlugService extends PostServiceBase<FindBySlugQuery, Return> {
   async executeImpl(query: FindBySlugQuery): Promise<Return> {
-    const entity = await this.postRepo.findBySlugDetail(query.slug, query.userId)
+    const authMember = await this.memberRepo.findOneByUserIdIfExists(query.userId)
+
+    const entity = await this.postRepo.findBySlugDetail(query.slug, authMember?.id)
     if (!entity) throw new NotFoundException()
 
     return entity

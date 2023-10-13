@@ -1,25 +1,3 @@
-export const todoUrls = {
-  root: '/todos',
-  findAll: '/',
-  findOne: '/:todoId',
-  createOne: '/',
-  updateOne: '/:todoId',
-  deleteOne: '/:todoId',
-}
-
-export const userUrls = {
-  root: '/users',
-  findAll: '/',
-  login: '/login',
-  logout: '/logout',
-  refreshToken: '/refreshToken',
-  currentUser: '/currentUser',
-  // findOne: '/:todoId',
-  // createOne: '/',
-  // updateOne: '/:todoId',
-  // deleteOne: '/:todoId',
-}
-
 // Root
 const todosRoot = 'todos'
 const postsRoot = 'posts'
@@ -38,39 +16,40 @@ export const routes = {
   //   updateOne: `/${todosRoot}/:todoId`,
   //   deleteOne: `/${todosRoot}/:todoId`,
   // },
-  post: {
-    findAll: `/${postsRoot}`,
-    findById: `/${postsRoot}/:postId`,
-    findBySlug: `/${postsRoot}/:slug`,
-    create: `/${postsRoot}`,
-    update: `/${postsRoot}/:postId`,
-    delete: `/${postsRoot}/:postId`,
-    upvote: `/${postsRoot}/:slug/upvote`,
-    downvote: `/${postsRoot}/:slug/downvote`,
-  },
-  postComments: {
-    findAll: `/${postsRoot}/:slug/${commentsRoot}/`,
-    findById: `/${postsRoot}/:slug/${commentsRoot}/:commentId`,
-    create: `/${postsRoot}/:slug/${commentsRoot}/`,
-    updateById: `/${postsRoot}/:slug/${commentsRoot}/:commentId`,
-    deleteById: `/${postsRoot}/:slug/${commentsRoot}/:commentId`,
-    upvote: `/${postsRoot}/:slug/${commentsRoot}/:commentId/upvote`,
-    downvote: `/${postsRoot}/:slug/${commentsRoot}/:commentId/downvote`,
-  },
-  member: {
-    findByLogin: `/${memebersRoot}/:login`,
-    posts: `/${memebersRoot}/:memberId/posts`,
-  },
   user: {
-    findAll: `/${usersRoot}`,
-    findById: `/${usersRoot}/:userId`,
     create: `/${usersRoot}`,
-    deleteById: `/${usersRoot}/:userId`,
-    recoverById: `/${usersRoot}/:userId`,
+    findAll: `/${usersRoot}`,
+    findByLogin: `/${usersRoot}/:login`,
+    deleteByLogin: `/${usersRoot}/:login`,
+    recoverByLogin: `/${usersRoot}/:login`,
     login: `/${usersRoot}/login`,
     logout: `/${usersRoot}/logout`,
     refreshToken: `/${usersRoot}/refreshToken`,
     currentUser: `/${usersRoot}/currentUser`,
     posts: `/${usersRoot}/:userId/posts`,
+  },
+  member: {
+    findByLogin: `/${memebersRoot}/:login`,
+    currentMember: `/${memebersRoot}/currentMember`,
+    posts: `/${memebersRoot}/:login/posts`,
+  },
+  post: {
+    create: `/${postsRoot}`,
+    findAll: `/${postsRoot}`,
+    findById: `/${postsRoot}/:postId`,
+    findBySlug: `/${postsRoot}/:slug`,
+    updateBySlug: `/${postsRoot}/:postId`,
+    deleteBySlug: `/${postsRoot}/:postId`,
+    upvoteBySlug: `/${postsRoot}/:slug/upvote`,
+    downvoteBySlug: `/${postsRoot}/:slug/downvote`,
+  },
+  postComments: {
+    create: `/${postsRoot}/:slug/${commentsRoot}/`,
+    findAll: `/${postsRoot}/:slug/${commentsRoot}/`,
+    findById: `/${postsRoot}/:slug/${commentsRoot}/:commentId`,
+    updateById: `/${postsRoot}/:slug/${commentsRoot}/:commentId`,
+    deleteById: `/${postsRoot}/:slug/${commentsRoot}/:commentId`,
+    upvote: `/${postsRoot}/:slug/${commentsRoot}/:commentId/upvote`,
+    downvote: `/${postsRoot}/:slug/${commentsRoot}/:commentId/downvote`,
   },
 }
