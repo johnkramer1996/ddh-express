@@ -17,13 +17,13 @@ export class CommentCreateService extends CommentServiceBase<CommentCreateComman
     const post = await this.postRepo.findBySlugDetail(command.slug)
     if (!post) throw new NotFoundException()
 
-    const user = await this.userRepo.findOneById(command.userId)
-    if (!user) throw new NotFoundException()
+    const member = await this.memberRepo.findOneByUserId(command.userId)
+    if (!member) throw new NotFoundException()
 
     const parentComment = command.parentId ? await this.commentRepo.findOneById(command.parentId) : null
-    if (!user) throw new NotFoundException()
+    if (!member) throw new NotFoundException()
 
-    const comment = this.postService.createComment(post, user, parentComment, command.text)
+    const comment = this.postService.createComment(post, member, parentComment, command.text)
 
     await this.postRepo.save(post)
 

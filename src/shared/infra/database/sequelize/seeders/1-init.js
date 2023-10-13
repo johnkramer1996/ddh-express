@@ -5,12 +5,14 @@ const uuid = require('uuid')
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
+    const testId = `11111111-1111-1111-1111-111111111111`
     await queryInterface.bulkInsert(
       'users',
       [
         {
-          id: '11111111-1111-1111-1111-111111111111',
+          id: testId,
           email: `vitalii@gmail.com`,
+          login: 'vitalii',
           password: '12345',
           created_at: new Date(),
           updated_at: new Date(),
@@ -20,6 +22,7 @@ module.exports = {
           .map((_, i) => ({
             id: '11111111-1111-1111-1111-11111111112' + i,
             email: `user${i}@gmail.com`,
+            login: `login-${i}`,
             password: '12345',
             created_at: new Date(),
             updated_at: new Date(),
@@ -43,12 +46,33 @@ module.exports = {
       }))
     )
 
+    await queryInterface.bulkInsert('members', [
+      {
+        id: testId,
+        user_id: users[0].id,
+        reputation: 0,
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+    ])
+
+    await queryInterface.bulkInsert(
+      'members',
+      users.slice(1).map((i, index) => ({
+        id: uuid.v4(),
+        user_id: i.id,
+        reputation: 0,
+        created_at: new Date(),
+        updated_at: new Date(),
+      }))
+    )
+
     await queryInterface.bulkInsert(
       'posts',
       [
         {
-          id: '11111111-1111-1111-1111-111111111111',
-          user_id: '11111111-1111-1111-1111-111111111111',
+          id: testId,
+          member_id: testId,
           type: `text`,
           title: `Title post  test`,
           text: `Text post test`,
@@ -65,7 +89,7 @@ module.exports = {
           .fill(null)
           .map((_, i) => ({
             id: uuid.v4(),
-            user_id: '11111111-1111-1111-1111-111111111111',
+            member_id: testId,
             type: `text`,
             title: `Title post ` + i,
             text: `Text post` + i,
@@ -85,9 +109,9 @@ module.exports = {
       'post_votes',
       [
         {
-          id: '11111111-1111-1111-1111-111111111111',
-          user_id: '11111111-1111-1111-1111-111111111111',
-          post_id: '11111111-1111-1111-1111-111111111111',
+          id: testId,
+          member_id: testId,
+          post_id: testId,
           type: `upvote`,
           created_at: new Date(),
           updated_at: new Date(),
@@ -101,9 +125,9 @@ module.exports = {
       'comments',
       [
         {
-          id: '11111111-1111-1111-1111-111111111111',
-          user_id: '11111111-1111-1111-1111-111111111111',
-          post_id: '11111111-1111-1111-1111-111111111111',
+          id: testId,
+          member_id: testId,
+          post_id: testId,
           text: `Text comment test`,
           points: 0,
           created_at: new Date(),
@@ -114,8 +138,8 @@ module.exports = {
           .fill(null)
           .map((_, i) => ({
             id: uuid.v4(),
-            user_id: '11111111-1111-1111-1111-111111111111',
-            post_id: '11111111-1111-1111-1111-111111111111',
+            member_id: testId,
+            post_id: testId,
             text: `Text comment` + i,
             points: 0,
             created_at: new Date(),
@@ -130,9 +154,9 @@ module.exports = {
       'comment_votes',
       [
         {
-          id: '11111111-1111-1111-1111-111111111111',
-          user_id: '11111111-1111-1111-1111-111111111111',
-          comment_id: '11111111-1111-1111-1111-111111111111',
+          id: testId,
+          member_id: testId,
+          comment_id: testId,
           type: `upvote`,
           created_at: new Date(),
           updated_at: new Date(),
@@ -144,11 +168,12 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('users', null, {})
-    await queryInterface.bulkDelete('user_addresses', null, {})
     await queryInterface.bulkDelete('post_votes', null, {})
     await queryInterface.bulkDelete('posts', null, {})
     await queryInterface.bulkDelete('comment_votes', null, {})
     await queryInterface.bulkDelete('comments', null, {})
+    await queryInterface.bulkDelete('user_addresses', null, {})
+    await queryInterface.bulkDelete('users', null, {})
+    await queryInterface.bulkDelete('members', null, {})
   },
 }

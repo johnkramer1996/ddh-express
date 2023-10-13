@@ -21,7 +21,8 @@ export class PostVoteController extends PostControllerBase {
   async executeImpl(req: RequestDecoded, res: Response): Promise<any> {
     const params = plainToClass(SlugRequestDto, req.params)
     const type = req.url.split('/').pop()?.toLowerCase() as VoteType
-    const decoded = plainToClass(UserRequestDto, req.decoded)
+    const decoded = req.decoded
+
     const command = new VoteCommand({ ...params, type, userId: decoded.id })
     const result = await this.commandBus.execute(command)
 

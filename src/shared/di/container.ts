@@ -8,8 +8,9 @@ import userModule from '@src/modules/user/di/user.container'
 import { QueryBus } from '@src/shared/core/cqs/query-bus'
 import { CommandBus } from '@src/shared/core/cqs/command-bus'
 import { AuthGuard } from '../infra/http/decorators/useGuard'
-import postModule from '@src/modules/forum/di/post.container'
-import commentModule from '@src/modules/forum/di/comment.container'
+import postModule from '@src/modules/forum/di/post/post.container'
+import commentModule from '@src/modules/forum/di/comment/comment.container'
+import MemberModule from '@src/modules/forum/di/member/container'
 
 const container = new Container({ defaultScope: 'Singleton', skipBaseClassChecks: true })
 //
@@ -21,9 +22,10 @@ container.bind(TYPES.COMMAND_BUS).to(CommandBus)
 container.bind(AuthGuard).toSelf()
 container.bind(Container).toDynamicValue((ctx) => ctx.container as Container)
 
-todoModule(container)
+// todoModule(container)
 userModule(container)
 postModule(container)
 commentModule(container)
+MemberModule(container)
 
 export { container }

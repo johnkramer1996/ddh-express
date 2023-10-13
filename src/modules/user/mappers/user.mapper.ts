@@ -17,7 +17,7 @@ export class UserMapper implements Mapper<UserEntity, UserModelAttributes, UserR
       deletedAt: copy.deletedAt,
       email: copy.email,
       password: copy.password.value,
-      username: copy.username,
+      login: copy.login,
       lastLogin: copy.lastLogin,
       isDeleted: copy.isDeleted,
       isAdminUser: copy.isAdminUser,
@@ -34,7 +34,7 @@ export class UserMapper implements Mapper<UserEntity, UserModelAttributes, UserR
       props: {
         email: record.email,
         password: new Password({ value: record.password }),
-        username: record.username,
+        login: record.login,
         isDeleted: record.isDeleted,
         isAdminUser: record.isAdminUser,
         isEmailVerified: record.isEmailVerified,

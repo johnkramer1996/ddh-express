@@ -6,6 +6,7 @@ import { CommentVoteEntity } from '../comment-vote/entity'
 import { CommentCreatedDomainEvent } from './events/created.domain-event'
 import { CommentDeletedDomainEvent } from './events/deleted.domain-event'
 import { CommentEntityCreationProps, CommentEntityProps } from './types'
+import { MemberEntity } from '../member/entity'
 
 export type CommentUpdateTextProps = {
   text: string
@@ -23,8 +24,8 @@ export class CommentEntity extends AggregateRoot<CommentEntityProps> {
     return entity
   }
 
-  public hasAccess(user: UserEntity) {
-    return user.id === this.props.userId
+  public hasAccess(user: MemberEntity) {
+    return user.id === this.props.memberId
   }
 
   get points(): number {

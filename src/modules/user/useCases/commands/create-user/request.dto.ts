@@ -1,6 +1,9 @@
-import { MaxLength, IsString, Matches, IsOptional, IsBoolean } from 'class-validator'
+import { IsString } from 'class-validator'
 
 export class CreateUserRequestDto {
+  @IsString()
+  readonly login!: string
+
   @IsString()
   readonly email!: string
 

@@ -5,7 +5,7 @@ import { inject } from 'inversify'
 import { TYPES } from '@src/shared/di/types'
 import { Response } from 'express'
 import { PostMapper } from '../../mappers/post/mapper'
-import { POST_TYPES } from '../../di/post.types'
+import { POST_TYPES } from '../../di/post/post.types'
 
 export abstract class PostControllerBase extends BaseController {
   declare mapper: PostMapper

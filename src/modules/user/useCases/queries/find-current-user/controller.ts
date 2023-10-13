@@ -14,9 +14,9 @@ import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
 export class CurrentUserController extends UserController {
   @UseGuard(AuthGuard)
   async executeImpl(req: RequestDecoded, res: Response): Promise<any> {
-    const decoded = plainToClass(UserRequestDto, req.decoded)
+    const decoded = req.decoded
 
-    const query = new CurrentUserQuery(decoded)
+    const query = new CurrentUserQuery({ userId: decoded.id })
     const result = await this.queryBus.execute(query)
 
     if (!result.isSuccess) return this.handleError(res, result.getValue())

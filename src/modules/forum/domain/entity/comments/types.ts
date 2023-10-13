@@ -9,7 +9,7 @@ import { CommentEntity } from './entity'
 export interface CommentEntityCreationProps {
   parentId: string | null
   postId: string
-  userId: string
+  memberId: string
   text: string
   points: number
 }
@@ -24,7 +24,7 @@ export interface CommentEntityProps extends CommentEntityCreationProps {
 export interface CommentModelCreationAttributes extends PrimaryKey {
   parentId: string | null
   postId: string
-  userId: string
+  memberId: string
   text: string
   points: number
 }

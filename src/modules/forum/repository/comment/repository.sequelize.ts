@@ -1,7 +1,7 @@
 import { SequelizeRepositoryBase } from '@src/shared/infra/database/sequelize/base.repository'
 import { ModelDefined, Includeable } from 'sequelize'
-import { COMMENT_VOTE_TYPES } from '../../di/comment-vote.types'
-import { COMMENT_TYPES } from '../../di/comment.types'
+import { COMMENT_VOTE_TYPES } from '../../di/comment/comment-vote.types'
+import { COMMENT_TYPES } from '../../di/comment/comment.types'
 import { inject, injectable } from 'inversify'
 import { CommentRepositoryPort, FindCommentsParams } from './repository.port'
 import { CommentVotes } from '../../domain/value-objects/votes.value-objcect'
@@ -81,7 +81,7 @@ export class CommentSequelizeRepository extends SequelizeRepositoryBase<CommentE
   public async findAllNestedComments(comments: CommentEntity[], options: Options = {}): Promise<CommentEntity[]> {
     if (!comments.length) return []
 
-    const childs = await this.findChildrenComments(comments)
+    const childs = await this.findChildrenComments(comments, options)
     return [...childs, ...(await this.findAllNestedComments(childs, options))]
   }
 

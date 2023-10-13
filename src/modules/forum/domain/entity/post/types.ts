@@ -15,7 +15,7 @@ export interface PostEntityCreationProps {
   text: string | null
   link: string | null
   slug: Slug
-  userId: string
+  memberId: string
   // comments: Comments
   // dateTimePosted?: string | Date;
 }
@@ -29,12 +29,12 @@ export interface PostEntityProps extends PostEntityCreationProps {
 }
 
 export interface PostModelCreationAttributes extends PrimaryKey {
-  userId: string
   type: string
   title: string
   text: string | null
   link: string | null
   slug: string
+  memberId: string
   points: number
   totalNumComments: number
 }

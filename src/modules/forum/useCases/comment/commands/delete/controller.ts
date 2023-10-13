@@ -2,7 +2,7 @@ import { injectable } from 'inversify'
 import { Request, Response } from 'express'
 import { plainToClass } from 'class-transformer'
 import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-request'
-import { CommentDeleteOneCommand } from './command'
+import { DeleteCommentByIdCommand } from './command'
 import { ControllerDelete } from '@src/shared/infra/http/decorators/controller'
 import { routes } from '@src/configs/routes'
 import { UserController } from '@src/modules/user/useCases/base.controller'
@@ -13,7 +13,7 @@ import { RequestDecoded } from '@src/shared/infra/http/models/base.controller'
 
 @injectable()
 @ControllerDelete(routes.postComments.deleteById)
-export class CommentDeleteByIdController extends UserController {
+export class DeleteCommentByIdController extends UserController {
   @UseGuard(AuthGuard)
   @ValidateRequest([
     ['params', SlugRequestDto],
@@ -24,7 +24,7 @@ export class CommentDeleteByIdController extends UserController {
     const postParams = plainToClass(SlugRequestDto, req.params)
     const decoded = req.decoded
 
-    const command = new CommentDeleteOneCommand({ ...params, ...postParams, userId: decoded.id })
+    const command = new DeleteCommentByIdCommand({ ...params, ...postParams, userId: decoded.id })
     const result = await this.commandBus.execute(command)
 
     if (!result.isSuccess) return this.handleError(res, result.getValue())

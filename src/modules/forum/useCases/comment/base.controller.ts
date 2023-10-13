@@ -5,8 +5,8 @@ import { inject } from 'inversify'
 import { TYPES } from '@src/shared/di/types'
 import { Response } from 'express'
 import { PostMapper } from '../../mappers/post/mapper'
-import { POST_TYPES } from '../../di/post.types'
-import { COMMENT_TYPES } from '../../di/comment.types'
+import { POST_TYPES } from '../../di/post/post.types'
+import { COMMENT_TYPES } from '../../di/comment/comment.types'
 import { CommentMapper } from '../../mappers/comment/mapper'
 
 export abstract class CommentControllerBase extends BaseController {

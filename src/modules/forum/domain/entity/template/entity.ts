@@ -8,7 +8,7 @@ export class TemplateEntity extends AggregateRoot<TemplateEntityProps> {
   protected readonly _id!: AggregateID
 
   static create(create: TemplateEntityCreationProps): TemplateEntity {
-    const props: TemplateEntityProps = { ...create }
+    const props: TemplateEntityProps = { ...create, reputation: 0 }
     const entity = new TemplateEntity({ props })
     entity.addEvent(new TemplateCreatedDomainEvent({ entity }))
 

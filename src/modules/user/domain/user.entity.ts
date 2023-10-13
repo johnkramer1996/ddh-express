@@ -18,7 +18,6 @@ export class UserEntity extends AggregateRoot<UserEntityProps> {
 
     const props: UserEntityProps = {
       ...create,
-      username: null,
       isEmailVerified: false,
       isAdminUser: false,
       isDeleted: false,

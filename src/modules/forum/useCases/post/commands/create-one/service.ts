@@ -16,7 +16,7 @@ export type CreateOneServiceResponse = ResultWithError<Return>
 export class CreateOneService extends PostServiceBase<CreateOneCommand, Return> {
   async executeImpl(command: CreateOneCommand): Promise<Return> {
     const post = PostEntity.create({
-      userId: command.userId,
+      memberId: command.userId,
       title: command.title,
       type: command.type,
       text: command.type === PostType.text ? command.text : null,

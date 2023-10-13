@@ -6,12 +6,12 @@ import { PostModelAttributes } from '@src/modules/forum/domain/entity/post/types
 import { PostEntity } from '@src/modules/forum/domain/entity/post/entity'
 
 export interface UserEntityCreationProps {
-  email: string
+  login: string
   password: Password
+  email: string
 }
 
 export interface UserEntityProps extends UserEntityCreationProps {
-  username: string | null
   isEmailVerified: boolean
   isAdminUser: boolean
   isDeleted: boolean
@@ -21,12 +21,12 @@ export interface UserEntityProps extends UserEntityCreationProps {
 }
 
 export interface UserModelCreationAttributes extends PrimaryKey {
+  login: string
   email: string
   password: string
 }
 
 export interface UserModelAttributes extends UserModelCreationAttributes, TimeStamp {
-  username: string | null
   isEmailVerified: boolean
   isAdminUser: boolean
   isDeleted: boolean

@@ -11,7 +11,7 @@ export class CommentVoteMapper implements Mapper<CommentVoteEntity, CommentVoteM
     const copy = entity.getProps()
     const record: CommentVoteModelAttributes = {
       id: copy.id,
-      userId: copy.userId,
+      memberId: copy.memberId,
       commentId: copy.commentId,
       type: copy.type,
       createdAt: entity.createdAt,
@@ -27,7 +27,7 @@ export class CommentVoteMapper implements Mapper<CommentVoteEntity, CommentVoteM
       createdAt: new Date(record.createdAt),
       updatedAt: new Date(record.updatedAt),
       props: {
-        userId: record.userId,
+        memberId: record.memberId,
         commentId: record.commentId,
         type: record.type as VoteType,
       },

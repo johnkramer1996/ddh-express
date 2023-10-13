@@ -19,6 +19,7 @@ export class UserCreateService extends UserService<UserCreateCommand, Return> {
     if (existsUser) throw new UserAlreadyExistsError()
 
     const user = UserEntity.create({
+      login: command.login,
       email: command.email,
       password: new Password({ value: command.password }),
     })

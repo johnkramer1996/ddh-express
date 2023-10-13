@@ -3,17 +3,17 @@
 GET http://localhost:8086/api/v1/posts?order=recent
 
 ### GET BY SLUG
-GET http://localhost:8086/api/v1/posts/7138669-new-post
+GET http://localhost:8086/api/v1/posts/slug5
 
 ### UPVOTE/DOWNVOTE /upvote /downvote
-POST http://localhost:8086/api/v1/posts/7138669-new-post/downvote
+POST http://localhost:8086/api/v1/posts/slug5/downvote
 
 ### CREATE ONE
 POST http://localhost:8086/api/v1/posts/
 Content-Type: application/json
 
 {
-    "title": "NEW POST",
+    "title": "POST CREATED USER 1",
     "text": "Text post",
     "type": "text"
 }

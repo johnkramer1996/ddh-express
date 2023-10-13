@@ -6,8 +6,8 @@ import { PostResponseDto } from '../../dtos/post/response.dto'
 import { Slug } from '../../domain/value-objects/slug.value-object'
 import { PostVotes, Votes } from '../../domain/value-objects/votes.value-objcect'
 import { PostVoteMapper } from '../post-vote/mapper'
-import { COMMENT_TYPES } from '../../di/comment.types'
-import { POST_VOTE_TYPES } from '../../di/post-vote.types'
+import { COMMENT_TYPES } from '../../di/comment/comment.types'
+import { POST_VOTE_TYPES } from '../../di/post/post-vote.types'
 import { CommentMapper } from '../comment/mapper'
 import { CommentResponseDto } from '../../dtos/comment/response.dto'
 import { PostComments } from '../../domain/value-objects/comments.value-objcect'
@@ -27,7 +27,7 @@ export class PostMapper implements Mapper<PostEntity, PostModelAttributes, PostR
     const copy = entity.getProps()
     const record: PostModelAttributes = {
       id: copy.id,
-      userId: copy.userId,
+      memberId: copy.memberId,
       type: copy.type,
       title: copy.title,
       text: copy.text,
@@ -52,7 +52,7 @@ export class PostMapper implements Mapper<PostEntity, PostModelAttributes, PostR
       createdAt: new Date(record.createdAt),
       updatedAt: new Date(record.updatedAt),
       props: {
-        userId: record.userId,
+        memberId: record.memberId,
         type: record.type as PostType,
         title: record.title,
         text: record.text,

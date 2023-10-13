@@ -7,13 +7,13 @@ module.exports = {
     allowNull: false,
     type: DataTypes.UUID,
   },
-  userId: {
-    field: 'user_id',
+  memberId: {
+    field: 'member_id',
     allowNull: false,
     type: DataTypes.UUID,
     references: {
       model: {
-        tableName: 'users',
+        tableName: 'members',
         schema: 'public',
       },
       key: 'id',

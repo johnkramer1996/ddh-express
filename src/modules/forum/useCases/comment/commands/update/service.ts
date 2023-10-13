@@ -18,10 +18,10 @@ export class CommentUpdateService extends CommentServiceBase<CommentUpdateComman
     const comment = await this.commentRepo.findOneById(command.commentId)
     if (!comment) throw new NotFoundException()
 
-    const user = await this.userRepo.findOneById(command.userId)
-    if (!user) throw new NotFoundException()
+    const member = await this.memberRepo.findOneByUserId(command.userId)
+    if (!member) throw new NotFoundException()
 
-    this.postService.updateComment(post, user, comment, command.text)
+    this.postService.updateComment(post, member, comment, command.text)
 
     await this.postRepo.save(post)
   }

@@ -20,13 +20,13 @@ Content-Type: application/json
 }
 
 ### DELETE BY ID
-DELETE http://localhost:8086/api/v1/posts/slug-test/comments/f653f5cf-71fe-4f89-94d0-f6a25ccc178b
+DELETE http://localhost:8086/api/v1/posts/slug-test/comments/22631e6b-089a-4e81-aa2f-d1948fb671d3
 
 ### UPVOTE/DOWNVOTE /upvote /downvote
 POST http://localhost:8086/api/v1/posts/slug-test/comments/efcf41a9-9bcc-4988-bc1e-762027eeb16e/upvote
 
 ### UPVOTE/DOWNVOTE /upvote /downvote
-POST http://localhost:8086/api/v1/posts/slug-test/comments/c039b8d5-5528-49f6-a5bb-8155f1541c8f/downvote
+POST http://localhost:8086/api/v1/posts/slug-test/comments/efcf41a9-9bcc-4988-bc1e-762027eeb16e/downvote
 
 
 

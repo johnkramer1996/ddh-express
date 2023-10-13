@@ -11,7 +11,7 @@ export class PostVoteMapper implements Mapper<PostVoteEntity, PostVoteModelAttri
     const copy = entity.getProps()
     const record: PostVoteModelAttributes = {
       id: copy.id,
-      userId: copy.userId,
+      memberId: copy.memberId,
       postId: copy.postId,
       type: copy.type,
       createdAt: entity.createdAt,
@@ -27,7 +27,7 @@ export class PostVoteMapper implements Mapper<PostVoteEntity, PostVoteModelAttri
       createdAt: new Date(record.createdAt),
       updatedAt: new Date(record.updatedAt),
       props: {
-        userId: record.userId,
+        memberId: record.memberId,
         postId: record.postId,
         type: record.type as VoteType,
       },

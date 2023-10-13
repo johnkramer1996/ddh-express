@@ -52,15 +52,7 @@ export abstract class SequelizeRepositoryBase<Aggregate extends AggregateRoot<an
   }
 
   public async findOneById(id: string, options: Options = {}): Promise<Aggregate | null> {
-    const row = await this.model.findOne({
-      where: { id },
-      attributes: {
-        include: options.attributeStrategies?.map((i) => i.apply().flat()).map((item) => [sequelize.literal(item[0]), item[1]] as [Literal, string]) || [],
-      },
-      include: options.includeStrategies?.map((i) => i.apply()).flat(),
-    })
-
-    return row ? this.mapper.toDomain(row) : row
+    return this.findOne({ where: { id }, ...options })
   }
 
   public async delete(entity: Aggregate, force = false): Promise<boolean> {

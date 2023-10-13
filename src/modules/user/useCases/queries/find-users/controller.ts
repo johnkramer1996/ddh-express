@@ -1,6 +1,5 @@
 import { injectable } from 'inversify'
 import { FindUsersQuery } from './query'
-import { FindUsersRequestDto } from './request.dto'
 import { Request, Response } from 'express'
 import { plainToClass } from 'class-transformer'
 import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-request'
@@ -13,12 +12,8 @@ import { ControllerGet } from '@src/shared/infra/http/decorators/controller'
 @injectable()
 @ControllerGet(routes.user.findAll)
 export class FindUsersController extends UserController {
-  @ValidateRequest([
-    ['body', FindUsersRequestDto],
-    ['query', PaginatedQueryRequestDto],
-  ])
+  @ValidateRequest([['query', PaginatedQueryRequestDto]])
   async executeImpl(req: Request, res: Response): Promise<any> {
-    const body = plainToClass(FindUsersRequestDto, req.body)
     const params = plainToClass(PaginatedQueryRequestDto, req.query)
 
     const query = new FindUsersQuery(params)

@@ -1,8 +1,9 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const [userInit, userAddress, postInit, postVoteInit, commentInit, commentVoteInit] = await Promise.all([
+    const [userInit, userAddress, memberInit, postInit, postVoteInit, commentInit, commentVoteInit] = await Promise.all([
       import('../init/user.init.js'),
       import('../init/user-adderess.init.js'),
+      import('../init/member.init.js'),
       import('../init/post.init.js'),
       import('../init/post-vote.init.js'),
       import('../init/comment.init.js'),
@@ -10,7 +11,9 @@ module.exports = {
     ])
 
     await queryInterface.createTable('users', userInit.default)
+    // TODO: join table with users
     await queryInterface.createTable('user_addresses', userAddress.default)
+    await queryInterface.createTable('members', memberInit.default)
     await queryInterface.createTable('posts', postInit.default)
     await queryInterface.createTable('post_votes', postVoteInit.default)
     await queryInterface.createTable('comments', commentInit.default)
@@ -21,6 +24,7 @@ module.exports = {
     await queryInterface.dropTable('comments')
     await queryInterface.dropTable('post_votes')
     await queryInterface.dropTable('posts')
+    await queryInterface.dropTable('members')
     await queryInterface.dropTable('user_addresses')
     await queryInterface.dropTable('users')
   },

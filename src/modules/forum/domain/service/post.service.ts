@@ -2,17 +2,17 @@ import { injectable } from 'inversify'
 import { VoteType } from '../entity/vote.base.entity'
 import { PostVoteEntity } from '../entity/post-vote/entity'
 import { PostEntity } from '../entity/post/entity'
-import { UserEntity } from '@src/modules/user/domain/user.entity'
 import { CommentEntity } from '../entity/comments/entity'
 import { CommentVoteEntity } from '../entity/comment-vote/entity'
 import { ForbiddenException } from '@src/shared/exceptions/exceptions'
+import { MemberEntity } from '../entity/member/entity'
 
 @injectable()
 export class PostService {
-  public createComment(post: PostEntity, member: UserEntity, parentComment: CommentEntity | null, text: string): CommentEntity {
+  public createComment(post: PostEntity, member: MemberEntity, parentComment: CommentEntity | null, text: string): CommentEntity {
     const comment = CommentEntity.create({
       postId: post.id,
-      userId: member.id,
+      memberId: member.id,
       text,
       parentId: parentComment?.id ?? null,
       points: 0,
@@ -23,7 +23,7 @@ export class PostService {
     return comment
   }
 
-  public updateComment(post: PostEntity, member: UserEntity, comment: CommentEntity, text?: string): void {
+  public updateComment(post: PostEntity, member: MemberEntity, comment: CommentEntity, text?: string): void {
     if (!comment.hasAccess(member)) throw new ForbiddenException()
 
     if (text !== undefined) comment.updateText({ text })
@@ -31,7 +31,7 @@ export class PostService {
     post.updateComment(comment)
   }
 
-  public removeComment(post: PostEntity, member: UserEntity, comment: CommentEntity): void {
+  public removeComment(post: PostEntity, member: MemberEntity, comment: CommentEntity): void {
     if (!comment.hasAccess(member)) throw new ForbiddenException()
 
     post.removeComment(comment)
@@ -39,9 +39,9 @@ export class PostService {
     comment.delete()
   }
 
-  public addVoteToPost(post: PostEntity, member: UserEntity, vote: PostVoteEntity | null, type: VoteType): void {
+  public addVoteToPost(post: PostEntity, member: MemberEntity, vote: PostVoteEntity | null, type: VoteType): void {
     if (!vote) {
-      const vote = PostVoteEntity.create({ postId: post.id, userId: member.id, type })
+      const vote = PostVoteEntity.create({ postId: post.id, memberId: member.id, type })
       post.addVote(vote)
       return
     }
@@ -55,9 +55,9 @@ export class PostService {
     }
   }
 
-  public addVoteToComment(post: PostEntity, member: UserEntity, comment: CommentEntity, vote: CommentVoteEntity | null, type: VoteType): void {
+  public addVoteToComment(post: PostEntity, member: MemberEntity, comment: CommentEntity, vote: CommentVoteEntity | null, type: VoteType): void {
     if (!vote) {
-      const vote = CommentVoteEntity.create({ commentId: comment.id, userId: member.id, type })
+      const vote = CommentVoteEntity.create({ commentId: comment.id, memberId: member.id, type })
       comment.addVote(vote)
       post.updateComment(comment)
       return

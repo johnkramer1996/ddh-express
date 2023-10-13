@@ -4,7 +4,7 @@ import { CommentEntity } from '../../domain/entity/comments/entity'
 import { CommentModelAttributes } from '../../domain/entity/comments/types'
 import { CommentResponseDto } from '../../dtos/comment/response.dto'
 import { CommentVotes, PostVotes } from '../../domain/value-objects/votes.value-objcect'
-import { COMMENT_VOTE_TYPES } from '../../di/comment-vote.types'
+import { COMMENT_VOTE_TYPES } from '../../di/comment/comment-vote.types'
 import { CommentVoteMapper } from '../comment-vote/mapper'
 import { USER_TYPES } from '@src/modules/user/di/user.types'
 import { UserMapper } from '@src/modules/user/mappers/user.mapper'
@@ -18,7 +18,7 @@ export class CommentMapper implements Mapper<CommentEntity, CommentModelAttribut
     const record: CommentModelAttributes = {
       id: copy.id,
       parentId: copy.parentId,
-      userId: copy.userId,
+      memberId: copy.memberId,
       postId: copy.postId,
       text: copy.text,
       points: copy.points,
@@ -37,7 +37,7 @@ export class CommentMapper implements Mapper<CommentEntity, CommentModelAttribut
       updatedAt: new Date(record.updatedAt),
       props: {
         parentId: record.parentId,
-        userId: record.userId,
+        memberId: record.memberId,
         postId: record.postId,
         text: record.text,
         points: record.points,

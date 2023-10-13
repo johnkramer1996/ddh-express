@@ -11,11 +11,11 @@ export type FindUserServiceResponse = ResultWithError<FindUsersServiceReturn>
 
 @injectable()
 @QueryHandler(FindUserQuery)
-export class FindUserService extends UserService<FindUserQuery, FindUsersServiceReturn> {
+export class FindUserByIdService extends UserService<FindUserQuery, FindUsersServiceReturn> {
   protected async executeImpl(query: FindUserQuery): Promise<FindUsersServiceReturn> {
-    const todo = await this.userRepo.findOneById(query.userId)
-    if (!todo) throw new NotFoundException()
+    const entity = await this.userRepo.findOneById(query.userId)
+    if (!entity) throw new NotFoundException()
 
-    return todo
+    return entity
   }
 }

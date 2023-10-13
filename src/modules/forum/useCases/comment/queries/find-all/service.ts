@@ -19,7 +19,7 @@ export type CommentFindAllServiceResponse = ResultWithError<Return>
 @QueryHandler(CommentFindAllQuery)
 export class CommentFindAllService extends CommentServiceBase<CommentFindAllQuery, Return> {
   async executeImpl(query: CommentFindAllQuery): Promise<Return> {
-    const entities = await this.commentRepo.findAllPaginated(query)
+    const entities = await this.commentRepo.findAllPaginatedDetail(query)
 
     return entities
   }

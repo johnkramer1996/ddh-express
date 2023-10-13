@@ -20,7 +20,7 @@ export class FindBySlugController extends PostControllerBase {
     const params = plainToClass(SlugRequestDto, req.params)
     const decoded = plainToClass(UserRequestDto, req.decoded)
 
-    const query = new FindBySlugQuery({ ...params, userId: decoded.id })
+    const query = new FindBySlugQuery({ ...params, userId: decoded.userId })
     const result = await this.queryBus.execute(query)
 
     if (!result.isSuccess) return this.handleError(res, result.getValue())

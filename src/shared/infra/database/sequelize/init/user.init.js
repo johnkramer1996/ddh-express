@@ -15,9 +15,9 @@ module.exports = {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  username: {
+  login: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
   },
   isEmailVerified: {
     field: 'is_email_verified',

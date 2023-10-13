@@ -4,20 +4,16 @@ import { PostModelAttributes } from '../../domain/entity/post/types'
 import { PostMapper } from '../../mappers/post/mapper'
 import { ModelDefined } from 'sequelize'
 import { PostVoteRepositoryPort } from '../post-vote/repository.port'
-import { POST_TYPES } from '../../di/post.types'
-import { COMMENT_TYPES } from '../../di/comment.types'
-import { POST_VOTE_TYPES } from '../../di/post-vote.types'
+import { POST_TYPES } from '../../di/post/post.types'
+import { COMMENT_TYPES } from '../../di/comment/comment.types'
+import { POST_VOTE_TYPES } from '../../di/post/post-vote.types'
 import { inject, injectable } from 'inversify'
-import { PostRepositoryPort } from './repository.port'
+import { FindPostsByMemberParams, FindPostsParams, PostRepositoryPort } from './repository.port'
 import { PostVotes } from '../../domain/value-objects/votes.value-objcect'
-import PostVoteModel from '@src/shared/infra/database/sequelize/models/post-vote.model'
-import CommentModel from '@src/shared/infra/database/sequelize/models/comment.model'
-import { IncludeStrategyPort, Paginated, QueryParams } from '@src/shared/domain/repository.port'
+import { IncludeStrategyPort, Paginated } from '@src/shared/domain/repository.port'
 import { PostFindAllQuery } from '../../useCases/post/queries/find-all/query'
 import { CommentRepositoryPort } from '../comment/repository.port'
-import { CommentEntity } from '../../domain/entity/comments/entity'
 import { PostComments } from '../../domain/value-objects/comments.value-objcect'
-import UserModel from '@src/shared/infra/database/sequelize/models/user.model'
 import { PostCurrentUserVotesIncludeStrategy } from './include-strategies/PostCurrentUserVotesIncludeStrategy'
 import { PostUserIncludeStrategy } from './include-strategies/PostUserIncludeStrategy'
 import { PostCommentsIncludeStrategy } from './include-strategies/PostCommentsIncludeStrategy'
@@ -33,7 +29,17 @@ export class PostSequelizeRepository extends SequelizeRepositoryBase<PostEntity,
     super(mapper, model)
   }
 
-  public async findAllPaginatedDetail(query: PostFindAllQuery): Promise<Paginated<PostEntity>> {
+  public async findAllPaginatedDetailByMemberId(query: FindPostsByMemberParams): Promise<Paginated<PostEntity>> {
+    const includeStrategies: IncludeStrategyPort[] = []
+
+    query.userId && includeStrategies.push(new PostCurrentUserVotesIncludeStrategy(query.userId))
+    includeStrategies.push(new PostUserIncludeStrategy())
+
+    // TODO: ANY USER ID
+    return this.findAllPaginated(query, { where: { memberId: query.memberId }, includeStrategies })
+  }
+
+  public async findAllPaginatedDetail(query: FindPostsParams): Promise<Paginated<PostEntity>> {
     const includeStrategies: IncludeStrategyPort[] = []
 
     query.userId && includeStrategies.push(new PostCurrentUserVotesIncludeStrategy(query.userId))
@@ -53,7 +59,7 @@ export class PostSequelizeRepository extends SequelizeRepositoryBase<PostEntity,
     includeStrategies.push(new PostUserIncludeStrategy())
     includeStrategies.push(new PostCommentsIncludeStrategy())
 
-    return this.findOne({ where: { slug, includeStrategies } })
+    return this.findOne({ where: { slug }, includeStrategies })
   }
 
   private async saveComments(list: PostComments) {

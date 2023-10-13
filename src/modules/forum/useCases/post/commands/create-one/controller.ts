@@ -21,7 +21,7 @@ export class PostCreateOneController extends PostControllerBase {
     const body = plainToClass(CreateOneRequestDto, req.body)
     const decoded = plainToClass(UserRequestDto, req.decoded)
 
-    const command = new CreateOneCommand({ ...body, userId: decoded.id })
+    const command = new CreateOneCommand({ ...body, userId: decoded.userId })
     const result = await this.commandBus.execute(command)
 
     if (!result.isSuccess) return this.handleError(res, result.getValue())

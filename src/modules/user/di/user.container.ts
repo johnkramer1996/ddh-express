@@ -10,14 +10,14 @@ import { RedisAuthService } from '../services/auth.service.redis'
 import { AuthServicePort } from '../services/auth.service.port'
 import { LoginController } from '../useCases/commands/login/controller'
 import { LoginService } from '../useCases/commands/login/service'
-import { CurrentUserService } from '../useCases/queries/current-user/service'
-import { CurrentUserController } from '../useCases/queries/current-user/controller'
+import { CurrentUserService } from '../useCases/queries/find-current-user/service'
+import { CurrentUserController } from '../useCases/queries/find-current-user/controller'
 import { LogoutController } from '../useCases/commands/logout/controller'
 import { LogoutService } from '../useCases/commands/logout/service'
 import { RefreshTokenController } from '../useCases/commands/refresh-token/controller'
 import { RefreshTokenService } from '../useCases/commands/refresh-token/service'
-import { FindUserController } from '../useCases/queries/find-by-id-user/controller'
-import { FindUserService } from '../useCases/queries/find-by-id-user/service'
+import { FindUserController } from '../useCases/queries/find-user-by-id/controller'
+import { FindUserByIdService } from '../useCases/queries/find-user-by-id/service'
 import { DeleteUserController } from '../useCases/commands/delete-user/controller'
 import { UserDeleteService } from '../useCases/commands/delete-user/service'
 import { CreateUserController } from '../useCases/commands/create-user/controller'
@@ -35,7 +35,7 @@ const userModule = (container: Container) => {
   container.bind(FindUsersService).toSelf()
 
   container.bind(FindUserController).toSelf()
-  container.bind(FindUserService).toSelf()
+  container.bind(FindUserByIdService).toSelf()
 
   container.bind(CreateUserController).toSelf()
   container.bind(UserCreateService).toSelf()

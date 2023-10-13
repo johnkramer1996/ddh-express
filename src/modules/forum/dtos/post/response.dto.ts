@@ -11,11 +11,11 @@ export class PostResponseDto extends ResponseBase {
   public readonly slug: string
   public readonly totalNumComments: number
   public readonly points: number
-  // public readonly votes?: PostVoteResponseDto[]
-  // public readonly comments?: CommentResponseDto[]
   public readonly wasUpvotedByMe?: boolean
   public readonly wasDownvotedByMe?: boolean
   public readonly user?: UserResponseDto
+  // public readonly votes?: PostVoteResponseDto[]
+  // public readonly comments?: CommentResponseDto[]
 
   constructor(props: ResponseBaseProps<PostResponseDto>) {
     super(props)
@@ -31,6 +31,5 @@ export class PostResponseDto extends ResponseBase {
     this.wasDownvotedByMe = props.wasDownvotedByMe
     // this.votes = props.votes
     // this.comments = props.comments
-    // this.user = props.user
   }
 }

@@ -8,10 +8,7 @@ import { container } from './shared/di/container'
 import './modules/todo'
 import { USER_TYPES } from './modules/user/di/user.types'
 import { AuthServicePort } from './modules/user/services/auth.service.port'
-import { sequelize } from './shared/infra/database/sequelize/config/connection'
-import associate from './shared/infra/database/sequelize/models/accociate'
-import { v4 } from 'uuid'
-import CommentModel from './shared/infra/database/sequelize/models/comment.model'
+import associate from './shared/infra/database/sequelize/models/associate'
 
 async function bootstrap() {
   const app = container.get<IServer>(TYPES.SERVER).create()

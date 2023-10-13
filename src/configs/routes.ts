@@ -25,18 +25,19 @@ const todosRoot = 'todos'
 const postsRoot = 'posts'
 const usersRoot = 'users'
 const commentsRoot = 'comments'
+const memebersRoot = 'members'
 
 // Api Versions
 const v1 = 'v1'
 
 export const routes = {
-  todo: {
-    findAll: `/${todosRoot}`,
-    findOne: `/${todosRoot}/:todoId`,
-    createOne: `/${todosRoot}`,
-    updateOne: `/${todosRoot}/:todoId`,
-    deleteOne: `/${todosRoot}/:todoId`,
-  },
+  // todo: {
+  //   findAll: `/${todosRoot}`,
+  //   findOne: `/${todosRoot}/:todoId`,
+  //   createOne: `/${todosRoot}`,
+  //   updateOne: `/${todosRoot}/:todoId`,
+  //   deleteOne: `/${todosRoot}/:todoId`,
+  // },
   post: {
     findAll: `/${postsRoot}`,
     findById: `/${postsRoot}/:postId`,
@@ -56,6 +57,10 @@ export const routes = {
     upvote: `/${postsRoot}/:slug/${commentsRoot}/:commentId/upvote`,
     downvote: `/${postsRoot}/:slug/${commentsRoot}/:commentId/downvote`,
   },
+  member: {
+    findByLogin: `/${memebersRoot}/:login`,
+    posts: `/${memebersRoot}/:memberId/posts`,
+  },
   user: {
     findAll: `/${usersRoot}`,
     findById: `/${usersRoot}/:userId`,
@@ -66,5 +71,6 @@ export const routes = {
     logout: `/${usersRoot}/logout`,
     refreshToken: `/${usersRoot}/refreshToken`,
     currentUser: `/${usersRoot}/currentUser`,
+    posts: `/${usersRoot}/:userId/posts`,
   },
 }

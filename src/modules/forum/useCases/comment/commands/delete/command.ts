@@ -1,13 +1,13 @@
 import { ICommand } from '@src/shared/core/cqs/command.interface'
-import { DeleteCommentServiceResponse } from './service'
+import { DeleteCommentByIdServiceResponse } from './service'
 
-export class CommentDeleteOneCommand implements ICommand<DeleteCommentServiceResponse> {
-  declare response?: DeleteCommentServiceResponse
+export class DeleteCommentByIdCommand implements ICommand<DeleteCommentByIdServiceResponse> {
+  declare response?: DeleteCommentByIdServiceResponse
   readonly userId: string
   readonly slug: string
   readonly commentId: string
 
-  constructor(props: CommentDeleteOneCommand) {
+  constructor(props: DeleteCommentByIdCommand) {
     this.userId = props.userId
     this.slug = props.slug
     this.commentId = props.commentId

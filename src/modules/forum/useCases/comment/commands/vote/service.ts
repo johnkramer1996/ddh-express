@@ -18,11 +18,11 @@ export class CommentVoteService extends CommentServiceBase<CommentVoteCommand, R
     const comment = await this.commentRepo.findOneById(command.commentId)
     if (!comment) throw new NotFoundException()
 
-    const user = await this.userRepo.findOneById(command.userId)
-    if (!user) throw new NotFoundException()
+    const member = await this.memberRepo.findOneById(command.userId)
+    if (!member) throw new NotFoundException()
 
     const vote = await this.upvoteRepo.findOneByCommentIdAndUserId(command.commentId, command.userId)
-    this.postService.addVoteToComment(post, user, comment, vote, command.type)
+    this.postService.addVoteToComment(post, member, comment, vote, command.type)
 
     await this.postRepo.save(post)
     return comment.points
