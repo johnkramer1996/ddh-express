@@ -6,10 +6,6 @@ import { envCongig } from '@src/configs/config'
 export abstract class AggregateRoot<EntityProps> extends Entity<EntityProps> {
   private _domainEvents: DomainEvent[] = []
 
-  // get id(): UniqueEntityID {
-  //   return this._id
-  // }
-
   get domainEvents(): DomainEvent[] {
     return this._domainEvents
   }

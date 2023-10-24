@@ -1,4 +1,4 @@
-import { injectable } from 'inversify'
+import { inject, injectable } from 'inversify'
 import { VoteType } from '../entity/vote.base.entity'
 import { PostVoteEntity } from '../entity/post-vote/entity'
 import { PostEntity } from '../entity/post/entity'
@@ -6,70 +6,89 @@ import { CommentEntity } from '../entity/comments/entity'
 import { CommentVoteEntity } from '../entity/comment-vote/entity'
 import { ForbiddenException } from '@src/shared/exceptions/exceptions'
 import { MemberEntity } from '../entity/member/entity'
+import { POST_VOTE_TYPES } from '../../di/post/post-vote.types'
+import { PostVoteRepositoryPort } from '../../repository/post-vote/repository.port'
+import { CommentRepositoryPort } from '../../repository/comment/repository.port'
+import { PostRepositoryPort } from '../../repository/post/repository.port'
+import { POST_TYPES } from '../../di/post/post.types'
+import { COMMENT_TYPES } from '../../di/comment/comment.types'
+
+// TODO:
+// https://softwareengineering.stackexchange.com/questions/330428/ddd-repositories-in-application-or-domain-service
 
 @injectable()
 export class PostService {
-  public createComment(post: PostEntity, member: MemberEntity, parentComment: CommentEntity | null, text: string): CommentEntity {
-    const comment = CommentEntity.create({
+  constructor(
+    // @inject(POST_TYPES.REPOSITORY) protected postRepo: PostRepositoryPort,
+    @inject(COMMENT_TYPES.REPOSITORY) protected commentRepo: CommentRepositoryPort
+  ) {}
+  public async createComment(post: PostEntity, member: MemberEntity, parentComment: CommentEntity | null, text: string): Promise<CommentEntity> {
+    // IF POST NOT ACTIVE THROW ERROR
+    const countUserComment = await this.commentRepo.countCommentsByPostIdMemberId(post.id, member.id)
+    if (countUserComment > PostEntity.maxCountCommentByUser)
+      throw new ForbiddenException(`
+    LIMIT COUNT COMMENT
+    CURRENT = ${countUserComment}
+    MAX = ${PostEntity.maxCountCommentByUser}
+    `)
+
+    // TODO: WHY? https://www.cnblogs.com/fengjq/p/17688708.html
+    return CommentEntity.create({
       postId: post.id,
       memberId: member.id,
       text,
       parentId: parentComment?.id ?? null,
       points: 0,
     })
-
-    post.addComment(comment)
-
-    return comment
   }
 
   public updateComment(post: PostEntity, member: MemberEntity, comment: CommentEntity, text?: string): void {
     if (!comment.hasAccess(member)) throw new ForbiddenException()
 
     if (text !== undefined) comment.updateText({ text })
-
-    post.updateComment(comment)
   }
 
   public removeComment(post: PostEntity, member: MemberEntity, comment: CommentEntity): void {
     if (!comment.hasAccess(member)) throw new ForbiddenException()
 
-    post.removeComment(comment)
+    post.removeComment(comment.id)
 
     comment.delete()
   }
 
-  public addVoteToPost(post: PostEntity, member: MemberEntity, vote: PostVoteEntity | null, type: VoteType): void {
-    if (!vote) {
+  public async addVoteToPost(postRepo: PostRepositoryPort, post: PostEntity, member: MemberEntity, type: VoteType) {
+    const currentVote = await postRepo.findVoteByPostIdAndMemberId(post.id, member.id)
+
+    if (!currentVote) {
       const vote = PostVoteEntity.create({ postId: post.id, memberId: member.id, type })
       post.addVote(vote)
       return
     }
-    if (type === VoteType['upvote'] && vote.isDownvote()) {
-      post.removeVote(vote)
-      return
-    }
-    if (type === VoteType['downvote'] && vote.isUpvote()) {
-      post.removeVote(vote)
+
+    const isUpvote = type === VoteType.upvote
+    const isDownvote = type === VoteType.downvote
+    if ((isUpvote && currentVote.isDownvote()) || (isDownvote && currentVote.isUpvote())) {
+      post.removeVote(currentVote)
       return
     }
   }
 
-  public addVoteToComment(post: PostEntity, member: MemberEntity, comment: CommentEntity, vote: CommentVoteEntity | null, type: VoteType): void {
+  public toggleVoteToComment(post: PostEntity, member: MemberEntity, comment: CommentEntity, vote: CommentVoteEntity | null, type: VoteType): void {
+    // const vote = await this.voteRepo.findOneByCommentIdAndUserId(command.commentId, member.id)
     if (!vote) {
       const vote = CommentVoteEntity.create({ commentId: comment.id, memberId: member.id, type })
       comment.addVote(vote)
-      post.updateComment(comment)
+      // post.updateComment(comment)
       return
     }
     if (type === VoteType['upvote'] && vote.isDownvote()) {
       comment.removeVote(vote)
-      post.updateComment(comment)
+      // post.updateComment(comment)
       return
     }
     if (type === VoteType['downvote'] && vote.isUpvote()) {
       comment.removeVote(vote)
-      post.updateComment(comment)
+      // post.updateComment(comment)
       return
     }
   }

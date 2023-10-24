@@ -1,0 +1,5 @@
+### GET MEMBER BY LOGIN
+POST http://localhost:8086/api/v1/members/login-1/ban
+
+### POSTS
+GET http://localhost:8086/api/v1/members/login-1/posts

@@ -19,6 +19,8 @@ export interface UserEntityProps extends UserEntityCreationProps {
   isDeleted: boolean
   lastLogin: Date | null
   address: Address | null
+  // TODO:
+  // try to always make relationships unidirectional when possible
   posts?: PostEntity[]
 }
 

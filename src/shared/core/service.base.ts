@@ -14,6 +14,7 @@ export abstract class ServiceBase<T1, T2> {
     try {
       return Result.ok(await this.executeImpl(param))
     } catch (err) {
+      console.log(err)
       if (err instanceof Error) return Result.fail(err)
       if (envCongig.isDevelopment) console.log('[ServiceBase]')
       return Result.fail(new InternalServerErrorException(getStringFromUnknown(err)))

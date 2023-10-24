@@ -12,7 +12,7 @@ export type DeleteCommentByIdServiceResponse = ResultWithError<Return>
 @CommandHandler(DeleteCommentByIdCommand)
 export class CommentDeleteByIdService extends CommentServiceBase<DeleteCommentByIdCommand, Return> {
   async executeImpl(command: DeleteCommentByIdCommand): Promise<Return> {
-    const post = await this.postRepo.findBySlugDetail(command.slug)
+    const post = await this.postRepo.findBySlug(command.slug)
     if (!post) throw new NotFoundException()
 
     const comment = await this.commentRepo.findOneById(command.commentId)
@@ -23,6 +23,6 @@ export class CommentDeleteByIdService extends CommentServiceBase<DeleteCommentBy
 
     this.postService.removeComment(post, member, comment)
 
-    await this.postRepo.save(post)
+    await this.commentRepo.delete(comment)
   }
 }

@@ -22,6 +22,7 @@ export class UserDeleteService extends UserService<DeleteUserCommand, Return> {
 
     this.authService.deAuthenticateUser(user)
 
+    // This layer also contains the triggering of Application Events, which represent some outcome of a use case
     user.delete()
 
     await this.userRepo.delete(user)

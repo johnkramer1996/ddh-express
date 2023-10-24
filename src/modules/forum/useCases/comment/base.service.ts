@@ -11,6 +11,9 @@ import { PostRepositoryPort } from '../../repository/post/repository.port'
 import { CommentVoteRepositoryPort } from '../../repository/comment-vote/repository.port'
 import { MEMBER_TYPES } from '../../di/member/types'
 import { MemberRepositoryPort } from '../../repository/member/repository.port'
+import { CommentSequelizeRepositoryQuery } from '../../repository/comment/repository.sequelize'
+import { MemberSequelizeRepositoryQuery } from '../../repository/member/repository.sequelize'
+import { CommentQueryMapper } from '../../mappers/comment/mapper-query'
 
 @injectable()
 export abstract class CommentServiceBase<T1, T2> extends ServiceBase<T1, T2> {
@@ -18,9 +21,19 @@ export abstract class CommentServiceBase<T1, T2> extends ServiceBase<T1, T2> {
     @inject(COMMENT_TYPES.REPOSITORY) protected commentRepo: CommentRepositoryPort,
     @inject(USER_TYPES.REPOSITORY) protected userRepo: UserRepositoryPort,
     @inject(POST_TYPES.REPOSITORY) protected postRepo: PostRepositoryPort,
-    @inject(COMMENT_VOTE_TYPES.REPOSITORY) protected upvoteRepo: CommentVoteRepositoryPort,
+    @inject(COMMENT_VOTE_TYPES.REPOSITORY) protected voteRepo: CommentVoteRepositoryPort,
     @inject(MEMBER_TYPES.REPOSITORY) protected memberRepo: MemberRepositoryPort,
     @inject(PostService) protected postService: PostService
+  ) {
+    super()
+  }
+}
+
+export abstract class CommentServiceQueryBase<T1, T2> extends ServiceBase<T1, T2> {
+  constructor(
+    @inject(CommentSequelizeRepositoryQuery) protected commentRepository: CommentSequelizeRepositoryQuery,
+    @inject(MemberSequelizeRepositoryQuery) protected memberRepository: MemberSequelizeRepositoryQuery,
+    @inject(COMMENT_TYPES.QUERY_MAPPER) protected commentMapper: CommentQueryMapper
   ) {
     super()
   }

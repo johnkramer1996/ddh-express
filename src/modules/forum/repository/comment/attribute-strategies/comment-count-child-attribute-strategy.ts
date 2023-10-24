@@ -7,9 +7,11 @@ export class CommentCountChildAttributeStrategy implements AttributeStrategyPort
     return [
       `(
       WITH RECURSIVE r AS (
-        SELECT id FROM comments d WHERE comments.id = d.parent_id
+        SELECT id FROM comments d 
+        WHERE comments.id = d.parent_id
         UNION ALL
-        SELECT comments.id FROM comments JOIN r ON comments.parent_id = r.id
+        SELECT comments.id FROM comments 
+        JOIN r ON comments.parent_id = r.id
       )
       SELECT COUNT(*) FROM r
     )`,

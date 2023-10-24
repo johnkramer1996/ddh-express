@@ -5,10 +5,10 @@ import { FindPostsParams } from '@src/modules/forum/repository/post/repository.p
 
 export class FindPostsQuery extends PaginatedQueryBase implements FindPostsParams, IQuery<FindPostsServiceResponse> {
   declare response?: FindPostsServiceResponse
-  readonly authMemberId?: string
+  readonly userId?: string
 
   constructor(props: PaginatedParams<FindPostsQuery>) {
     super(props)
-    this.authMemberId = props.authMemberId
+    this.userId = props.userId
   }
 }

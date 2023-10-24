@@ -2,6 +2,7 @@ import { WatchedList } from '@src/shared/domain/watched-list'
 import { VoteEntity } from '../entity/vote.base.entity'
 import { PostVoteEntity } from '../entity/post-vote/entity'
 import { CommentVoteEntity } from '../entity/comment-vote/entity'
+import { AggregateID } from '@src/shared/domain/entity'
 
 export class Votes<T extends VoteEntity> extends WatchedList<T> {
   public compareItems(a: T, b: T): boolean {

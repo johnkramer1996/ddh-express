@@ -27,6 +27,6 @@ export class FindBySlugController extends PostControllerBase {
 
     const item = result.getValue()
 
-    return this.ok(res, this.getResponseMapper(req)(item))
+    return this.ok(res, item)
   }
 }

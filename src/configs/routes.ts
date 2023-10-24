@@ -9,13 +9,6 @@ const memebersRoot = 'members'
 const v1 = 'v1'
 
 export const routes = {
-  // todo: {
-  //   findAll: `/${todosRoot}`,
-  //   findOne: `/${todosRoot}/:todoId`,
-  //   createOne: `/${todosRoot}`,
-  //   updateOne: `/${todosRoot}/:todoId`,
-  //   deleteOne: `/${todosRoot}/:todoId`,
-  // },
   user: {
     create: `/${usersRoot}`,
     findAll: `/${usersRoot}`,
@@ -29,6 +22,7 @@ export const routes = {
     posts: `/${usersRoot}/:userId/posts`,
   },
   member: {
+    banByLogin: `/${memebersRoot}/:login/ban`,
     findByLogin: `/${memebersRoot}/:login`,
     currentMember: `/${memebersRoot}/currentMember`,
     posts: `/${memebersRoot}/:login/posts`,

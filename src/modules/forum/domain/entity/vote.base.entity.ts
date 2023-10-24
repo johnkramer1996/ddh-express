@@ -1,5 +1,5 @@
 import { AggregateRoot } from '../../../../shared/domain/aggregate-root.base'
-import { AggregateID } from '../../../../shared/domain/entity'
+import { AggregateID, Entity } from '../../../../shared/domain/entity'
 import { PrimaryKey } from '@src/shared/core/primary-key'
 
 export enum VoteType {
@@ -9,12 +9,13 @@ export enum VoteType {
 
 export interface VoteEntityCreationProps {
   type: VoteType
+  memberId: AggregateID
 }
 export interface VoteModelCreationAttributes extends PrimaryKey {
   type: string
 }
 
-export abstract class VoteEntity<T extends VoteEntityCreationProps = VoteEntityCreationProps> extends AggregateRoot<T> {
+export abstract class VoteEntity<T extends VoteEntityCreationProps = VoteEntityCreationProps> extends Entity<T> {
   protected readonly _id!: AggregateID
 
   public isUpvote(): boolean {
@@ -23,6 +24,10 @@ export abstract class VoteEntity<T extends VoteEntityCreationProps = VoteEntityC
 
   public isDownvote(): boolean {
     return this.props.type === VoteType['downvote']
+  }
+
+  get memberId() {
+    return this.props.memberId
   }
 
   validate(): void {

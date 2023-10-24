@@ -30,7 +30,7 @@ export interface RequestDecodedIfExist extends Request {
 
 @injectable()
 export abstract class BaseController {
-  constructor(protected queryBus: IQueryBus, protected commandBus: ICommandBus, protected mapper: Mapper<Entity<any>, any>) {}
+  constructor(protected queryBus: IQueryBus, protected commandBus: ICommandBus) {}
 
   protected abstract executeImpl(req: RequestDecoded, res: Response): Promise<void | any>
 
@@ -38,6 +38,7 @@ export abstract class BaseController {
     try {
       return await this.executeImpl(req as RequestDecoded, res)
     } catch (err) {
+      console.log(err)
       if (err instanceof ExceptionBase) {
         this.handleError(res, err)
         return

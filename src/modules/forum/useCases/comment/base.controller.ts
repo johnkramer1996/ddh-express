@@ -7,21 +7,30 @@ import { Response } from 'express'
 import { PostMapper } from '../../mappers/post/mapper'
 import { POST_TYPES } from '../../di/post/post.types'
 import { COMMENT_TYPES } from '../../di/comment/comment.types'
-import { CommentMapper } from '../../mappers/comment/mapper'
+import { CommentMapper } from '../../mappers/comment/mapper-domain'
+import { CommentQueryMapper } from '../../mappers/comment/mapper-query'
 
 export abstract class CommentControllerBase extends BaseController {
-  declare mapper: CommentMapper
-
   constructor(
-    @inject(TYPES.QUERY_BUS) protected queryBus: IQueryBus,
-    @inject(TYPES.COMMAND_BUS) protected commandBus: ICommandBus,
-    @inject(COMMENT_TYPES.MAPPER) mapper: CommentMapper
+    @inject(TYPES.QUERY_BUS) queryBus: IQueryBus,
+    @inject(TYPES.COMMAND_BUS) commandBus: ICommandBus,
+    @inject(COMMENT_TYPES.MAPPER) public commentMapper: CommentMapper
   ) {
-    super(queryBus, commandBus, mapper)
+    super(queryBus, commandBus)
   }
 
-  protected getResponseMapper(req: RequestDecodedIfExist) {
-    return req.decoded ? this.mapper.toResponseDetail.bind(this.mapper) : this.mapper.toResponse.bind(this.mapper)
+  protected handleError(res: Response, value: Error) {
+    return super.handleError(res, value)
+  }
+}
+
+export abstract class CommentControllerQueryBase extends BaseController {
+  constructor(
+    @inject(TYPES.QUERY_BUS) queryBus: IQueryBus,
+    @inject(TYPES.COMMAND_BUS) commandBus: ICommandBus,
+    @inject(COMMENT_TYPES.QUERY_MAPPER) public commentMapper: CommentQueryMapper
+  ) {
+    super(queryBus, commandBus)
   }
 
   protected handleError(res: Response, value: Error) {

@@ -1,9 +1,9 @@
 import { ICommand } from '@src/shared/core/cqs/command.interface'
-import { VoteServiceResponse } from './service'
+import { VoteCommentServiceResponse } from './service'
 import { VoteType } from '@src/modules/forum/domain/entity/vote.base.entity'
 
-export class CommentVoteCommand implements ICommand<VoteServiceResponse> {
-  declare response?: VoteServiceResponse
+export class CommentVoteCommand implements ICommand<VoteCommentServiceResponse> {
+  declare response?: VoteCommentServiceResponse
   readonly userId: string
   readonly slug: string
   readonly commentId: string

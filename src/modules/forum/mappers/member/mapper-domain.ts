@@ -2,7 +2,7 @@ import { inject, injectable } from 'inversify'
 import { Mapper } from '../../../../shared/domain/mapper.interface'
 import { MemberResponseDto } from '../../dtos/member/response.dto'
 import { MemberEntity } from '../../domain/entity/member/entity'
-import { MemberModelAttributes } from '../../domain/entity/member/types'
+import { MemberModelAttributes, MemberModelWithAdditonAttributes } from '../../domain/entity/member/types'
 import { USER_TYPES } from '@src/modules/user/di/user.types'
 import { UserMapper } from '@src/modules/user/mappers/user.mapper'
 
@@ -24,7 +24,7 @@ export class MemberMapper implements Mapper<MemberEntity, MemberModelAttributes,
     return record
   }
 
-  public toDomain(record: MemberModelAttributes): MemberEntity {
+  public toDomain(record: MemberModelWithAdditonAttributes): MemberEntity {
     const entity = new MemberEntity({
       id: record.id,
       createdAt: new Date(record.createdAt),
@@ -33,15 +33,15 @@ export class MemberMapper implements Mapper<MemberEntity, MemberModelAttributes,
         userId: record.userId,
         reputation: record.reputation,
         isBanned: record.isBanned,
-        login: record.user?.login,
-        user: record.user ? this.userMapper.toDomain(record.user) : null,
       },
     })
     return entity
   }
 
   public toResponse(entity: MemberEntity): MemberResponseDto {
-    const copy = entity.getProps()
-    return new MemberResponseDto({ ...copy, email: copy.user?.email.value })
+    throw 'not impemented'
+    // const copy = entity.getProps()
+    // login: copy.user.login.value, email: copy.user.email.value
+    // return new MemberResponseDto({ ...copy })
   }
 }

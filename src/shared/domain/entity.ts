@@ -91,10 +91,6 @@ export abstract class Entity<EntityProps> implements TimeStamp {
     return this.id ? this.id === object.id : false
   }
 
-  protected _getProps(): Partial<EntityProps> {
-    return {}
-  }
-
   public getProps(): EntityProps & BaseEntityProps {
     const propsCopy = {
       id: this._id,
@@ -102,7 +98,6 @@ export abstract class Entity<EntityProps> implements TimeStamp {
       updatedAt: this._updatedAt,
       deletedAt: this._deletedAt,
       ...this.props,
-      ...this._getProps(),
     }
     return Object.freeze(propsCopy)
   }

@@ -1,3 +1,4 @@
+import { AggregateID } from '@src/shared/domain/entity'
 import { VoteEntity } from '../vote.base.entity'
 import { PostVoteEntityCreationProps, PostVoteEntityProps } from './types'
 
@@ -7,6 +8,10 @@ export class PostVoteEntity extends VoteEntity<PostVoteEntityProps> {
     const entity = new PostVoteEntity({ props })
 
     return entity
+  }
+
+  get memberId(): AggregateID {
+    return this.props.memberId
   }
 
   validate(): void {}

@@ -10,6 +10,16 @@ import { UserDeletedDomainEvent } from './events/deleted.domain-event'
 import Email from './value-objects/email.value-object'
 import Login from './value-objects/login.value-object'
 
+// user -> Account
+
+// Role
+//     {
+//         Member,
+//         Admin,
+//         Client
+//     }
+//  AddRole(Role.Member);
+
 export class UserEntity extends AggregateRoot<UserEntityProps> {
   protected readonly _id!: AggregateID
   private _accessToken?: JWTToken

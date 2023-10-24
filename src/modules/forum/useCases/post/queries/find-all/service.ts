@@ -3,18 +3,20 @@ import { Paginated } from '@src/shared/domain/repository.port'
 import { injectable } from 'inversify'
 import { FindPostsQuery } from './query'
 import { QueryHandler } from '@src/shared/core/cqs/query-handler'
-import { PostEntity } from '@src/modules/forum/domain/entity/post/entity'
 import { PostServiceBase } from '../../base.service'
+import { PostResponseDto } from '@src/modules/forum/dtos/post/response.dto'
 
-type Return = Paginated<PostEntity>
+type Return = Paginated<PostResponseDto>
 export type FindPostsServiceResponse = ResultWithError<Return>
 
 @injectable()
 @QueryHandler(FindPostsQuery)
 export class FindPostsService extends PostServiceBase<FindPostsQuery, Return> {
   async executeImpl(query: FindPostsQuery): Promise<Return> {
-    const entities = await this.postRepo.findAllPaginatedDetail(query)
+    const authMember = await this.memberRepo.findOneByUserIdIfExists(query.userId)
 
-    return entities
+    const posts = await this.postRepo.findAllPaginatedQuery(query, authMember?.id)
+
+    return posts
   }
 }

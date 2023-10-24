@@ -24,6 +24,9 @@ class PostModel extends Model<PostModelAttributes, PostModelCreationAttributes> 
 PostModel.init(postInit, {
   modelName: DB_TABLES.POST,
   sequelize,
+  defaultScope: {
+    include: [{ as: 'votes', model: PostVoteModel }],
+  },
 })
 
 export default PostModel

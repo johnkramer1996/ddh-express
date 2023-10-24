@@ -1,6 +1,6 @@
 import { UserEntity } from '@src/modules/user/domain/user.entity'
 import { AggregateRoot } from '../../../../../shared/domain/aggregate-root.base'
-import { AggregateID } from '../../../../../shared/domain/entity'
+import { AggregateID, BaseEntityProps } from '../../../../../shared/domain/entity'
 import { CommentVotes } from '../../value-objects/votes.value-objcect'
 import { CommentVoteEntity } from '../comment-vote/entity'
 import { CommentCreatedDomainEvent } from './events/created.domain-event'
@@ -15,8 +15,9 @@ export type CommentUpdateTextProps = {
 export class CommentEntity extends AggregateRoot<CommentEntityProps> {
   protected readonly _id!: AggregateID
 
+  /**@private PostService */
   static create(create: CommentEntityCreationProps): CommentEntity {
-    const props: CommentEntityProps = { ...create, votes: new CommentVotes(), user: null }
+    const props: CommentEntityProps = { ...create, votes: new CommentVotes() }
     const entity = new CommentEntity({ props })
 
     entity.addEvent(new CommentCreatedDomainEvent({ entity }))
@@ -36,10 +37,6 @@ export class CommentEntity extends AggregateRoot<CommentEntityProps> {
     return this.props.votes
   }
 
-  set children(children: CommentEntity[]) {
-    this.props.children = children
-  }
-
   public addVote(vote: CommentVoteEntity): void {
     this.props.votes.add(vote)
     // this.addEvent(new PostVoteChangedCreatedDomainEvent({ entity: this, vote }))
@@ -50,6 +47,7 @@ export class CommentEntity extends AggregateRoot<CommentEntityProps> {
     // this.addEvent(new PostVoteChangedCreatedDomainEvent({ entity: this, vote }))
   }
 
+  /**@private */
   public updateText(props: CommentUpdateTextProps): void {
     if (props.text === this.props.text) return
 
@@ -58,8 +56,8 @@ export class CommentEntity extends AggregateRoot<CommentEntityProps> {
     this.props.text = newText
   }
 
-  protected _getProps(): Partial<CommentEntityProps> {
-    return { points: this.points }
+  public getProps(): CommentEntityProps & BaseEntityProps {
+    return { ...super.getProps(), points: this.points }
   }
 
   public delete(): void {

@@ -7,6 +7,7 @@ import { PostVoteModelAttributes } from '../../domain/entity/post-vote/types'
 import { PostVoteMapper } from '../../mappers/post-vote/mapper'
 import { PostVoteEntity } from '../../domain/entity/post-vote/entity'
 
+// TODO: REPO FOR VALUE OBJECT
 @injectable()
 export class PostVoteSequelizeRepository extends SequelizeRepositoryBase<PostVoteEntity, PostVoteModelAttributes> implements PostVoteRepositoryPort {
   constructor(@inject(POST_VOTE_TYPES.MAPPER) mapper: PostVoteMapper, @inject(POST_VOTE_TYPES.SEQUELIZE_MODEL) model: ModelDefined<any, any>) {

@@ -1,18 +1,15 @@
 import { injectable } from 'inversify'
-import { Request, Response } from 'express'
-import { plainToClass } from 'class-transformer'
-import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-request'
+import { Response } from 'express'
 import { ControllerGet } from '@src/shared/infra/http/decorators/controller'
 import { routes } from '@src/configs/routes'
-import { LoginRequestDto } from '@src/modules/forum/dtos/login.request.dto'
-import { MemberControllerBase } from '../../base.controller'
+import { MemberControllerQueryBase } from '../../base.controller'
 import { RequestDecoded } from '@src/shared/infra/http/models/base.controller'
 import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
 import { FindMemberByLoginQuery } from '../find-member-by-login/query'
 
 @injectable()
 @ControllerGet(routes.member.currentMember)
-export class FindCurrentMemberController extends MemberControllerBase {
+export class FindCurrentMemberController extends MemberControllerQueryBase {
   @UseGuard(AuthGuard)
   async executeImpl(req: RequestDecoded, res: Response): Promise<any> {
     const decoded = req.decoded
@@ -24,6 +21,6 @@ export class FindCurrentMemberController extends MemberControllerBase {
 
     const member = result.getValue()
 
-    return this.ok(res, this.mapper.toResponse(member))
+    return this.ok(res, this.memberMapper.toResponse(member))
   }
 }

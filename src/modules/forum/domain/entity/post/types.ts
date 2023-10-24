@@ -5,9 +5,7 @@ import { PostVotes, Votes } from '../../value-objects/votes.value-objcect'
 import { Slug } from '../../value-objects/slug.value-object'
 import { PostVoteModelAttributes } from '../post-vote/types'
 import { CommentModelAttributes } from '../comments/types'
-import { CommentEntity } from '../comments/entity'
-import { PostComments } from '../../value-objects/comments.value-objcect'
-import { UserEntity } from '@src/modules/user/domain/user.entity'
+import { AggregateID } from '@src/shared/domain/entity'
 
 export interface PostEntityCreationProps {
   type: PostType
@@ -15,17 +13,15 @@ export interface PostEntityCreationProps {
   text: string | null
   link: string | null
   slug: Slug
-  memberId: string
-  // comments: Comments
-  // dateTimePosted?: string | Date;
+  memberId: AggregateID
 }
 
 export interface PostEntityProps extends PostEntityCreationProps {
   points: number
   totalNumComments: number
-  comments: PostComments
+  // comments: PostComments
+  // commentIds: AggregateID[]
   votes: PostVotes
-  user: UserEntity | null
 }
 
 export interface PostModelCreationAttributes extends PrimaryKey {

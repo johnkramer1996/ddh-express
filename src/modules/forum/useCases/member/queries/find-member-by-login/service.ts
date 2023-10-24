@@ -3,17 +3,18 @@ import { injectable } from 'inversify'
 import { FindMemberByLoginQuery } from './query'
 import { NotFoundException } from '@src/shared/exceptions/exceptions'
 import { QueryHandler } from '@src/shared/core/cqs/query-handler'
-import { MemberServiceBase } from '../../base.service'
+import { MemberServiceBase, MemberServiceQueryBase } from '../../base.service'
 import { MemberEntity } from '@src/modules/forum/domain/entity/member/entity'
+import { MemberQuery } from '@src/modules/forum/domain/entity/member/query'
 
-type FindMemberServiceReturn = MemberEntity
+type FindMemberServiceReturn = MemberQuery
 export type FindMemberByLoginServiceResponse = ResultWithError<FindMemberServiceReturn>
 
 @injectable()
 @QueryHandler(FindMemberByLoginQuery)
-export class FindMemberLoginService extends MemberServiceBase<FindMemberByLoginQuery, FindMemberServiceReturn> {
+export class FindMemberLoginService extends MemberServiceQueryBase<FindMemberByLoginQuery, FindMemberServiceReturn> {
   protected async executeImpl(query: FindMemberByLoginQuery): Promise<FindMemberServiceReturn> {
-    const entity = await this.memberRepo.findOneByLoginDetail(query.login)
+    const entity = await this.memberRepo.findOneByLogin(query.login)
     if (!entity) throw new NotFoundException()
 
     return entity

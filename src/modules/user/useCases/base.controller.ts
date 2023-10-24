@@ -9,14 +9,12 @@ import { PasswordDoesntMatchException, UserAlreadyExistsError } from '../domain/
 import { Response } from 'express'
 
 export abstract class UserController extends BaseController {
-  declare mapper: UserMapper
-
   constructor(
     @inject(TYPES.QUERY_BUS) protected queryBus: IQueryBus,
     @inject(TYPES.COMMAND_BUS) protected commandBus: ICommandBus,
-    @inject(USER_TYPES.MAPPER) mapper: UserMapper
+    @inject(USER_TYPES.MAPPER) public mapper: UserMapper
   ) {
-    super(queryBus, commandBus, mapper)
+    super(queryBus, commandBus)
   }
 
   protected handleError(res: Response, value: Error) {

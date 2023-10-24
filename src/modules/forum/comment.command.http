@@ -1,0 +1,35 @@
+### CREATE
+POST http://localhost:8086/api/v1/posts/slug-test/comments/
+Content-Type: application/json
+
+{
+    "text": "hello, world!!! comment with parentId",
+    "parentId": "951e2297-b70f-4bbc-9317-4ce0eb5e715a"
+}
+### UPDATE BY ID
+PATCH http://localhost:8086/api/v1/posts/slug-test/comments/c12a1c13-a8fe-463d-9792-46d03198d7fd
+Content-Type: application/json
+
+{
+    "text": "hello, world!!! 09.10.23 UPDATED1"
+}
+
+### DELETE BY ID
+DELETE http://localhost:8086/api/v1/posts/slug-test/comments/c12a1c13-a8fe-463d-9792-46d03198d7fd
+
+### UPVOTE/DOWNVOTE /upvote /downvote
+POST http://localhost:8086/api/v1/posts/slug-test/comments/c12a1c13-a8fe-463d-9792-46d03198d7fd/upvote
+
+### UPVOTE/DOWNVOTE /upvote /downvote
+POST http://localhost:8086/api/v1/posts/slug-test/comments/c12a1c13-a8fe-463d-9792-46d03198d7fd/downvote
+
+
+router.post('/setting', authMiddleware(true), cabinetController.setting.bind(cabinetController))
+router.get('/posts', authMiddleware(true), postController.getAllByAuthUser.bind(postController))
+router.get('/posts/:postId', authMiddleware(true), postController.getByAuthUser.bind(postController))
+
+
+router.post('/role', adminController.addRole.bind(adminController))
+router.post('/users/:userId/setRole', authMiddleware(true), adminController.setRole.bind(adminController))
+router.get('/users/:userId/loginAsUser', authMiddleware(true), adminController.loginAsUser.bind(adminController))
+

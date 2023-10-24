@@ -7,19 +7,22 @@ import { CommentModelAttributes, CommentModelCreationAttributes } from '@src/mod
 import { DB_TABLES } from '@src/configs/dbtables'
 import { BaseModel } from './base.model'
 import PostModel from './post.model'
+import MemberModel from './member.model'
 
 @injectable()
 class CommentModel extends BaseModel<CommentModelAttributes, CommentModelCreationAttributes> {
-  declare userId: ForeignKey<UserModel['id']>
+  declare id: string
+  declare memberId: ForeignKey<MemberModel['id']>
   declare postId: ForeignKey<PostModel['id']>
+  declare parentId: ForeignKey<CommentModel['id']>
   declare text: string
   declare points: number
 
-  declare user?: NonAttribute<UserModel>
+  declare countChild?: NonAttribute<number>
 
-  get childCount() {
-    return this.dataValues.childCount
-  }
+  // get countChild(): number {
+  //   return this.dataValues.countChild
+  // }
 }
 
 CommentModel.init(commentInit, { modelName: DB_TABLES.COMMENT, sequelize })

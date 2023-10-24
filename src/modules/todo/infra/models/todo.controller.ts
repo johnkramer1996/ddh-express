@@ -7,13 +7,11 @@ import { TYPES } from '@src/shared/di/types'
 import { TODO_TYPES } from '@src/modules/todo/infra/di/types'
 
 export abstract class TodoController extends BaseController {
-  declare mapper: TodoMapper
-
   constructor(
     @inject(TYPES.QUERY_BUS) protected queryBus: IQueryBus,
     @inject(TYPES.COMMAND_BUS) protected commandBus: ICommandBus,
-    @inject(TODO_TYPES.MAPPER) mapper: TodoMapper
+    @inject(TODO_TYPES.MAPPER) public mapper: TodoMapper
   ) {
-    super(queryBus, commandBus, mapper)
+    super(queryBus, commandBus)
   }
 }

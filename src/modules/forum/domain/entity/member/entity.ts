@@ -1,3 +1,4 @@
+import { UserEntity } from '@src/modules/user/domain/user.entity'
 import { AggregateRoot } from '../../../../../shared/domain/aggregate-root.base'
 import { AggregateID } from '../../../../../shared/domain/entity'
 import { MemberCreatedDomainEvent } from './events/created.domain-event'
@@ -8,11 +9,29 @@ export class MemberEntity extends AggregateRoot<MemberEntityProps> {
   protected readonly _id!: AggregateID
 
   static create(create: MemberEntityCreationProps): MemberEntity {
-    const props: MemberEntityProps = { ...create, reputation: 0, isBanned: false, user: null }
+    const props: MemberEntityProps = { ...create, reputation: 0, isBanned: false }
     const entity = new MemberEntity({ props })
     entity.addEvent(new MemberCreatedDomainEvent({ entity }))
 
     return entity
+  }
+
+  get userId(): AggregateID {
+    return this.props.userId
+  }
+
+  public hasAccess(member: MemberEntity) {
+    return member.id === this.id
+  }
+
+  // TODO:
+  // is banned -> acticate
+  public activate(): void {
+    this.props.isBanned = true
+  }
+
+  public disable(): void {
+    this.props.isBanned = false
   }
 
   public delete(): void {

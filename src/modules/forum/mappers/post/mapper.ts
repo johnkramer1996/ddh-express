@@ -8,7 +8,7 @@ import { PostVotes, Votes } from '../../domain/value-objects/votes.value-objcect
 import { PostVoteMapper } from '../post-vote/mapper'
 import { COMMENT_TYPES } from '../../di/comment/comment.types'
 import { POST_VOTE_TYPES } from '../../di/post/post-vote.types'
-import { CommentMapper } from '../comment/mapper'
+import { CommentMapper } from '../comment/mapper-domain'
 import { CommentResponseDto } from '../../dtos/comment/response.dto'
 import { PostComments } from '../../domain/value-objects/comments.value-objcect'
 import { UserMapper } from '@src/modules/user/mappers/user.mapper'
@@ -44,8 +44,6 @@ export class PostMapper implements Mapper<PostEntity, PostModelAttributes, PostR
 
   public toDomain(record: PostModelAttributes): PostEntity {
     const votes = record.votes ? record.votes.map(this.postVoteMapper.toDomain.bind(this.postVoteMapper)) : []
-    const comments = record.comments ? record.comments.map(this.commentMapper.toDomain.bind(this.commentMapper)) : []
-    const user = record.user ? this.userMapper.toDomain(record.user) : null
 
     const entity = new PostEntity({
       id: record.id,
@@ -60,9 +58,7 @@ export class PostMapper implements Mapper<PostEntity, PostModelAttributes, PostR
         slug: new Slug({ value: record.slug }),
         points: record.points,
         totalNumComments: record.totalNumComments,
-        comments: new PostComments(comments),
         votes: new PostVotes(votes),
-        user,
       },
     })
     return entity
@@ -70,22 +66,11 @@ export class PostMapper implements Mapper<PostEntity, PostModelAttributes, PostR
 
   public toResponse(entity: PostEntity): PostResponseDto {
     const copy = entity.getProps()
-
-    return new PostResponseDto({
-      ...copy,
-      user: undefined,
-      slug: copy.slug.value,
-    })
-  }
-
-  public toResponseDetail(entity: PostEntity): PostResponseDto {
-    const copy = entity.getProps()
     const voteEntities = copy.votes.getItems()
 
     return new PostResponseDto({
       ...copy,
       slug: copy.slug.value,
-      user: copy.user ? this.userMapper.toResponse(copy.user) : undefined,
       wasUpvotedByMe: Boolean(voteEntities.find((v) => v.isUpvote())),
       wasDownvotedByMe: Boolean(voteEntities.find((v) => v.isDownvote())),
     })

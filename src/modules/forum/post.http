@@ -1,12 +1,5 @@
-
-### GET LIST ?order=popular ?order=recent
-GET http://localhost:8086/api/v1/posts?order=recent
-
-### GET BY SLUG
-GET http://localhost:8086/api/v1/posts/5525840-post-created-user-1
-
 ### UPVOTE/DOWNVOTE /upvote /downvote
-POST http://localhost:8086/api/v1/posts/5525840-post-created-user-1/downvote
+POST http://localhost:8086/api/v1/posts/6482851-post-created-user-1/upvote
 
 ### CREATE ONE
 POST http://localhost:8086/api/v1/posts/

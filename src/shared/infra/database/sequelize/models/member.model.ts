@@ -7,6 +7,7 @@ import memberInit from '../init/member.init'
 
 @injectable()
 class MemberModel extends Model<MemberModelAttributes, MemberModelCreationAttributes> {
+  declare id: string
   declare userId: ForeignKey<UserModel['id']>
   declare reputation: string
   declare isBanned: boolean

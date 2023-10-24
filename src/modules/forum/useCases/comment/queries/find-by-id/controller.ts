@@ -7,12 +7,12 @@ import { ControllerGet } from '@src/shared/infra/http/decorators/controller'
 import { routes } from '@src/configs/routes'
 import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
 import { RequestDecodedIfExist } from '@src/shared/infra/http/models/base.controller'
-import { CommentControllerBase } from '../../base.controller'
+import { CommentControllerBase, CommentControllerQueryBase } from '../../base.controller'
 import { CommentIdRequestDto } from '@src/modules/forum/dtos/comment/id.request.dto'
 
 @injectable()
 @ControllerGet(routes.postComments.findById)
-export class CommentFindByIdController extends CommentControllerBase {
+export class CommentFindByIdController extends CommentControllerQueryBase {
   @UseGuard(AuthGuard, false)
   @ValidateRequest([['params', CommentIdRequestDto]])
   async executeImpl(req: RequestDecodedIfExist, res: Response): Promise<any> {
@@ -26,6 +26,6 @@ export class CommentFindByIdController extends CommentControllerBase {
 
     const item = result.getValue()
 
-    return this.ok(res, this.getResponseMapper(req)(item))
+    return this.ok(res, this.commentMapper.toResponse(item))
   }
 }

@@ -6,11 +6,11 @@ import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-requ
 import { ControllerGet } from '@src/shared/infra/http/decorators/controller'
 import { routes } from '@src/configs/routes'
 import { LoginRequestDto } from '@src/modules/forum/dtos/login.request.dto'
-import { MemberControllerBase } from '../../base.controller'
+import { MemberControllerQueryBase } from '../../base.controller'
 
 @injectable()
 @ControllerGet(routes.member.findByLogin)
-export class FindMemberByLoginController extends MemberControllerBase {
+export class FindMemberByLoginController extends MemberControllerQueryBase {
   @ValidateRequest([['params', LoginRequestDto]])
   async executeImpl(req: Request, res: Response): Promise<any> {
     const params = plainToClass(LoginRequestDto, req.params)
@@ -22,6 +22,6 @@ export class FindMemberByLoginController extends MemberControllerBase {
 
     const member = result.getValue()
 
-    return this.ok(res, this.mapper.toResponse(member))
+    return this.ok(res, this.memberMapper.toResponse(member))
   }
 }

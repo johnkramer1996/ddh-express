@@ -1,20 +1,22 @@
-import { injectable } from 'inversify'
-import { CommentFindAllQuery } from './query'
+import { inject, injectable } from 'inversify'
+import { FindCommentsQuery } from './query'
 import { Response } from 'express'
 import { plainToClass } from 'class-transformer'
 import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-request'
 import { routes } from '@src/configs/routes'
 import { ControllerGet } from '@src/shared/infra/http/decorators/controller'
-import { CommentControllerBase } from '../../base.controller'
+import { CommentControllerBase, CommentControllerQueryBase } from '../../base.controller'
 import { CommentPaginatedResponseDto } from '@src/modules/forum/dtos/comment/paginated.response.dto.ts'
 import { SlugRequestDto } from '@src/modules/forum/dtos/slug.request.dto'
 import { PaginatedQueryRequestDto } from '@src/shared/api/paginated-query.request.dto'
 import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
 import { RequestDecodedIfExist } from '@src/shared/infra/http/models/base.controller'
+import { COMMENT_TYPES } from '@src/modules/forum/di/comment/comment.types'
+import { CommentQueryMapper } from '@src/modules/forum/mappers/comment/mapper-query'
 
 @injectable()
 @ControllerGet(routes.postComments.findAll)
-export class CommentFindAllController extends CommentControllerBase {
+export class FindCommentsController extends CommentControllerQueryBase {
   @ValidateRequest([
     ['params', SlugRequestDto],
     ['query', PaginatedQueryRequestDto],
@@ -25,7 +27,7 @@ export class CommentFindAllController extends CommentControllerBase {
     const paginatedQuery = plainToClass(PaginatedQueryRequestDto, req.query)
     const decoded = req.decoded
 
-    const query = new CommentFindAllQuery({ ...params, ...paginatedQuery, userId: decoded?.id })
+    const query = new FindCommentsQuery({ ...params, ...paginatedQuery, userId: decoded?.id })
     const result = await this.queryBus.execute(query)
 
     if (!result.isSuccess) return this.handleError(res, result.getValue())
@@ -36,7 +38,7 @@ export class CommentFindAllController extends CommentControllerBase {
       res,
       new CommentPaginatedResponseDto({
         ...paginated,
-        data: paginated.data.map(this.getResponseMapper(req)),
+        data: paginated.data.map(this.commentMapper.toResponse.bind(this.commentMapper)),
       })
     )
   }

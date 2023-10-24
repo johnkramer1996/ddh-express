@@ -2,12 +2,14 @@ import { ResultWithError } from '@src/shared/core/result'
 import { injectable } from 'inversify'
 import { FindBySlugQuery } from './query'
 import { NotFoundException } from '@src/shared/exceptions/exceptions'
-import { PostEntity } from '@src/modules/forum/domain/entity/post/entity'
 import { QueryHandler } from '@src/shared/core/cqs/query-handler'
 import { PostServiceBase } from '../../base.service'
+import { PostResponseDto } from '@src/modules/forum/dtos/post/response.dto'
 
-type Return = PostEntity
-export type FindBySlugServiceResponse = ResultWithError<PostEntity>
+//TODO
+// POST DETAIL  ValueObject
+type Return = PostResponseDto
+export type FindBySlugServiceResponse = ResultWithError<Return>
 
 @injectable()
 @QueryHandler(FindBySlugQuery)
@@ -15,9 +17,9 @@ export class FindBySlugService extends PostServiceBase<FindBySlugQuery, Return> 
   async executeImpl(query: FindBySlugQuery): Promise<Return> {
     const authMember = await this.memberRepo.findOneByUserIdIfExists(query.userId)
 
-    const entity = await this.postRepo.findBySlugDetail(query.slug, authMember?.id)
-    if (!entity) throw new NotFoundException()
+    const post = await this.postRepo.findBySlugQuery(query.slug, authMember?.id)
+    if (!post) throw new NotFoundException()
 
-    return entity
+    return post
   }
 }
