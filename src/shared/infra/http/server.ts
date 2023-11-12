@@ -4,6 +4,7 @@ import { TYPES } from '../../di/types'
 import HTTPRouter from './api/v1'
 import morgan from 'morgan'
 import cookieParser from 'cookie-parser'
+import cors from 'cors'
 
 export interface IServer {
   create(baseUrl?: string): Application
@@ -18,7 +19,8 @@ class Server {
 
     app.use(express.json())
     // app.use(bodyParser.urlencoded({ extended: true }))
-    // app.use(cors( { origin: '*' }))
+    app.use(cors({ credentials: true, origin: ['http://localhost:8088', 'http://localhost:3001'] }))
+    // app.use(cors({ origin: 'http://localhost:3000' }))
     // app.use(compression())
     // app.use(helmet())
     app.use(cookieParser())

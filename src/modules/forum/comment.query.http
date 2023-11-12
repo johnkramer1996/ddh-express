@@ -2,4 +2,4 @@
 GET http://localhost:8086/api/v1/posts/slug-test/comments
 
 ### GET BY ID
-GET  http://localhost:8086/api/v1/posts/slug-test/comments/c12a1c13-a8fe-463d-9792-46d03198d7fd
+GET  http://localhost:8086/api/v1/posts/slug-test/comments/ff7350e3-f2bf-4342-8616-bf4981057d09

@@ -3,7 +3,6 @@ import { Container } from 'inversify'
 import { TYPES } from './types'
 import Server, { IServer } from '../infra/http/server'
 import HTTPRouter from '../infra/http/api/v1'
-import todoModule from '@src/modules/todo/infra/di/container'
 import userModule from '@src/modules/user/di/user.container'
 import { QueryBus } from '@src/shared/core/cqs/query-bus'
 import { CommandBus } from '@src/shared/core/cqs/command-bus'
@@ -22,7 +21,6 @@ container.bind(TYPES.COMMAND_BUS).to(CommandBus)
 container.bind(AuthGuard).toSelf()
 container.bind(Container).toDynamicValue((ctx) => ctx.container as Container)
 
-// todoModule(container)
 userModule(container)
 postModule(container)
 commentModule(container)

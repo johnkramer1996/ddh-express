@@ -1,0 +1,6 @@
+
+### GET LIST ?order=popular ?order=recent
+GET http://localhost:8086/api/v1/posts?order=recent&limit=20
+
+### GET BY SLUG
+GET http://localhost:8086/api/v1/posts/9052248-post-created-user-1

@@ -1,7 +1,7 @@
-import { SequelizeRepositoryBase } from '@src/shared/infra/database/sequelize/base.repository'
+import { SequelizeRepositoryBase, SequelizeRepositoryQueryBase } from '@src/shared/infra/database/sequelize/base.repository'
 import { PostEntity } from '../../domain/entity/post/entity'
 import { PostModelAttributes } from '../../domain/entity/post/types'
-import { PostMapper } from '../../mappers/post/mapper'
+import { PostMapper } from '../../mappers/post/mapper-domain'
 import { ModelDefined } from 'sequelize'
 import { PostVoteRepositoryPort } from '../post-vote/repository.port'
 import { POST_TYPES } from '../../di/post/post.types'
@@ -14,6 +14,8 @@ import { PostVotesByAuthMemberIdIncludeStrategy } from './include-strategies/pos
 import { PostUserIncludeStrategy } from './include-strategies/post.member.include-strategy'
 import { PostVoteEntity } from '../../domain/entity/post-vote/entity'
 import { PostResponseDto } from '../../dtos/post/response.dto'
+import { PostQuery } from '../../domain/entity/post/query'
+import { PostQueryMapper } from '../../mappers/post/mapper-query'
 
 @injectable()
 export class PostSequelizeRepository extends SequelizeRepositoryBase<PostEntity, PostModelAttributes> implements PostRepositoryPort {
@@ -23,41 +25,6 @@ export class PostSequelizeRepository extends SequelizeRepositoryBase<PostEntity,
     @inject(POST_VOTE_TYPES.REPOSITORY) protected postVoteRepo: PostVoteRepositoryPort
   ) {
     super(mapper, model)
-  }
-
-  public async findAllPaginatedQuery(query: FindPostsParams, authMemberId?: string): Promise<Paginated<PostResponseDto>> {
-    const includeStrategies: IncludeStrategyPort[] = []
-
-    authMemberId && includeStrategies.push(new PostVotesByAuthMemberIdIncludeStrategy(authMemberId))
-    includeStrategies.push(new PostUserIncludeStrategy())
-
-    // TODO:
-    // CALL DIRECT THIS
-    const paginated = await this.findAllPaginated(query, { includeStrategies })
-
-    return {
-      ...paginated,
-      data: paginated.data.map(this.mapper.toResponse.bind(this.mapper)),
-    }
-  }
-
-  public async findAllPaginatedByMemberIdQuery(query: FindPostsByMemberParams, authMemberId?: string): Promise<Paginated<PostResponseDto>> {
-    const includeStrategies: IncludeStrategyPort[] = []
-
-    authMemberId && includeStrategies.push(new PostVotesByAuthMemberIdIncludeStrategy(authMemberId))
-    includeStrategies.push(new PostUserIncludeStrategy())
-
-    const paginated = await this.findAllPaginated(query, { where: { memberId: query.memberId }, includeStrategies })
-
-    return {
-      ...paginated,
-      data: paginated.data.map(this.mapper.toResponse.bind(this.mapper)),
-    }
-  }
-
-  public async findBySlugQuery(slug: string): Promise<PostResponseDto | null> {
-    const post = await this.findOne({ where: { slug } })
-    return post ? this.mapper.toResponse(post) : null
   }
 
   async findVoteByPostIdAndMemberId(postId: string, memberId: string): Promise<PostVoteEntity | null> {
@@ -78,23 +45,49 @@ export class PostSequelizeRepository extends SequelizeRepositoryBase<PostEntity,
     const exists = await this.exists(post.id)
     const isNew = !exists
 
-    // TODO: WRAP IN TRANSACTION
-    // https://khalilstemmler.com/articles/typescript-domain-driven-design/aggregate-design-persistence/
-    // I've chosen to manually apply rollbacks because it's much simpler for now.
-    try {
-      if (isNew) {
-        await this.model.create(rawSequelizePost)
-        // await this.saveComments(post.comments)
-        await this.savePostVotes(post.votes)
-      } else {
-        // await this.saveComments(post.comments)
-        await this.savePostVotes(post.votes)
-        await this.model.update(rawSequelizePost, { where: { id: post.id } })
-      }
-    } catch {
-      // this.rollbackSave(post);
+    if (isNew) {
+      await this.model.create(rawSequelizePost)
+      await this.savePostVotes(post.votes)
+    } else {
+      await this.savePostVotes(post.votes)
+      await this.model.update(rawSequelizePost, { where: { id: post.id } })
     }
 
     await post.publishEvents()
+  }
+}
+
+@injectable()
+export class PostSequelizeRepositoryQuery extends SequelizeRepositoryQueryBase<PostQuery, PostModelAttributes, PostResponseDto> {
+  constructor(@inject(POST_TYPES.QUERY_MAPPER) mapper: PostQueryMapper, @inject(POST_TYPES.SEQUELIZE_MODEL) model: ModelDefined<any, any>) {
+    super(mapper, model)
+  }
+
+  public async findAllPaginatedAuth(query: FindPostsParams, authMemberId?: string): Promise<Paginated<PostQuery>> {
+    const includeStrategies: IncludeStrategyPort[] = []
+
+    authMemberId && includeStrategies.push(new PostVotesByAuthMemberIdIncludeStrategy(authMemberId))
+    includeStrategies.push(new PostUserIncludeStrategy())
+
+    return await super.findAllPaginated(query, { includeStrategies })
+  }
+
+  public async findAllPaginatedByMemberId(query: FindPostsByMemberParams, authMemberId?: string): Promise<Paginated<PostQuery>> {
+    const includeStrategies: IncludeStrategyPort[] = []
+
+    authMemberId && includeStrategies.push(new PostVotesByAuthMemberIdIncludeStrategy(authMemberId))
+    includeStrategies.push(new PostUserIncludeStrategy())
+
+    return await this.findAllPaginated(query, { where: { memberId: query.memberId }, includeStrategies })
+  }
+
+  public async findBySlugQuery(slug: string, authMemberId?: string): Promise<PostResponseDto | null> {
+    const includeStrategies: IncludeStrategyPort[] = []
+
+    includeStrategies.push(new PostUserIncludeStrategy())
+    authMemberId && includeStrategies.push(new PostVotesByAuthMemberIdIncludeStrategy(authMemberId))
+
+    const post = await this.findOne({ where: { slug }, includeStrategies })
+    return post ? this.mapper.toResponse(post) : null
   }
 }

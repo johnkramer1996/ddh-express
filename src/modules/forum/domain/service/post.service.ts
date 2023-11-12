@@ -13,18 +13,17 @@ import { PostRepositoryPort } from '../../repository/post/repository.port'
 import { POST_TYPES } from '../../di/post/post.types'
 import { COMMENT_TYPES } from '../../di/comment/comment.types'
 
-// TODO:
-// https://softwareengineering.stackexchange.com/questions/330428/ddd-repositories-in-application-or-domain-service
-
 @injectable()
 export class PostService {
-  constructor(
-    // @inject(POST_TYPES.REPOSITORY) protected postRepo: PostRepositoryPort,
-    @inject(COMMENT_TYPES.REPOSITORY) protected commentRepo: CommentRepositoryPort
-  ) {}
-  public async createComment(post: PostEntity, member: MemberEntity, parentComment: CommentEntity | null, text: string): Promise<CommentEntity> {
+  public async createComment(
+    commentRepo: CommentRepositoryPort,
+    post: PostEntity,
+    member: MemberEntity,
+    parentComment: CommentEntity | null,
+    text: string
+  ): Promise<CommentEntity> {
     // IF POST NOT ACTIVE THROW ERROR
-    const countUserComment = await this.commentRepo.countCommentsByPostIdMemberId(post.id, member.id)
+    const countUserComment = await commentRepo.countCommentsByPostIdMemberId(post.id, member.id)
     if (countUserComment > PostEntity.maxCountCommentByUser)
       throw new ForbiddenException(`
     LIMIT COUNT COMMENT
@@ -32,7 +31,6 @@ export class PostService {
     MAX = ${PostEntity.maxCountCommentByUser}
     `)
 
-    // TODO: WHY? https://www.cnblogs.com/fengjq/p/17688708.html
     return CommentEntity.create({
       postId: post.id,
       memberId: member.id,

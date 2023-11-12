@@ -1,8 +1,0 @@
-const TODO_TYPES = {
-  ROUTER: Symbol.for('TODO_ROUTER'),
-  MAPPER: Symbol.for('TODO_MAPPER'),
-  REPOSITORY: Symbol.for('TODO_REPOSITORY'),
-  TODO_SEQUELIZE_MODEL: Symbol.for('TODO_SEQUELIZE_MODEL'),
-}
-
-export { TODO_TYPES }

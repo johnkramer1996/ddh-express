@@ -1,0 +1,27 @@
+import { ResultWithError } from '@src/shared/core/result'
+import { Paginated } from '@src/shared/domain/repository.port'
+import { injectable } from 'inversify'
+import { PostFindAllByLoginQuery } from './query'
+import { QueryHandler } from '@src/shared/core/cqs/query-handler'
+import { PostServiceBase, PostServiceQueryBase } from '../../base.service'
+import { NotFoundException } from '@src/shared/exceptions/exceptions'
+import { PostResponseDto } from '@src/modules/forum/dtos/post/response.dto'
+import { PostQuery } from '@src/modules/forum/domain/entity/post/query'
+
+type Return = Paginated<PostQuery>
+export type FindPostsServiceByUserResponse = ResultWithError<Return>
+
+@injectable()
+@QueryHandler(PostFindAllByLoginQuery)
+export class PostFindAllByLoginService extends PostServiceQueryBase<PostFindAllByLoginQuery, Return> {
+  async executeImpl(query: PostFindAllByLoginQuery): Promise<Return> {
+    const authMember = await this.memberRepo.findOneByUserIdIfExists(query.userId)
+
+    const member = await this.memberRepo.findOneByLogin(query.login)
+    if (!member) throw new NotFoundException()
+
+    const posts = await this.postRepo.findAllPaginatedByMemberId({ ...query, memberId: member.id }, authMember?.id)
+
+    return posts
+  }
+}

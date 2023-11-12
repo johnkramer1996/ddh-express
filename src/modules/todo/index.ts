@@ -1,1 +1,0 @@
-import './application/event-handlers'

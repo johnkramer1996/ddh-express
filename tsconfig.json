@@ -28,16 +28,6 @@
       "@tests/*": ["tests/*"]
     }
   },
-  "include": [
-    "src/*.ts",
-    "src/**/*.ts",
-    "src/**/*.js",
-    "scripts/**/*.ts",
-    "tests/**/*.ts",
-    "src/shared/infra/database/sequelize/init/user.init.js",
-    "src/shared/infra/database/sequelize/migrations/time-stamp.init.js",
-    "src/shared/infra/database/sequelize/migrations/init.mjs",
-    "src/modules/forum/domain/entity/post-vote/entity.ts"
-  ],
+  "include": ["src/*.ts", "src/**/*.ts", "src/**/*.js", "scripts/**/*.ts", "tests/**/*.ts"],
   "exclude": ["node_modules", "src/**/*.spec.ts", "src/**/*.spec.js"]
 }

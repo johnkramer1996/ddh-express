@@ -1,5 +1,4 @@
 // Root
-const todosRoot = 'todos'
 const postsRoot = 'posts'
 const usersRoot = 'users'
 const commentsRoot = 'comments'

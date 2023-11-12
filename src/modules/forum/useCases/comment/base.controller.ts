@@ -4,7 +4,7 @@ import { BaseController, RequestDecodedIfExist } from '@src/shared/infra/http/mo
 import { inject } from 'inversify'
 import { TYPES } from '@src/shared/di/types'
 import { Response } from 'express'
-import { PostMapper } from '../../mappers/post/mapper'
+import { PostMapper } from '../../mappers/post/mapper-domain'
 import { POST_TYPES } from '../../di/post/post.types'
 import { COMMENT_TYPES } from '../../di/comment/comment.types'
 import { CommentMapper } from '../../mappers/comment/mapper-domain'
