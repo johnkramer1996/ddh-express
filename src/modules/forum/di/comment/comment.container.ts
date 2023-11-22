@@ -5,7 +5,7 @@ import { FindCommentsController } from '../../useCases/comment/queries/find-comm
 import { FindCommentsQueryHandler } from '../../useCases/comment/queries/find-comments/service'
 import { CommentRepositoryPort } from '../../repository/comment/repository.port'
 import CommentVoteModel from '@src/shared/infra/database/sequelize/models/comment-vote.model'
-import { CommentSequelizeRepository, CommentSequelizeRepositoryQuery } from '../../repository/comment/repository.sequelize'
+import { CommentSequelizeRepository } from '../../repository/comment/repository.sequelize'
 import { CommentMapper } from '../../mappers/comment/mapper-domain'
 import CommentModel from '@src/shared/infra/database/sequelize/models/comment.model'
 import { CommentVoteMapper } from '../../mappers/comment-vote/mapper'
@@ -13,15 +13,20 @@ import { CommentVoteSequelizeRepository } from '../../repository/comment-vote/re
 import { CommentVoteRepositoryPort } from '../../repository/comment-vote/repository.port'
 import { DeleteCommentByIdController } from '../../useCases/comment/commands/delete-comment/controller'
 import { CommentDeleteByIdService } from '../../useCases/comment/commands/delete-comment/service'
-import { CommentVoteController } from '../../useCases/comment/commands/vote-comment/controller'
+import { VoteCommentController } from '../../useCases/comment/commands/vote-comment/controller'
 import { VoteCommentService } from '../../useCases/comment/commands/vote-comment/service'
-import { CommentFindByIdController } from '../../useCases/comment/queries/find-comment-by-id/controller'
-import { CommentFindByIdService } from '../../useCases/comment/queries/find-comment-by-id/service'
+import { FindCommentByIdController } from '../../useCases/comment/queries/find-comment-by-id/controller'
+import { FindCommentByIdService } from '../../useCases/comment/queries/find-comment-by-id/service'
 import { CommentCreateController } from '../../useCases/comment/commands/create-comment/controller'
 import { CommentCreateService } from '../../useCases/comment/commands/create-comment/service'
 import { CommentUpdateService } from '../../useCases/comment/commands/update-comment/service'
 import { CommentUpdateController } from '../../useCases/comment/commands/update-comment/controller'
 import { CommentQueryMapper } from '../../mappers/comment/mapper-query'
+import { FindChildrenCommentByIdController } from '../../useCases/comment/queries/find-children-comment-by-id/controller'
+import { FindChildrenCommentByIdService } from '../../useCases/comment/queries/find-children-comment-by-id/service'
+import { FindAllChildrenCommentByIdService } from '../../useCases/comment/queries/find-all-children-comment-by-id/service'
+import { FindAllChildrenCommentByIdController } from '../../useCases/comment/queries/find-all-children-comment-by-id/controller'
+import { CommentSequelizeRepositoryQuery } from '../../repository/comment/repository-query.sequelize'
 
 const commentModule = (container: Container) => {
   container.bind(COMMENT_TYPES.MAPPER).to(CommentMapper)
@@ -33,13 +38,20 @@ const commentModule = (container: Container) => {
   container.bind<CommentVoteRepositoryPort>(COMMENT_VOTE_TYPES.REPOSITORY).to(CommentVoteSequelizeRepository)
   container.bind(COMMENT_VOTE_TYPES.SEQUELIZE_MODEL).toConstantValue(CommentVoteModel)
 
+  // TODO: ADD INTERFACE
   container.bind(CommentSequelizeRepositoryQuery).toSelf()
 
   container.bind(FindCommentsController).toSelf()
   container.bind(FindCommentsQueryHandler).toSelf()
 
-  container.bind(CommentFindByIdController).toSelf()
-  container.bind(CommentFindByIdService).toSelf()
+  container.bind(FindCommentByIdController).toSelf()
+  container.bind(FindCommentByIdService).toSelf()
+
+  container.bind(FindChildrenCommentByIdController).toSelf()
+  container.bind(FindChildrenCommentByIdService).toSelf()
+
+  container.bind(FindAllChildrenCommentByIdController).toSelf()
+  container.bind(FindAllChildrenCommentByIdService).toSelf()
 
   container.bind(CommentCreateController).toSelf()
   container.bind(CommentCreateService).toSelf()
@@ -50,7 +62,7 @@ const commentModule = (container: Container) => {
   container.bind(DeleteCommentByIdController).toSelf()
   container.bind(CommentDeleteByIdService).toSelf()
 
-  container.bind(CommentVoteController).toSelf()
+  container.bind(VoteCommentController).toSelf()
   container.bind(VoteCommentService).toSelf()
 }
 

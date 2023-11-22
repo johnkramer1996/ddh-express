@@ -16,11 +16,8 @@ export class CommentVoteSequelizeRepository
     super(mapper, model)
   }
 
-  // TODO:
-  // MOVE TO COMMENT REPO
-  // findVoteByCommentIdAndUserId
   public async findOneByCommentIdAndMemberId(commentId: string, memberId: string): Promise<CommentVoteEntity | null> {
-    const row = await this.model.findOne({ where: { commentId, userId: memberId } })
+    const row = await this.model.findOne({ where: { commentId, memberId } })
 
     return row ? this.mapper.toDomain(row) : null
   }

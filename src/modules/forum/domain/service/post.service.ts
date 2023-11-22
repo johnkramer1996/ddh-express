@@ -1,4 +1,4 @@
-import { inject, injectable } from 'inversify'
+import { injectable } from 'inversify'
 import { VoteType } from '../entity/vote.base.entity'
 import { PostVoteEntity } from '../entity/post-vote/entity'
 import { PostEntity } from '../entity/post/entity'
@@ -6,12 +6,10 @@ import { CommentEntity } from '../entity/comments/entity'
 import { CommentVoteEntity } from '../entity/comment-vote/entity'
 import { ForbiddenException } from '@src/shared/exceptions/exceptions'
 import { MemberEntity } from '../entity/member/entity'
-import { POST_VOTE_TYPES } from '../../di/post/post-vote.types'
-import { PostVoteRepositoryPort } from '../../repository/post-vote/repository.port'
 import { CommentRepositoryPort } from '../../repository/comment/repository.port'
 import { PostRepositoryPort } from '../../repository/post/repository.port'
-import { POST_TYPES } from '../../di/post/post.types'
-import { COMMENT_TYPES } from '../../di/comment/comment.types'
+import { PostVoteRepositoryPort } from '../../repository/post-vote/repository.port'
+import { CommentVoteRepositoryPort } from '../../repository/comment-vote/repository.port'
 
 @injectable()
 export class PostService {
@@ -25,11 +23,9 @@ export class PostService {
     // IF POST NOT ACTIVE THROW ERROR
     const countUserComment = await commentRepo.countCommentsByPostIdMemberId(post.id, member.id)
     if (countUserComment > PostEntity.maxCountCommentByUser)
-      throw new ForbiddenException(`
-    LIMIT COUNT COMMENT
-    CURRENT = ${countUserComment}
-    MAX = ${PostEntity.maxCountCommentByUser}
-    `)
+      throw new ForbiddenException(`LIMIT COUNT COMMENT CURRENT = ${countUserComment} MAX = ${PostEntity.maxCountCommentByUser}`)
+
+    post.addComment()
 
     return CommentEntity.create({
       postId: post.id,
@@ -49,13 +45,13 @@ export class PostService {
   public removeComment(post: PostEntity, member: MemberEntity, comment: CommentEntity): void {
     if (!comment.hasAccess(member)) throw new ForbiddenException()
 
-    post.removeComment(comment.id)
+    post.removeComment()
 
     comment.delete()
   }
 
-  public async addVoteToPost(postRepo: PostRepositoryPort, post: PostEntity, member: MemberEntity, type: VoteType) {
-    const currentVote = await postRepo.findVoteByPostIdAndMemberId(post.id, member.id)
+  public async addVoteToPost(postVoteRepo: PostVoteRepositoryPort, post: PostEntity, member: MemberEntity, type: VoteType) {
+    const currentVote = await postVoteRepo.findOneByPostIdAndMemberId(post.id, member.id)
 
     if (!currentVote) {
       const vote = PostVoteEntity.create({ postId: post.id, memberId: member.id, type })
@@ -71,22 +67,19 @@ export class PostService {
     }
   }
 
-  public toggleVoteToComment(post: PostEntity, member: MemberEntity, comment: CommentEntity, vote: CommentVoteEntity | null, type: VoteType): void {
-    // const vote = await this.voteRepo.findOneByCommentIdAndUserId(command.commentId, member.id)
-    if (!vote) {
+  public async addVoteToComment(commentVoteRepo: CommentVoteRepositoryPort, comment: CommentEntity, member: MemberEntity, type: VoteType) {
+    const currentVote = await commentVoteRepo.findOneByCommentIdAndMemberId(comment.id, member.id)
+
+    if (!currentVote) {
       const vote = CommentVoteEntity.create({ commentId: comment.id, memberId: member.id, type })
       comment.addVote(vote)
-      // post.updateComment(comment)
       return
     }
-    if (type === VoteType['upvote'] && vote.isDownvote()) {
-      comment.removeVote(vote)
-      // post.updateComment(comment)
-      return
-    }
-    if (type === VoteType['downvote'] && vote.isUpvote()) {
-      comment.removeVote(vote)
-      // post.updateComment(comment)
+
+    const isUpvote = type === VoteType.upvote
+    const isDownvote = type === VoteType.downvote
+    if ((isUpvote && currentVote.isDownvote()) || (isDownvote && currentVote.isUpvote())) {
+      comment.removeVote(currentVote)
       return
     }
   }

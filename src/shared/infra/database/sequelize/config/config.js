@@ -13,18 +13,24 @@ const config = {
   user: get('DB_USER').default('postgres').asString(),
   password: get('DB_PASSWORD').default('password').asString(),
   database: get('DB_NAME').default('ddh').asString(),
+  isSqlite3: get('DB_IS_SQLITE3').default('true').asBool(),
 }
 
+const development = config.isSqlite3
+  ? {
+      storage: 'database.sqlite',
+      dialect: 'sqlite',
+    }
+  : {
+      username: config.user,
+      password: config.password,
+      database: config.database,
+      host: '127.0.0.1',
+      dialect: 'postgres',
+    }
+
 module.exports = {
-  development: {
-    // username: config.user,
-    // password: config.password,
-    // database: config.database,
-    // host: '127.0.0.1',
-    storage: 'database.sqlite',
-    dialect: 'sqlite',
-    logging: true,
-  },
+  development,
   test: {
     username: config.user,
     password: config.password,

@@ -9,8 +9,7 @@ export class CommentResponseDto extends ResponseBase {
   public readonly countChild: number
   public readonly wasUpvotedByMe: boolean
   public readonly wasDownvotedByMe: boolean
-  public readonly member: MemberResponseDto
-  //  public readonly children?: CommentResponseDto[]
+  public readonly member: MemberResponseDto | null
 
   constructor(props: ResponseBaseProps<CommentResponseDto>) {
     super(props)
@@ -21,6 +20,5 @@ export class CommentResponseDto extends ResponseBase {
     this.wasUpvotedByMe = props.wasUpvotedByMe
     this.wasDownvotedByMe = props.wasDownvotedByMe
     this.member = props.member
-    // this.children = props.children
   }
 }

@@ -3,10 +3,11 @@ POST http://localhost:8086/api/v1/posts/slug4/comments/
 Content-Type: application/json
 
 {
-    "text": "hello, world!!! comment with parentId"
+    "parentId": "80b3344c-c498-4737-938b-c2b53c984f77",
+    "text": "child child"
 }
 ### UPDATE BY ID
-PATCH http://localhost:8086/api/v1/posts/slug-test/comments/c12a1c13-a8fe-463d-9792-46d03198d7fd
+PATCH http://localhost:8086/api/v1/posts/slug-test/comments/80b3344c-c498-4737-938b-c2b53c984f77
 Content-Type: application/json
 
 {
@@ -14,13 +15,15 @@ Content-Type: application/json
 }
 
 ### DELETE BY ID
-DELETE http://localhost:8086/api/v1/posts/slug-test/comments/c12a1c13-a8fe-463d-9792-46d03198d7fd
+DELETE http://localhost:8086/api/v1/posts/slug-test/comments/80b3344c-c498-4737-938b-c2b53c984f77
 
 ### UPVOTE/DOWNVOTE /upvote /downvote
-POST http://localhost:8086/api/v1/posts/slug-test/comments/c12a1c13-a8fe-463d-9792-46d03198d7fd/upvote
+POST http://localhost:8086/api/v1/posts/slug-test/comments/80b3344c-c498-4737-938b-c2b53c984f77/upvote
+#authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIxIiwiZW1haWwiOiJ2aXRhbGlpQHJ1Ymljb24uY29tIiwiaWF0IjoxNjk5ODg1ODMzLCJleHAiOjE2OTk4OTMwMzN9.5xBNMHrZURisrUPGsVYwfAIEZ1BXTQrVYtrQTyRNxew
+
 
 ### UPVOTE/DOWNVOTE /upvote /downvote
-POST http://localhost:8086/api/v1/posts/slug-test/comments/c12a1c13-a8fe-463d-9792-46d03198d7fd/downvote
+POST http://localhost:8086/api/v1/posts/slug-test/comments/80b3344c-c498-4737-938b-c2b53c984f77/downvote
 
 
 router.post('/setting', authMiddleware(true), cabinetController.setting.bind(cabinetController))

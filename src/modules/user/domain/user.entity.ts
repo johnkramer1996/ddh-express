@@ -7,8 +7,8 @@ import { UserEntityProps, UserEntityCreationProps } from './user.types'
 import { UserLoggedInDomainEvent } from './events/logged-in.domain-event'
 import { UserCreatedDomainEvent } from './events/created.domain-event'
 import { UserDeletedDomainEvent } from './events/deleted.domain-event'
-import Email from './value-objects/email.value-object'
-import Login from './value-objects/login.value-object'
+import { Login } from './value-objects/login.value-object'
+import { Email } from './value-objects/email.value-object'
 
 // user -> Account
 

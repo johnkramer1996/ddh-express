@@ -11,6 +11,7 @@ const dbConfig = {
   username: get('DB_USERNAME').default('postgres1').asString(),
   password: get('DB_PASSWORD').default('root1').asString(),
   database: get('DB_NAME').default('ddh1').asString(),
+  isSqlite3: get('DB_IS_SQLITE3').default('true').asBool(),
 }
 
 const envCongig = {

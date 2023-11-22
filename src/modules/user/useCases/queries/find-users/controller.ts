@@ -5,13 +5,13 @@ import { plainToClass } from 'class-transformer'
 import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-request'
 import { PaginatedQueryRequestDto } from '@src/shared/api/paginated-query.request.dto'
 import { UserPaginatedResponseDto } from '@src/modules/user/dtos/user.paginated.response.dto.ts'
-import { UserController } from '@src/modules/user/useCases/base.controller'
+import { UserController, UserControllerQueryBase } from '@src/modules/user/useCases/base.controller'
 import { routes } from '@src/configs/routes'
 import { ControllerGet } from '@src/shared/infra/http/decorators/controller'
 
 @injectable()
 @ControllerGet(routes.user.findAll)
-export class FindUsersController extends UserController {
+export class FindUsersController extends UserControllerQueryBase {
   @ValidateRequest([['query', PaginatedQueryRequestDto]])
   async executeImpl(req: Request, res: Response): Promise<any> {
     const params = plainToClass(PaginatedQueryRequestDto, req.query)
@@ -27,7 +27,7 @@ export class FindUsersController extends UserController {
       res,
       new UserPaginatedResponseDto({
         ...paginated,
-        data: paginated.data.map(this.mapper.toResponse.bind(this.mapper)),
+        data: paginated.data.map(this.userMapper.toResponse.bind(this.userMapper)),
       })
     )
   }

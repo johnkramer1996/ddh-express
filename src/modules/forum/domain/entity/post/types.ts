@@ -8,12 +8,12 @@ import { CommentModelAttributes } from '../comments/types'
 import { AggregateID } from '@src/shared/domain/entity'
 
 export interface PostEntityCreationProps {
+  memberId: AggregateID
   type: PostType
   title: string
   text: string | null
   link: string | null
   slug: Slug
-  memberId: AggregateID
 }
 
 export interface PostEntityProps extends PostEntityCreationProps {
@@ -25,12 +25,12 @@ export interface PostEntityProps extends PostEntityCreationProps {
 }
 
 export interface PostModelCreationAttributes extends PrimaryKey {
+  memberId: string
   type: string
   title: string
   text: string | null
   link: string | null
   slug: string
-  memberId: string
   points: number
   totalNumComments: number
 }

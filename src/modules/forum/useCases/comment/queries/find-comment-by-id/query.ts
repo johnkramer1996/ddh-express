@@ -1,12 +1,12 @@
 import { IQuery } from '@src/shared/core/cqs/query.interface'
-import { CommentFindByIdServiceResponse } from './service'
+import { FindCommentByIdServiceResponse as FindCommentByIdServiceResponse } from './service'
 
-export class CommentFindByIdQuery implements IQuery<CommentFindByIdServiceResponse> {
-  declare response?: CommentFindByIdServiceResponse
+export class FindCommentByIdQuery implements IQuery<FindCommentByIdServiceResponse> {
+  declare response?: FindCommentByIdServiceResponse
   readonly userId?: string
   readonly commentId: string
 
-  constructor(props: CommentFindByIdQuery) {
+  constructor(props: FindCommentByIdQuery) {
     this.userId = props.userId
     this.commentId = props.commentId
   }

@@ -1,0 +1,11 @@
+
+### GET LIST
+GET http://localhost:8086/api/v1/users
+
+
+### GET BY LOGIN
+GET http://localhost:8086/api/v1/users/vitalii
+
+
+### GET CURRENT USER
+GET http://localhost:8086/api/v1/users/currentUser

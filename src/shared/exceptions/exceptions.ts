@@ -1,4 +1,13 @@
-import { ARGUMENT_INVALID, ARGUMENT_NOT_PROVIDED, ARGUMENT_OUT_OF_RANGE, CONFLICT, FORBIDEN, INTERNAL_SERVER_ERROR, NOT_FOUND } from './exception.codes'
+import {
+  ARGUMENT_INVALID,
+  ARGUMENT_NOT_PROVIDED,
+  ARGUMENT_OUT_OF_RANGE,
+  CONFLICT,
+  FORBIDEN,
+  INTERNAL_SERVER_ERROR,
+  NOT_FOUND,
+  UNAUTHORIZED,
+} from './exception.codes'
 import { ExceptionBase } from './exception.base'
 
 export class ArgumentInvalidException extends ExceptionBase {
@@ -11,6 +20,14 @@ export class ArgumentNotProvidedException extends ExceptionBase {
 
 export class ArgumentOutOfRangeException extends ExceptionBase {
   readonly code = ARGUMENT_OUT_OF_RANGE
+}
+
+export class UnauthorizedException extends ExceptionBase {
+  static readonly message = 'Not unauthorized'
+
+  constructor(message = ForbiddenException.message, readonly code = UNAUTHORIZED) {
+    super(message)
+  }
 }
 
 export class ConflictException extends ExceptionBase {
@@ -37,12 +54,6 @@ export class NotFoundException extends ExceptionBase {
   }
 }
 
-/**
- * Used to indicate an internal server error that does not fall under all other errors
- *
- * @class InternalServerErrorException
- * @extends {ExceptionBase}
- */
 export class InternalServerErrorException extends ExceptionBase {
   static readonly message = 'Internal server error'
 

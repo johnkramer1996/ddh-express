@@ -2,7 +2,7 @@ import { injectable } from 'inversify'
 import { Response } from 'express'
 import { plainToClass } from 'class-transformer'
 import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-request'
-import { CommentVoteCommand } from './command'
+import { VoteCommentCommand } from './command'
 import { ControllerPost } from '@src/shared/infra/http/decorators/controller'
 import { routes } from '@src/configs/routes'
 import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
@@ -16,7 +16,7 @@ import { CommentIdRequestDto } from '@src/modules/forum/dtos/comment/id.request.
 @injectable()
 @ControllerPost(routes.postComments.upvote)
 @ControllerPost(routes.postComments.downvote)
-export class CommentVoteController extends PostControllerBase {
+export class VoteCommentController extends PostControllerBase {
   @UseGuard(AuthGuard)
   @ValidateRequest([
     ['params', SlugRequestDto],
@@ -28,7 +28,7 @@ export class CommentVoteController extends PostControllerBase {
     const type = req.url.split('/').pop()?.toLowerCase() as VoteType
     const decoded = req.decoded
 
-    const command = new CommentVoteCommand({ ...params, ...postParams, type, userId: decoded.id })
+    const command = new VoteCommentCommand({ ...params, ...postParams, type, userId: decoded.id })
     const result = await this.commandBus.execute(command)
 
     if (!result.isSuccess) return this.handleError(res, result.getValue())

@@ -25,7 +25,8 @@ PostModel.init(postInit, {
   modelName: DB_TABLES.POST,
   sequelize,
   defaultScope: {
-    include: [{ as: 'votes', model: PostVoteModel }],
+    // TODO: IN COMMENT ADD POSTvOTE
+    // include: [{ as: 'votes', model: PostVoteModel }],
   },
 })
 

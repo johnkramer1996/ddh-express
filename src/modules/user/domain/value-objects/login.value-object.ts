@@ -8,7 +8,7 @@ export interface LoginCreationProps {
 
 export interface LoginProps extends LoginCreationProps {}
 
-class Login extends ValueObject<LoginProps> {
+export class Login extends ValueObject<LoginProps> {
   public static minLength = 2
   public static maxLength = 15
 
@@ -43,5 +43,3 @@ class Login extends ValueObject<LoginProps> {
     }
   }
 }
-
-export default Login

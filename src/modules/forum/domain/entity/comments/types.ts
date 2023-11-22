@@ -26,11 +26,8 @@ export interface CommentModelCreationAttributes extends PrimaryKey {
   points: number
 }
 
-export interface CommentModelAttributes extends CommentModelCreationAttributes, TimeStamp {}
-
-export interface CommentModelAdditionalAttribute extends CommentModelAttributes {
-  countChild: number
-  member: MemberModelWithAdditonAttributes
+export interface CommentModelAttributes extends CommentModelCreationAttributes, TimeStamp {
+  countChild?: string
+  member?: MemberModelWithAdditonAttributes
   votes?: CommentVoteModelAttributes[]
-  children?: CommentModelAttributes[]
 }

@@ -1,4 +1,4 @@
-import express, { Application, Router } from 'express'
+import express, { Application, Request, Response, Router } from 'express'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '../../di/types'
 import HTTPRouter from './api/v1'
@@ -19,8 +19,7 @@ class Server {
 
     app.use(express.json())
     // app.use(bodyParser.urlencoded({ extended: true }))
-    app.use(cors({ credentials: true, origin: ['http://localhost:8088', 'http://localhost:3001'] }))
-    // app.use(cors({ origin: 'http://localhost:3000' }))
+    app.use(cors({ credentials: true, origin: ['http://localhost:8088'] }))
     // app.use(compression())
     // app.use(helmet())
     app.use(cookieParser())
@@ -31,6 +30,10 @@ class Server {
     })
 
     app.use(baseUrl, this._router.get())
+
+    app.use((req: Request, res: Response) => {
+      res.status(404).json({ message: 'Not found' })
+    })
 
     return app
   }

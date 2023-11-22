@@ -29,32 +29,29 @@ export abstract class AbstractRedisClient {
   }
 
   public async getOne<T>(key: string): Promise<T | null> {
-    const value = (await this.client.get(key)) as T
-    return value
+    return (await this.client.get(key)) as T
   }
 
   public async getAllKeys(wildcard: string): Promise<string[]> {
     return await this.client.keys(wildcard)
   }
 
-  public async getAllKeyValue(wildcard: string): Promise<any[]> {
+  public async getAllKeyValue(wildcard: string): Promise<{ key: string; value: string }[]> {
     const results = await this.client.keys(wildcard)
     return await Promise.all(
-      results.map(async (key: any) => {
-        const value = await this.getOne(key)
+      results.map(async (key: string) => {
+        const value = (await this.getOne(key)) as string
         return { key, value }
       })
     )
   }
 
   public async set(key: string, value: any): Promise<any> {
-    const reply = await this.client.set(key, value)
-    return reply
+    return this.client.set(key, value)
   }
 
   public async deleteOne(key: string): Promise<number> {
-    const reply = await this.client.del(key)
-    return reply
+    return this.client.del(key)
   }
 
   public async testConnection(): Promise<any> {

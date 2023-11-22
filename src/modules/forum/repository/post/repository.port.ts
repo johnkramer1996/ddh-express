@@ -9,10 +9,6 @@ export interface FindPostsByMemberParams extends QueryParams {
 }
 
 export interface PostRepositoryPort extends RepositoryPort<PostEntity> {
-  // findAllPaginatedQuery(params: FindPostsParams, authMemberId?: string): Promise<Paginated<PostResponseDto>>
-  // findAllPaginatedByMemberIdQuery(params: FindPostsByMemberParams, authMemberId?: string): Promise<Paginated<PostResponseDto>>
-  // findBySlugQuery(slug: string, authMemberId?: string): Promise<PostResponseDto | null>
   findBySlug(slug: string): Promise<PostEntity | null>
-
-  findVoteByPostIdAndMemberId(postId: string, memberId: string): Promise<PostVoteEntity | null>
+  // findVoteByPostIdAndMemberId(postId: string, memberId: string): Promise<PostVoteEntity | null>
 }

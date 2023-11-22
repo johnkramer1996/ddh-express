@@ -19,6 +19,12 @@ async function bootstrap() {
 
   associate()
 
+  // const REPO = container.get(CommentSequelizeRepositoryQuery)
+
+  // const comments = await REPO.findOneByIdWithNestedComments2('d447272a-94a7-42cb-892a-fc5a245541a6')
+
+  // console.log(comments)
+
   try {
     envCongig.isProduction
       ? await redis.connect()

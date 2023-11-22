@@ -1,0 +1,8 @@
+### GET MEMBER INFO
+GET http://localhost:8086/api/v1/cabinet/member
+
+### GET USER INFO 
+GET http://localhost:8086/api/v1/cabinet/user
+
+### GET USER INFO 
+GET http://localhost:8086/api/v1/cabinet/posts?limit=3

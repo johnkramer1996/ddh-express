@@ -20,8 +20,12 @@ class CommentModel extends BaseModel<CommentModelAttributes, CommentModelCreatio
 
   declare countChild?: NonAttribute<number>
 
+  // get countChild(): NonAttribute<number> {
+  //   return this._countChild;
+  // }
+
   // get countChild(): number {
-  //   return this.dataValues.countChild
+  //   return this.att.countChild
   // }
 }
 

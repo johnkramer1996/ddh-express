@@ -5,6 +5,7 @@ interface MemberQueryProps {
   id: string
   createdAt: Date
   updatedAt: Date
+  memberId: string
   slug: string
   type: string
   title: string
@@ -14,7 +15,7 @@ interface MemberQueryProps {
 export class PostQuery extends ValueObject<MemberQueryProps> {
   validate(): void {}
 
-  get id(): AggregateID {
+  get id(): string {
     return this.props.id
   }
 
@@ -24,6 +25,10 @@ export class PostQuery extends ValueObject<MemberQueryProps> {
 
   get updatedAt(): Date {
     return this.props.updatedAt
+  }
+
+  get memberId(): string {
+    return this.props.memberId
   }
 
   get slug(): string {

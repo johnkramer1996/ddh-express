@@ -50,19 +50,10 @@ export interface RepositoryPort<Entity> {
   findOne(options?: Options): Promise<Entity | null>
   findOneById(id: string, options?: Options): Promise<Entity | null>
   // findAll(options?: Options): Promise<Entity[]>
-  findAllPaginated(params: QueryParams, options?: Options): Promise<Paginated<Entity>>
+  // findAllPaginated(params: QueryParams, options?: Options): Promise<Paginated<Entity>>
   delete(entity: Entity, force?: boolean): Promise<void>
   exists(id: string): Promise<boolean>
   save(entity: Entity): Promise<void>
   saveBulk(entiries: Entity[]): Promise<any>
   deleteBulk(entiries: Entity[], force?: boolean): Promise<any>
-
-  // insert(entity: Entity | Entity[]): Promise<void>
-  //   transaction<T>(handler: () => Promise<T>): Promise<T>
-} // public class ActiveAccountSpecification : ISpecification<Account>
-// {
-//     public Func<Account, bool> IsSatisfiedBy()
-//     {
-//         return x => x.IsActive && x.Credit > 0;
-//     }
-// }
+}

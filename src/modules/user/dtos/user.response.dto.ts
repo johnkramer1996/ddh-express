@@ -1,7 +1,7 @@
 import { ResponseBase, ResponseBaseProps } from '../../../shared/api/response.base'
 
 type UserResponseDtoProps<T> = Omit<T, 'lastLogin'> & {
-  lastLogin: Date | null
+  lastLogin?: Date | null
 }
 
 export class UserResponseDto extends ResponseBase {
@@ -9,7 +9,7 @@ export class UserResponseDto extends ResponseBase {
   public readonly country?: string | null
   public readonly postalCode?: string | null
   public readonly street?: string | null
-  public readonly lastLogin: string | null
+  public readonly lastLogin?: string | null
   public readonly isDeleted?: boolean | null
   public readonly posts?: any[]
 
@@ -21,6 +21,6 @@ export class UserResponseDto extends ResponseBase {
     this.street = props.street
     this.posts = props.posts
     this.isDeleted = props.isDeleted
-    this.lastLogin = props.lastLogin ? new Date(props.lastLogin).toISOString() : props.lastLogin
+    this.lastLogin = props.lastLogin ? new Date(props.lastLogin).toISOString() : null
   }
 }

@@ -1,5 +1,5 @@
 import { injectable } from 'inversify'
-import { CommentFindByIdQuery } from './query'
+import { FindCommentByIdQuery } from './query'
 import { Response } from 'express'
 import { plainToClass } from 'class-transformer'
 import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-request'
@@ -12,14 +12,14 @@ import { CommentIdRequestDto } from '@src/modules/forum/dtos/comment/id.request.
 
 @injectable()
 @ControllerGet(routes.postComments.findById)
-export class CommentFindByIdController extends CommentControllerQueryBase {
+export class FindCommentByIdController extends CommentControllerQueryBase {
   @UseGuard(AuthGuard, false)
   @ValidateRequest([['params', CommentIdRequestDto]])
   async executeImpl(req: RequestDecodedIfExist, res: Response): Promise<any> {
     const params = plainToClass(CommentIdRequestDto, req.params)
     const decoded = req.decoded
 
-    const query = new CommentFindByIdQuery({ ...params, userId: decoded?.id })
+    const query = new FindCommentByIdQuery({ ...params, userId: decoded?.id })
     const result = await this.queryBus.execute(query)
 
     if (!result.isSuccess) return this.handleError(res, result.getValue())

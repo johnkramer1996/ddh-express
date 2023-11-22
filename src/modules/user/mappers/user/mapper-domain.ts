@@ -1,12 +1,12 @@
 import { injectable } from 'inversify'
-import { Mapper } from '../../../shared/domain/mapper.interface'
-import { UserResponseDto } from '../dtos/user.response.dto'
-import { UserEntity } from '../domain/user.entity'
-import { UserModelAttributes } from '../domain/user.types'
+import { Mapper } from '../../../../shared/domain/mapper.interface'
+import { UserResponseDto } from '../../dtos/user.response.dto'
+import { UserEntity } from '../../domain/user.entity'
+import { UserModelAttributes } from '../../domain/user.types'
 import { Address } from '@src/modules/user/domain/value-objects/address.value-object'
-import { Password } from '../domain/value-objects/password.value-object'
-import Email from '../domain/value-objects/email.value-object'
-import Login from '../domain/value-objects/login.value-object'
+import { Password } from '../../domain/value-objects/password.value-object'
+import { Email } from '../../domain/value-objects/email.value-object'
+import { Login } from '../../domain/value-objects/login.value-object'
 
 @injectable()
 export class UserMapper implements Mapper<UserEntity, UserModelAttributes, UserResponseDto> {
@@ -48,7 +48,7 @@ export class UserMapper implements Mapper<UserEntity, UserModelAttributes, UserR
               street: record.address?.street ?? null,
             })
           : null,
-        posts: undefined,
+        // posts: undefined,
         // TODO: add posts
         // posts: record.posts,
       },

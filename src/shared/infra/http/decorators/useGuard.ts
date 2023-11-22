@@ -4,7 +4,7 @@ import { inject, injectable } from 'inversify'
 import { RequestDecoded } from '../models/base.controller'
 import { AuthServicePort } from '@src/modules/user/services/auth.service.port'
 import { container } from '../../../di/container'
-import { ForbiddenException } from '@src/shared/exceptions/exceptions'
+import { ForbiddenException, UnauthorizedException } from '@src/shared/exceptions/exceptions'
 
 export function UseGuard(func: Function, ...args: any[]): MethodDecorator {
   return function (target: Object, propertyKey: string | symbol, descriptor: PropertyDescriptor) {
@@ -36,7 +36,7 @@ export class AuthGuard extends Guard {
   }
 
   public error(message: string): boolean {
-    throw new ForbiddenException(message)
+    throw new UnauthorizedException(message)
   }
 
   public async execute(req: Request, ensure = true): Promise<boolean> {
@@ -44,8 +44,9 @@ export class AuthGuard extends Guard {
     if (!token) return ensure ? this.error('No access token provided') : true
 
     try {
+      console.log(token)
       const decoded = await this.authService.decodeJWT(token)
-      const tokens = await this.authService.getTokens(decoded.email)
+      const tokens = await this.authService.getTokens(decoded)
 
       if (tokens.length === 0) {
         return ensure ? this.error('Auth token not found. User is probably not logged in. Please login again.') : true
@@ -54,6 +55,7 @@ export class AuthGuard extends Guard {
       ;(req as RequestDecoded).decoded = decoded
       return true
     } catch (e) {
+      console.log({ e })
       return ensure ? this.error('Token signature expired.') : true
     }
   }

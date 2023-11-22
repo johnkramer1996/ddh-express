@@ -15,7 +15,7 @@ import { PostControllerBase } from '../../base.controller'
 @injectable()
 @ControllerPost(routes.post.upvoteBySlug)
 @ControllerPost(routes.post.downvoteBySlug)
-export class PostVoteController extends PostControllerBase {
+export class VotePostController extends PostControllerBase {
   @UseGuard(AuthGuard)
   @ValidateRequest([['params', SlugRequestDto]])
   async executeImpl(req: RequestDecoded, res: Response): Promise<any> {

@@ -6,11 +6,11 @@ import { FindPostsService } from '../../useCases/post/queries/find-posts/service
 import { PostMapper } from '../../mappers/post/mapper-domain'
 import PostModel from '@src/shared/infra/database/sequelize/models/post.model'
 import { PostRepositoryPort } from '../../repository/post/repository.port'
-import { PostCreateOneController } from '../../useCases/post/commands/create-post/controller'
-import { CreateOneService } from '../../useCases/post/commands/create-post/service'
+import { CreatePostController } from '../../useCases/post/commands/create-post/controller'
+import { CreateOneService as CreatePostService } from '../../useCases/post/commands/create-post/service'
 import { FindPostBySlugController } from '../../useCases/post/queries/find-post-by-slug/controller'
 import { FindPostBySlugService } from '../../useCases/post/queries/find-post-by-slug/service'
-import { PostVoteController } from '../../useCases/post/commands/vote-post/controller'
+import { VotePostController } from '../../useCases/post/commands/vote-post/controller'
 import { VotePostService } from '../../useCases/post/commands/vote-post/service'
 import { PostVoteSequelizeRepository } from '../../repository/post-vote/repository.sequelize'
 import PostVoteModel from '@src/shared/infra/database/sequelize/models/post-vote.model'
@@ -18,9 +18,11 @@ import { PostVoteMapper } from '../../mappers/post-vote/mapper'
 import { PostService } from '../../domain/service/post.service'
 import { PostVoteRepositoryPort } from '../../repository/post-vote/repository.port'
 import { PostSequelizeRepository, PostSequelizeRepositoryQuery } from '../../repository/post/repository.sequelize'
-import { PostFindAllByLoginController } from '../../useCases/post/queries/find-posts-by-user-login/controller'
-import { PostFindAllByLoginService } from '../../useCases/post/queries/find-posts-by-user-login/service'
+import { FindPostsByLoginController } from '../../useCases/post/queries/find-posts-by-user-login/controller'
+import { FindPostsByLoginService } from '../../useCases/post/queries/find-posts-by-user-login/service'
 import { PostQueryMapper } from '../../mappers/post/mapper-query'
+import { FindPostsByAuthUserController } from '../../useCases/post/queries/find-posts-by-auth-user/controller'
+import { FindPostsByAuthUserService } from '../../useCases/post/queries/find-posts-by-auth-user/service'
 
 const postModule = (container: Container) => {
   container.bind(POST_TYPES.MAPPER).to(PostMapper)
@@ -38,17 +40,20 @@ const postModule = (container: Container) => {
   container.bind(FindPostsController).toSelf()
   container.bind(FindPostsService).toSelf()
 
-  container.bind(PostCreateOneController).toSelf()
-  container.bind(CreateOneService).toSelf()
+  container.bind(CreatePostController).toSelf()
+  container.bind(CreatePostService).toSelf()
 
   container.bind(FindPostBySlugController).toSelf()
   container.bind(FindPostBySlugService).toSelf()
 
-  container.bind(PostVoteController).toSelf()
+  container.bind(VotePostController).toSelf()
   container.bind(VotePostService).toSelf()
 
-  container.bind(PostFindAllByLoginController).toSelf()
-  container.bind(PostFindAllByLoginService).toSelf()
+  container.bind(FindPostsByLoginController).toSelf()
+  container.bind(FindPostsByLoginService).toSelf()
+
+  container.bind(FindPostsByAuthUserController).toSelf()
+  container.bind(FindPostsByAuthUserService).toSelf()
 }
 
 export default postModule

@@ -1,5 +1,5 @@
 ### UPVOTE/DOWNVOTE /upvote /downvote
-POST http://localhost:8086/api/v1/posts/6482851-post-created-user-1/upvote
+POST http://localhost:8086/api/v1/posts/slug-test/downvote
 
 ### CREATE ONE
 POST http://localhost:8086/api/v1/posts/

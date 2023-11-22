@@ -8,14 +8,14 @@ import { UserTokensResponseDto } from '../../../dtos/user-tokens.response.dto'
 import { AuthServicePort } from '@src/modules/user/services/auth.service.port'
 import { PasswordDoesntMatchException } from '@src/modules/user/domain/user.errors'
 import { CommandHandler } from '@src/shared/core/cqs/command-handler'
-import { UserService } from '../../base.service'
+import { UserServiceBase } from '../../base.service'
 
 export type Return = UserTokensResponseDto
 export type LoginServiceResponse = ResultWithError<Return>
 
 @injectable()
 @CommandHandler(LoginCommand)
-export class LoginService extends UserService<LoginCommand, Return> {
+export class LoginService extends UserServiceBase<LoginCommand, Return> {
   async executeImpl(command: LoginCommand): Promise<Return> {
     const user = await this.userRepo.findOneByLogin(command.login)
     if (!user) throw new NotFoundException()

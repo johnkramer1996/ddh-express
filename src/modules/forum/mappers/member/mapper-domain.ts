@@ -4,7 +4,7 @@ import { MemberResponseDto } from '../../dtos/member/response.dto'
 import { MemberEntity } from '../../domain/entity/member/entity'
 import { MemberModelAttributes, MemberModelWithAdditonAttributes } from '../../domain/entity/member/types'
 import { USER_TYPES } from '@src/modules/user/di/user.types'
-import { UserMapper } from '@src/modules/user/mappers/user.mapper'
+import { UserMapper } from '@src/modules/user/mappers/user/mapper-domain'
 
 @injectable()
 export class MemberMapper implements Mapper<MemberEntity, MemberModelAttributes, MemberResponseDto> {

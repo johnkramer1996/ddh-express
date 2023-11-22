@@ -2,7 +2,7 @@ import { injectable } from 'inversify'
 import { MemberResponseDto } from '../../dtos/member/response.dto'
 import { MemberModelAttributes, MemberModelWithAdditonAttributes } from '../../domain/entity/member/types'
 import { MemberQuery } from '../../domain/entity/member/query'
-import { QueryMapper } from '../comment/mapper-query'
+import { QueryMapper } from '../../../../shared/domain/mapper-query.interface'
 
 @injectable()
 export class MemberQueryMapper implements QueryMapper<MemberQuery, MemberModelAttributes, MemberResponseDto> {

@@ -1,6 +1,6 @@
 import { Container } from 'inversify'
 import { USER_TYPES } from './user.types'
-import { UserMapper } from '../mappers/user.mapper'
+import { UserMapper } from '../mappers/user/mapper-domain'
 import { UserRepositoryPort } from '../repository/repository.port'
 import { UserSequelizeRepository } from '../repository/repository.sequelize'
 import UserModel from '@src/shared/infra/database/sequelize/models/user.model'
@@ -24,12 +24,18 @@ import { CreateUserController } from '../useCases/commands/create-user/controlle
 import { CreateUserService } from '../useCases/commands/create-user/service'
 import { RecoverUserController } from '../useCases/commands/restore-user/controller'
 import { RecoverUserService } from '../useCases/commands/restore-user/service'
+import { UserSequelizeRepositoryQuery } from '../repository/repository-query.sequelize'
+import { UserQueryMapper } from '../mappers/user/mapper-query'
 
 const userModule = (container: Container) => {
   container.bind(USER_TYPES.MAPPER).to(UserMapper)
+  container.bind(USER_TYPES.QUERY_MAPPER).to(UserQueryMapper)
   container.bind<UserRepositoryPort>(USER_TYPES.REPOSITORY).to(UserSequelizeRepository)
   container.bind<AuthServicePort>(USER_TYPES.AUTH_SERVICE).to(RedisAuthService)
   container.bind(USER_TYPES.SEQUELIZE_MODEL).toConstantValue(UserModel)
+
+  // TODO: ADD INTERFACE
+  container.bind(UserSequelizeRepositoryQuery).toSelf()
 
   container.bind(FindUsersController).toSelf()
   container.bind(FindUsersService).toSelf()

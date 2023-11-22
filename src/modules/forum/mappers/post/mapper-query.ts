@@ -1,6 +1,5 @@
 import { injectable } from 'inversify'
-import { MemberModelAttributes, MemberModelWithAdditonAttributes } from '../../domain/entity/member/types'
-import { QueryMapper } from '../comment/mapper-query'
+import { QueryMapper } from '../../../../shared/domain/mapper-query.interface'
 import { PostResponseDto } from '../../dtos/post/response.dto'
 import { PostQuery } from '../../domain/entity/post/query'
 import { PostModelAttributes } from '../../domain/entity/post/types'
@@ -12,6 +11,7 @@ export class PostQueryMapper implements QueryMapper<PostQuery, PostModelAttribut
       id: record.id,
       createdAt: new Date(record.createdAt),
       updatedAt: new Date(record.updatedAt),
+      memberId: record.memberId,
       slug: record.slug,
       type: record.type,
       title: record.title,
@@ -24,6 +24,7 @@ export class PostQueryMapper implements QueryMapper<PostQuery, PostModelAttribut
       id: query.id,
       createdAt: query.createdAt,
       updatedAt: query.updatedAt,
+      memberId: query.memberId,
       slug: query.slug,
       type: query.type,
       text: query.text,

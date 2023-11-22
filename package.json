@@ -23,9 +23,8 @@
     "seed:down:dev": "sequelize db:seed:undo:all",
     "seed:up:test": "sequelize db:seed:all",
     "setup": "",
-    "setup:dev": "npm install && npm run db:create:dev && npm run migrate:dev && cd public/app && npm install",
-    "start:dev": "cross-env NODE_ENV=development nodemon",
-    "start": "nodemon",
+    "setup:dev": "npm install && npm run db:create:dev && npm run migrate:dev",
+    "start": "cross-env NODE_ENV=development nodemon",
     "test": "jest",
     "test:dev": "jest --watchAll"
   },

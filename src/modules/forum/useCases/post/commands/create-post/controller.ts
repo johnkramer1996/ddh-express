@@ -14,7 +14,7 @@ import { PostControllerBase } from '../../base.controller'
 
 @injectable()
 @ControllerPost(routes.post.create)
-export class PostCreateOneController extends PostControllerBase {
+export class CreatePostController extends PostControllerBase {
   @UseGuard(AuthGuard)
   @ValidateRequest([['body', CreateOneRequestDto]])
   async executeImpl(req: RequestDecoded, res: Response): Promise<any> {

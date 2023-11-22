@@ -19,7 +19,7 @@ export class VotePostService extends PostServiceBase<VoteCommand, Return> {
     const member = await this.memberRepo.findOneByUserId(command.userId)
     if (!member) throw new NotFoundException()
 
-    await this.postService.addVoteToPost(this.postRepo, post, member, command.type)
+    await this.postService.addVoteToPost(this.postVoteRepo, post, member, command.type)
 
     await this.postRepo.save(post)
 

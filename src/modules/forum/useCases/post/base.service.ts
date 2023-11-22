@@ -8,14 +8,16 @@ import { PostService } from '../../domain/service/post.service'
 import { PostSequelizeRepositoryQuery } from '../../repository/post/repository.sequelize'
 import { MemberSequelizeRepositoryQuery } from '../../repository/member/repository.sequelize'
 import { PostQueryMapper } from '../../mappers/post/mapper-query'
+import { POST_VOTE_TYPES } from '../../di/post/post-vote.types'
+import { PostVoteRepositoryPort } from '../../repository/post-vote/repository.port'
 
 export abstract class PostServiceBase<T1, T2> extends ServiceBase<T1, T2> {
   constructor(
     @inject(POST_TYPES.REPOSITORY) protected postRepo: PostRepositoryPort,
     @inject(MEMBER_TYPES.REPOSITORY) protected memberRepo: MemberRepositoryPort,
+    @inject(POST_VOTE_TYPES.REPOSITORY) protected postVoteRepo: PostVoteRepositoryPort,
     @inject(PostService) protected postService: PostService
   ) {
-    console.log(postService)
     super()
   }
 }

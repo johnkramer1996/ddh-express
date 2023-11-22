@@ -12,7 +12,7 @@ interface CommentQueryProps {
   countChild: number
   wasUpvotedByMe: boolean
   wasDownvotedByMe: boolean
-  member: MemberQuery
+  member: MemberQuery | null
 }
 
 export class CommentQuery extends ValueObject<CommentQueryProps> {
@@ -34,7 +34,7 @@ export class CommentQuery extends ValueObject<CommentQueryProps> {
     return this.props.text
   }
 
-  get member(): MemberQuery {
+  get member(): MemberQuery | null {
     return this.props.member
   }
 

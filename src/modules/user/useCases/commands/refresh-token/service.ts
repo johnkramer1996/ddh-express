@@ -7,14 +7,14 @@ import { USER_TYPES } from '@src/modules/user/di/user.types'
 import { AuthServicePort } from '@src/modules/user/services/auth.service.port'
 import { CommandHandler } from '@src/shared/core/cqs/command-handler'
 import { JWTToken } from '@src/shared/core/jwt'
-import { UserService } from '../../base.service'
+import { UserServiceBase } from '../../base.service'
 
 type Return = JWTToken
 export type RefreshTokenServiceResponse = ResultWithError<Return>
 
 @injectable()
 @CommandHandler(RefreshTokenCommand)
-export class RefreshTokenService extends UserService<RefreshTokenCommand, Return> {
+export class RefreshTokenService extends UserServiceBase<RefreshTokenCommand, Return> {
   async executeImpl(command: RefreshTokenCommand): Promise<Return> {
     const login = await this.authService.getLoginFromRefreshToken(command.refreshToken)
     const user = await this.userRepo.findOneByLogin(login)

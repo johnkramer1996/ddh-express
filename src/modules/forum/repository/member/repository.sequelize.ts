@@ -1,5 +1,6 @@
 import { inject, injectable } from 'inversify'
-import { SequelizeRepositoryBase, SequelizeRepositoryQueryBase } from '../../../../shared/infra/database/sequelize/base.repository'
+import { SequelizeRepositoryBase } from '../../../../shared/infra/database/sequelize/base.repository'
+import { SequelizeRepositoryQueryBase } from '@src/shared/infra/database/sequelize/base-query.repository'
 import { ModelDefined } from 'sequelize'
 import { MemberRepositoryPort } from './repository.port'
 import { MemberMapper } from '../../mappers/member/mapper-domain'

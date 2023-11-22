@@ -8,7 +8,7 @@ export interface EmailCreationProps {
 
 export interface EmailProps extends EmailCreationProps {}
 
-class Email extends ValueObject<EmailProps> {
+export class Email extends ValueObject<EmailProps> {
   constructor(props: EmailProps) {
     super(props)
     this.props.value = this.format(props.value)
@@ -43,5 +43,3 @@ class Email extends ValueObject<EmailProps> {
     }
   }
 }
-
-export default Email

@@ -9,6 +9,7 @@ import { FindMemberByLoginQuery } from '../find-member-by-login/query'
 
 @injectable()
 @ControllerGet(routes.member.currentMember)
+@ControllerGet(routes.cabinet.member)
 export class FindCurrentMemberController extends MemberControllerQueryBase {
   @UseGuard(AuthGuard)
   async executeImpl(req: RequestDecoded, res: Response): Promise<any> {

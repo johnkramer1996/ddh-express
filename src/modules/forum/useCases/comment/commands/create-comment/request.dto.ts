@@ -2,9 +2,10 @@ import { IsString, IsOptional, IsEnum, ValidateIf, IsEmpty, IsUUID } from 'class
 
 export class CommentCreateRequestDto {
   @IsString()
+  @IsUUID()
   readonly text!: string
 
-  @IsOptional()
+  // @IsOptional()
   @IsUUID()
   readonly parentId?: string
 }

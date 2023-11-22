@@ -11,7 +11,6 @@ class MemberModel extends Model<MemberModelAttributes, MemberModelCreationAttrib
   declare userId: ForeignKey<UserModel['id']>
   declare reputation: string
   declare isBanned: boolean
-
   declare createdAt: Date
   declare updatedAt: Date
   declare deletedAt: Date | null

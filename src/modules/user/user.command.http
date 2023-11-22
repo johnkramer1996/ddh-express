@@ -1,11 +1,3 @@
-
-### GET LIST
-GET http://localhost:8086/api/v1/users
-
-
-### GET BY LOGIN
-GET http://localhost:8086/api/v1/users/vitalii
-
 ### DELETE BY LOGIN
 DELETE http://localhost:8086/api/v1/users/member-1
 

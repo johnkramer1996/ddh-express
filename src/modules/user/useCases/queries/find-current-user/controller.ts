@@ -4,14 +4,15 @@ import { UserRequestDto } from '../../../dtos/user.request.dto'
 import { Response } from 'express'
 import { plainToClass } from 'class-transformer'
 import { RequestDecoded } from '@src/shared/infra/http/models/base.controller'
-import { UserController } from '@src/modules/user/useCases/base.controller'
+import { UserController, UserControllerQueryBase } from '@src/modules/user/useCases/base.controller'
 import { routes } from '@src/configs/routes'
 import { ControllerGet } from '@src/shared/infra/http/decorators/controller'
 import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
 
 @injectable()
 @ControllerGet(routes.user.currentUser)
-export class CurrentUserController extends UserController {
+@ControllerGet(routes.cabinet.user)
+export class CurrentUserController extends UserControllerQueryBase {
   @UseGuard(AuthGuard)
   async executeImpl(req: RequestDecoded, res: Response): Promise<any> {
     const decoded = req.decoded
@@ -23,6 +24,6 @@ export class CurrentUserController extends UserController {
 
     const user = result.getValue()
 
-    return this.ok(res, this.mapper.toResponse(user))
+    return this.ok(res, this.userMapper.toResponse(user))
   }
 }

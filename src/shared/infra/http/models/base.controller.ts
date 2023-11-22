@@ -17,6 +17,7 @@ import {
   ForbiddenException,
   InternalServerErrorException,
   NotFoundException,
+  UnauthorizedException,
 } from '@src/shared/exceptions/exceptions'
 import { ExceptionBase } from '@src/shared/exceptions/exception.base'
 
@@ -59,6 +60,7 @@ export abstract class BaseController {
     if (error instanceof ConflictException) return this.conflict(res, error)
     if (error instanceof NotFoundException) return this.notFound(res, error)
     if (error instanceof ForbiddenException) return this.forbidden(res, error)
+    if (error instanceof UnauthorizedException) return this.unauthorized(res, error)
     if (error instanceof InternalServerErrorException) return this.fail(res, error)
     return this.fail(res, error.message)
   }
@@ -97,7 +99,7 @@ export abstract class BaseController {
   }
 
   public notFound(res: Response, error?: ExceptionBase) {
-    return BaseController.jsonResponse(res, 404, error ? error : 'Not found1')
+    return BaseController.jsonResponse(res, 404, error ? error : 'Not found')
   }
 
   public conflict(res: Response, error?: ExceptionBase) {

@@ -30,6 +30,7 @@ export class CommentCreateService extends CommentServiceBase<CommentCreateComman
     // COUNT COMMENT BY MEMBER
     // BUSINESS RULE -> LESS THAN 10 COMMENTS
     // entity member add prop countPost ???
+    console.log(parentComment)
     const comment = await this.postService.createComment(this.commentRepo, post, member, parentComment, command.text)
 
     await this.commentRepo.save(comment)

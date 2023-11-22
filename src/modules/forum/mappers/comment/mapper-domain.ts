@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify'
 import { Mapper } from '../../../../shared/domain/mapper.interface'
 import { CommentEntity } from '../../domain/entity/comments/entity'
-import { CommentModelAdditionalAttribute, CommentModelAttributes } from '../../domain/entity/comments/types'
+import { CommentModelAttributes } from '../../domain/entity/comments/types'
 import { CommentResponseDto } from '../../dtos/comment/response.dto'
 import { CommentVotes, PostVotes } from '../../domain/value-objects/votes.value-objcect'
 import { COMMENT_VOTE_TYPES } from '../../di/comment/comment-vote.types'
@@ -32,7 +32,7 @@ export class CommentMapper implements Mapper<CommentEntity, CommentModelAttribut
     return record
   }
 
-  public toDomain(record: CommentModelAdditionalAttribute): CommentEntity {
+  public toDomain(record: CommentModelAttributes): CommentEntity {
     const votes = record.votes ? record.votes.map(this.commentVoteMapper.toDomain.bind(this.commentVoteMapper)) : []
     const entity = new CommentEntity({
       id: record.id,

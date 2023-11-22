@@ -15,7 +15,7 @@ export class CommentCountChildAttributeStrategy implements AttributeStrategyPort
       )
       SELECT COUNT(*) FROM r
     )`,
-      'childCount',
+      'countChild',
     ]
   }
 }

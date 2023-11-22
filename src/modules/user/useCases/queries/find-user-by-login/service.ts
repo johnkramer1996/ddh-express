@@ -4,14 +4,15 @@ import { FindUserByLoginQuery } from './query'
 import { NotFoundException } from '@src/shared/exceptions/exceptions'
 import { QueryHandler } from '../../../../../shared/core/cqs/query-handler'
 import { UserEntity } from '@src/modules/user/domain/user.entity'
-import { UserService } from '../../base.service'
+import { UserServiceBase, UserServiceQueryBase } from '../../base.service'
+import { UserQuery } from '@src/modules/user/domain/user.query'
 
-type FindUserByLoginServiceReturn = UserEntity
+type FindUserByLoginServiceReturn = UserQuery
 export type FindUserByLoginServiceResponse = ResultWithError<FindUserByLoginServiceReturn>
 
 @injectable()
 @QueryHandler(FindUserByLoginQuery)
-export class FindUserByIdService extends UserService<FindUserByLoginQuery, FindUserByLoginServiceReturn> {
+export class FindUserByIdService extends UserServiceQueryBase<FindUserByLoginQuery, FindUserByLoginServiceReturn> {
   protected async executeImpl(query: FindUserByLoginQuery): Promise<FindUserByLoginServiceReturn> {
     const entity = await this.userRepo.findOneByLogin(query.login)
     if (!entity) throw new NotFoundException()

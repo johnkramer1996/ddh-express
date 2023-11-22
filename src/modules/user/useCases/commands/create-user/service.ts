@@ -5,17 +5,17 @@ import { AggregateID } from '@src/shared/domain/entity'
 import { CommandHandler } from '@src/shared/core/cqs/command-handler'
 import { UserEntity } from '@src/modules/user/domain/user.entity'
 import { Password } from '@src/modules/user/domain/value-objects/password.value-object'
-import { UserService } from '../../base.service'
+import { UserServiceBase } from '../../base.service'
 import { UserAlreadyExistsError } from '@src/modules/user/domain/user.errors'
-import Email from '@src/modules/user/domain/value-objects/email.value-object'
-import Login from '@src/modules/user/domain/value-objects/login.value-object'
+import { Login } from '@src/modules/user/domain/value-objects/login.value-object'
+import { Email } from '@src/modules/user/domain/value-objects/email.value-object'
 
 type Return = AggregateID
 export type CreateUserServiceResponse = ResultWithError<Return>
 
 @injectable()
 @CommandHandler(CreateUserCommand)
-export class CreateUserService extends UserService<CreateUserCommand, Return> {
+export class CreateUserService extends UserServiceBase<CreateUserCommand, Return> {
   async executeImpl(command: CreateUserCommand): Promise<Return> {
     const existsLogin = await this.userRepo.findOneByLogin(command.login)
     if (existsLogin) throw new UserAlreadyExistsError('Login already exists')

@@ -1,6 +1,7 @@
 import { ResponseBase, ResponseBaseProps } from '../../../../shared/api/response.base'
 
 export class PostResponseDto extends ResponseBase {
+  public readonly memberId: string
   public readonly slug: string
   public readonly title: string
   public readonly type: string
@@ -16,6 +17,7 @@ export class PostResponseDto extends ResponseBase {
 
   constructor(props: ResponseBaseProps<PostResponseDto>) {
     super(props)
+    this.memberId = props.memberId
     this.slug = props.slug
     this.title = props.title
     this.type = props.type

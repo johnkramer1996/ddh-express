@@ -26,6 +26,7 @@ module.exports = {
     type: DataTypes.INTEGER,
   },
   isBanned: {
+    field: 'is_banned',
     allowNull: false,
     type: DataTypes.BOOLEAN,
   },

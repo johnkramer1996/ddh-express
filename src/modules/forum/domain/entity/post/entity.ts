@@ -1,4 +1,3 @@
-import { v4 } from 'uuid'
 import { AggregateRoot } from '../../../../../shared/domain/aggregate-root.base'
 import { AggregateID, BaseEntityProps } from '../../../../../shared/domain/entity'
 import { PostEntityCreationProps, PostEntityProps } from './types'
@@ -7,16 +6,12 @@ import { PostVoteEntity } from '../post-vote/entity'
 import { PostDeletedDomainEvent } from './events/deleted.domain-event'
 import { PostCreatedDomainEvent } from './events/created.domain-event'
 import { PostVoteChangedCreatedDomainEvent } from './events/vote-changed.domain-event'
-import { CommentEntity } from '../comments/entity'
-import { PostComments } from '../../value-objects/comments.value-objcect'
-import { VoteType } from '../vote.base.entity'
 
 export class PostEntity extends AggregateRoot<PostEntityProps> {
-  public static maxCountCommentByUser = 27
+  public static maxCountCommentByUser = 20
   protected readonly _id!: AggregateID
 
   static create(create: PostEntityCreationProps): PostEntity {
-    // commentIds: [],
     const props: PostEntityProps = { ...create, points: 0, totalNumComments: 0, votes: PostVotes.create() }
     const entity = new PostEntity({ props })
 
@@ -52,21 +47,16 @@ export class PostEntity extends AggregateRoot<PostEntityProps> {
     this.addEvent(new PostVoteChangedCreatedDomainEvent({ entity: this, vote }))
   }
 
-  public addComment(commentId: AggregateID): void {
+  public addComment(): void {
     // this.props.commentIds.push(commentId)
     this.props.totalNumComments++
     // this.addEvent(new CommentPosted(this, comment));
   }
 
-  public removeComment(commentId: AggregateID): void {
+  public removeComment(): void {
     // this.props.commentIds.remove(comment)
     this.props.totalNumComments--
     // this.addEvent(new CommentPosted(this, comment));
-  }
-
-  public updateComment(commentId: AggregateID): void {
-    // this.props.commentIds.update(comment)
-    // this.addEvent(new CommentVotesChanged(this, comment));
   }
 
   public getProps(): PostEntityProps & BaseEntityProps {

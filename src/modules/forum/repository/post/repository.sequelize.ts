@@ -1,4 +1,5 @@
-import { SequelizeRepositoryBase, SequelizeRepositoryQueryBase } from '@src/shared/infra/database/sequelize/base.repository'
+import { SequelizeRepositoryBase } from '@src/shared/infra/database/sequelize/base.repository'
+import { SequelizeRepositoryQueryBase } from '@src/shared/infra/database/sequelize/base-query.repository'
 import { PostEntity } from '../../domain/entity/post/entity'
 import { PostModelAttributes } from '../../domain/entity/post/types'
 import { PostMapper } from '../../mappers/post/mapper-domain'
@@ -25,10 +26,6 @@ export class PostSequelizeRepository extends SequelizeRepositoryBase<PostEntity,
     @inject(POST_VOTE_TYPES.REPOSITORY) protected postVoteRepo: PostVoteRepositoryPort
   ) {
     super(mapper, model)
-  }
-
-  async findVoteByPostIdAndMemberId(postId: string, memberId: string): Promise<PostVoteEntity | null> {
-    return this.postVoteRepo.findOneByPostIdAndMemberId(postId, memberId)
   }
 
   public async findBySlug(slug: string): Promise<PostEntity | null> {

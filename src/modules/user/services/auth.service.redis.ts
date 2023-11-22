@@ -71,8 +71,8 @@ export class RedisAuthService extends AbstractRedisClient implements AuthService
     return this.count(`*${this.jwtHashName}*`)
   }
 
-  public async getTokens(login: string): Promise<string[]> {
-    const keyValues = await this.getAllKeyValue(`*${this.jwtHashName}.${login}`)
+  public async getTokens(decoded: JWTClaims): Promise<string[]> {
+    const keyValues = await this.getAllKeyValue(`*${this.jwtHashName}.${decoded.login}`)
     return keyValues.map((kv) => kv.value)
   }
 

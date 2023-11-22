@@ -9,7 +9,7 @@ import { PostVoteMapper } from '../post-vote/mapper'
 import { COMMENT_TYPES } from '../../di/comment/comment.types'
 import { POST_VOTE_TYPES } from '../../di/post/post-vote.types'
 import { CommentMapper } from '../comment/mapper-domain'
-import { UserMapper } from '@src/modules/user/mappers/user.mapper'
+import { UserMapper } from '@src/modules/user/mappers/user/mapper-domain'
 import { USER_TYPES } from '@src/modules/user/di/user.types'
 
 @injectable()

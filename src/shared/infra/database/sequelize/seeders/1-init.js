@@ -52,7 +52,7 @@ module.exports = {
         id: testId,
         user_id: users[0].id,
         reputation: 0,
-        isBanned: false,
+        is_banned: false,
         created_at: new Date(),
         updated_at: new Date(),
       },
@@ -64,7 +64,7 @@ module.exports = {
         id: uuid.v4(),
         user_id: i.id,
         reputation: 0,
-        isBanned: false,
+        is_banned: false,
         created_at: new Date(),
         updated_at: new Date(),
       }))
@@ -171,12 +171,12 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    // await queryInterface.bulkDelete('post_votes', null, {})
-    // await queryInterface.bulkDelete('posts', null, {})
-    // await queryInterface.bulkDelete('comment_votes', null, {})
-    // await queryInterface.bulkDelete('comments', null, {})
-    // await queryInterface.bulkDelete('user_addresses', null, {})
-    // await queryInterface.bulkDelete('users', null, {})
-    // await queryInterface.bulkDelete('members', null, {})
+    await queryInterface.bulkDelete('post_votes', null, {})
+    await queryInterface.bulkDelete('posts', null, {})
+    await queryInterface.bulkDelete('comment_votes', null, {})
+    await queryInterface.bulkDelete('comments', null, {})
+    await queryInterface.bulkDelete('user_addresses', null, {})
+    await queryInterface.bulkDelete('users', null, {})
+    await queryInterface.bulkDelete('members', null, {})
   },
 }

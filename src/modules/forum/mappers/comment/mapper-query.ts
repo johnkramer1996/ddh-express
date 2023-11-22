@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify'
-import { CommentModelAdditionalAttribute, CommentModelAttributes } from '../../domain/entity/comments/types'
+import { CommentModelAttributes } from '../../domain/entity/comments/types'
 import { CommentResponseDto } from '../../dtos/comment/response.dto'
 import { COMMENT_VOTE_TYPES } from '../../di/comment/comment-vote.types'
 import { CommentVoteMapper } from '../comment-vote/mapper'
@@ -7,11 +7,8 @@ import { MEMBER_TYPES } from '../../di/member/types'
 import { CommentQuery } from '../../domain/entity/comments/query'
 import { VoteType } from '../../domain/entity/vote.base.entity'
 import { MemberQueryMapper } from '../member/mapper-query'
+import { QueryMapper } from '../../../../shared/domain/mapper-query.interface'
 
-export interface QueryMapper<T1, T2, T3> {
-  toQuery(record: any): T1
-  toResponse(record: any): T3
-}
 @injectable()
 export class CommentQueryMapper implements QueryMapper<CommentQuery, CommentModelAttributes, CommentResponseDto> {
   constructor(
@@ -19,7 +16,7 @@ export class CommentQueryMapper implements QueryMapper<CommentQuery, CommentMode
     @inject(MEMBER_TYPES.QUERY_MAPPER) protected memberMapper: MemberQueryMapper
   ) {}
 
-  public toQuery(record: CommentModelAdditionalAttribute): CommentQuery {
+  public toQuery(record: CommentModelAttributes): CommentQuery {
     return new CommentQuery({
       id: record.id,
       createdAt: new Date(record.createdAt),
@@ -27,10 +24,10 @@ export class CommentQueryMapper implements QueryMapper<CommentQuery, CommentMode
       text: record.text,
       parentId: record.parentId,
       points: record.points,
-      countChild: record.countChild,
+      countChild: Number(record.countChild) ?? 99,
       wasUpvotedByMe: Boolean(record.votes?.find((i) => i.type === VoteType.upvote)),
       wasDownvotedByMe: Boolean(record.votes?.find((i) => i.type === VoteType.downvote)),
-      member: this.memberMapper.toQuery(record.member),
+      member: record.member ? this.memberMapper.toQuery(record.member) : null,
     })
   }
 
@@ -45,7 +42,7 @@ export class CommentQueryMapper implements QueryMapper<CommentQuery, CommentMode
       countChild: query.countChild,
       wasUpvotedByMe: query.wasUpvotedByMe,
       wasDownvotedByMe: query.wasDownvotedByMe,
-      member: this.memberMapper.toResponse(query.member),
+      member: query.member ? this.memberMapper.toResponse(query.member) : null,
     })
   }
 }

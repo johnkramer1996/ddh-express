@@ -3,7 +3,7 @@ import { SequelizeRepositoryBase } from '../../../shared/infra/database/sequeliz
 import { UserEntity } from '../domain/user.entity'
 import { UserModelAttributes } from '../domain/user.types'
 import { UserRepositoryPort } from './repository.port'
-import { UserMapper } from '../mappers/user.mapper'
+import { UserMapper } from '../mappers/user/mapper-domain'
 import { ModelDefined } from 'sequelize'
 import { USER_TYPES } from '../di/user.types'
 

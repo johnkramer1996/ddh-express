@@ -3,6 +3,7 @@ const postsRoot = 'posts'
 const usersRoot = 'users'
 const commentsRoot = 'comments'
 const memebersRoot = 'members'
+const cabinetRoot = 'cabinet'
 
 // Api Versions
 const v1 = 'v1'
@@ -18,27 +19,33 @@ export const routes = {
     logout: `/${usersRoot}/logout`,
     refreshToken: `/${usersRoot}/refreshToken`,
     currentUser: `/${usersRoot}/currentUser`,
-    posts: `/${usersRoot}/:userId/posts`,
+  },
+  cabinet: {
+    user: `/${cabinetRoot}/user`,
+    member: `/${cabinetRoot}/member`,
+    posts: `/${cabinetRoot}/posts`,
   },
   member: {
     banByLogin: `/${memebersRoot}/:login/ban`,
     findByLogin: `/${memebersRoot}/:login`,
     currentMember: `/${memebersRoot}/currentMember`,
-    posts: `/${memebersRoot}/:login/posts`,
+    findPostsByAuthUser: `/${memebersRoot}/posts`,
+    findPostsByLogin: `/${memebersRoot}/:login/posts`,
   },
   post: {
     create: `/${postsRoot}`,
     findAll: `/${postsRoot}`,
-    findById: `/${postsRoot}/:postId`,
     findBySlug: `/${postsRoot}/:slug`,
-    updateBySlug: `/${postsRoot}/:postId`,
-    deleteBySlug: `/${postsRoot}/:postId`,
     upvoteBySlug: `/${postsRoot}/:slug/upvote`,
     downvoteBySlug: `/${postsRoot}/:slug/downvote`,
+    // updateBySlug: `/${postsRoot}/:slug`,
+    // deleteBySlug: `/${postsRoot}/:slug`,
   },
   postComments: {
     create: `/${postsRoot}/:slug/${commentsRoot}/`,
     findAll: `/${postsRoot}/:slug/${commentsRoot}/`,
+    findChildrenById: `/${postsRoot}/:slug/${commentsRoot}/:commentId/children`,
+    findAllChildrenById: `/${postsRoot}/:slug/${commentsRoot}/:commentId/all-children`,
     findById: `/${postsRoot}/:slug/${commentsRoot}/:commentId`,
     updateById: `/${postsRoot}/:slug/${commentsRoot}/:commentId`,
     deleteById: `/${postsRoot}/:slug/${commentsRoot}/:commentId`,

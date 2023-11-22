@@ -6,7 +6,7 @@ export interface AuthServicePort {
   signJWT(user: UserEntity): JWTToken
   decodeJWT(token: string): Promise<JWTClaims>
   createRefreshToken(): RefreshToken
-  getTokens(username: string): Promise<string[]>
+  getTokens(decoded: JWTClaims): Promise<string[]>
   saveAuthenticatedUser(user: UserEntity): Promise<void>
   deAuthenticateUser(user: UserEntity): Promise<void>
   refreshTokenExists(refreshToken: RefreshToken): Promise<boolean>

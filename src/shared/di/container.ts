@@ -12,7 +12,6 @@ import commentModule from '@src/modules/forum/di/comment/comment.container'
 import MemberModule from '@src/modules/forum/di/member/container'
 
 const container = new Container({ defaultScope: 'Singleton', skipBaseClassChecks: true })
-//
 
 container.bind<IServer>(TYPES.SERVER).to(Server)
 container.bind(TYPES.HTTP_ROUTER).to(HTTPRouter)
