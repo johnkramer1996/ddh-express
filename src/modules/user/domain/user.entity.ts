@@ -9,6 +9,8 @@ import { UserCreatedDomainEvent } from './events/created.domain-event'
 import { UserDeletedDomainEvent } from './events/deleted.domain-event'
 import { Login } from './value-objects/login.value-object'
 import { Email } from './value-objects/email.value-object'
+import { ForbiddenException } from '@src/shared/exceptions/exceptions'
+import { Password } from './value-objects/password.value-object'
 
 // user -> Account
 
@@ -20,6 +22,15 @@ import { Email } from './value-objects/email.value-object'
 //     }
 //  AddRole(Role.Member);
 
+export type UpdateUserProps = {
+  readonly email?: string
+  readonly avatar?: string
+  readonly password?: string
+  readonly deleteAvatar?: boolean
+  readonly firstName?: string
+  readonly lastName?: string
+}
+
 export class UserEntity extends AggregateRoot<UserEntityProps> {
   protected readonly _id!: AggregateID
   private _accessToken?: JWTToken
@@ -30,6 +41,9 @@ export class UserEntity extends AggregateRoot<UserEntityProps> {
 
     const props: UserEntityProps = {
       ...create,
+      avatar: null,
+      firstName: null,
+      lastName: null,
       isEmailVerified: false,
       isAdminUser: false,
       isDeleted: false,
@@ -47,6 +61,10 @@ export class UserEntity extends AggregateRoot<UserEntityProps> {
     return user
   }
 
+  get avatar(): string | null {
+    return this.props.avatar
+  }
+
   get login(): Login {
     return this.props.login
   }
@@ -61,6 +79,10 @@ export class UserEntity extends AggregateRoot<UserEntityProps> {
 
   get refreshToken(): RefreshToken | undefined {
     return this._refreshToken
+  }
+
+  get address(): Address {
+    return this.props.address
   }
 
   set accessToken(accessToken: string) {
@@ -99,9 +121,33 @@ export class UserEntity extends AggregateRoot<UserEntityProps> {
     // this.props.isDeleted = false
   }
 
-  public delete(): void {
+  public delete(authUser: UserEntity): void {
+    if (!this.hasAccess(authUser)) throw new ForbiddenException()
     this.addEvent(new UserDeletedDomainEvent({ entity: this }))
     // this.props.isDeleted = true
+  }
+
+  public update(authUser: UserEntity, props: UpdateUserProps): void {
+    if (!this.hasAccess(authUser)) throw new ForbiddenException()
+
+    if (props.email && props.email !== this.props.email.value) {
+      this.props.email = Email.create({ value: props.email })
+    }
+    if (props.password && props.password !== this.props.password.value) {
+      this.props.password = Password.create({ value: props.password })
+    }
+    if (props.avatar && props.avatar !== this.props.avatar) {
+      this.props.avatar = props.avatar
+    }
+    if (props.deleteAvatar && '' !== this.props.avatar) {
+      this.props.avatar = null
+    }
+    if (props.firstName && props.firstName !== this.props.firstName) {
+      this.props.firstName = props.firstName
+    }
+    if (props.lastName && props.lastName !== this.props.lastName) {
+      this.props.lastName = props.lastName
+    }
   }
 
   public validate(): void {

@@ -20,6 +20,7 @@ export class SequelizeRepositoryQueryBase<T1, T2, T3> {
   public async findAll(options: Options = {}): Promise<T1[]> {
     const rows = await this.model.findAll({
       where: options.where ? options.where : {},
+      // order: [['createdAt', 'desc']],
       attributes: {
         include: getAttributeStrategies(options.attributeStrategies),
       },
@@ -53,7 +54,7 @@ export class SequelizeRepositoryQueryBase<T1, T2, T3> {
       include: getIncludeStrategies(options.includeStrategies),
     })
 
-    return row ? this.mapper.toQuery(row as T2) : row
+    return row ? this.mapper.toQuery(row.toJSON() as T2) : null
   }
 
   public async findOneById(id: string, options: Options = {}): Promise<T1 | null> {

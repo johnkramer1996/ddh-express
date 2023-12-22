@@ -17,10 +17,10 @@ import { VoteCommentController } from '../../useCases/comment/commands/vote-comm
 import { VoteCommentService } from '../../useCases/comment/commands/vote-comment/service'
 import { FindCommentByIdController } from '../../useCases/comment/queries/find-comment-by-id/controller'
 import { FindCommentByIdService } from '../../useCases/comment/queries/find-comment-by-id/service'
-import { CommentCreateController } from '../../useCases/comment/commands/create-comment/controller'
-import { CommentCreateService } from '../../useCases/comment/commands/create-comment/service'
-import { CommentUpdateService } from '../../useCases/comment/commands/update-comment/service'
-import { CommentUpdateController } from '../../useCases/comment/commands/update-comment/controller'
+import { CreateCommentController } from '../../useCases/comment/commands/create-comment/controller'
+import { CreateCommentService } from '../../useCases/comment/commands/create-comment/service'
+import { UpdateCommentService } from '../../useCases/comment/commands/update-comment/service'
+import { UpdateCommentController } from '../../useCases/comment/commands/update-comment/controller'
 import { CommentQueryMapper } from '../../mappers/comment/mapper-query'
 import { FindChildrenCommentByIdController } from '../../useCases/comment/queries/find-children-comment-by-id/controller'
 import { FindChildrenCommentByIdService } from '../../useCases/comment/queries/find-children-comment-by-id/service'
@@ -53,11 +53,11 @@ const commentModule = (container: Container) => {
   container.bind(FindAllChildrenCommentByIdController).toSelf()
   container.bind(FindAllChildrenCommentByIdService).toSelf()
 
-  container.bind(CommentCreateController).toSelf()
-  container.bind(CommentCreateService).toSelf()
+  container.bind(CreateCommentController).toSelf()
+  container.bind(CreateCommentService).toSelf()
 
-  container.bind(CommentUpdateController).toSelf()
-  container.bind(CommentUpdateService).toSelf()
+  container.bind(UpdateCommentController).toSelf()
+  container.bind(UpdateCommentService).toSelf()
 
   container.bind(DeleteCommentByIdController).toSelf()
   container.bind(CommentDeleteByIdService).toSelf()

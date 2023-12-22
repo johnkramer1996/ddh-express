@@ -1,5 +1,5 @@
 ### UPVOTE/DOWNVOTE /upvote /downvote
-POST http://localhost:8086/api/v1/posts/slug-test/downvote
+POST http://localhost:8086/api/v1/posts/8448938-post-291123/downvote
 
 ### CREATE ONE
 POST http://localhost:8086/api/v1/posts/
@@ -8,6 +8,17 @@ Content-Type: application/json
 {
     "title": "POST CREATED USER 1",
     "text": "Text post",
+    "type": "text"
+}
+
+
+### UPDATE ONE
+PATCH http://localhost:8086/api/v1/posts/6974007-post-created-user-1
+Content-Type: application/json
+
+{
+    "title": "new title",
+    "text": "new text",
     "type": "text"
 }
 

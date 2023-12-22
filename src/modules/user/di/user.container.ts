@@ -19,13 +19,16 @@ import { RefreshTokenService } from '../useCases/commands/refresh-token/service'
 import { FindUserByLoginController } from '../useCases/queries/find-user-by-login/controller'
 import { FindUserByIdService } from '../useCases/queries/find-user-by-login/service'
 import { DeleteUserController } from '../useCases/commands/delete-user-by-login/controller'
-import { UserDeleteService } from '../useCases/commands/delete-user-by-login/service'
+import { DeleteUserService } from '../useCases/commands/delete-user-by-login/service'
 import { CreateUserController } from '../useCases/commands/create-user/controller'
 import { CreateUserService } from '../useCases/commands/create-user/service'
 import { RecoverUserController } from '../useCases/commands/restore-user/controller'
 import { RecoverUserService } from '../useCases/commands/restore-user/service'
 import { UserSequelizeRepositoryQuery } from '../repository/repository-query.sequelize'
 import { UserQueryMapper } from '../mappers/user/mapper-query'
+import { SettingsUserController } from '../useCases/commands/settings-user/controller'
+import { SettingsUserService } from '../useCases/commands/settings-user/service'
+import AddressModel from '@src/shared/infra/database/sequelize/models/address.model'
 
 const userModule = (container: Container) => {
   container.bind(USER_TYPES.MAPPER).to(UserMapper)
@@ -33,6 +36,7 @@ const userModule = (container: Container) => {
   container.bind<UserRepositoryPort>(USER_TYPES.REPOSITORY).to(UserSequelizeRepository)
   container.bind<AuthServicePort>(USER_TYPES.AUTH_SERVICE).to(RedisAuthService)
   container.bind(USER_TYPES.SEQUELIZE_MODEL).toConstantValue(UserModel)
+  container.bind(USER_TYPES.SEQUELIZE_ADDRESS_MODEL).toConstantValue(AddressModel)
 
   // TODO: ADD INTERFACE
   container.bind(UserSequelizeRepositoryQuery).toSelf()
@@ -46,8 +50,12 @@ const userModule = (container: Container) => {
   container.bind(CreateUserController).toSelf()
   container.bind(CreateUserService).toSelf()
 
+  // TODO: RENAME TO UPDATEUSER
+  container.bind(SettingsUserController).toSelf()
+  container.bind(SettingsUserService).toSelf()
+
   container.bind(DeleteUserController).toSelf()
-  container.bind(UserDeleteService).toSelf()
+  container.bind(DeleteUserService).toSelf()
 
   container.bind(RecoverUserController).toSelf()
   container.bind(RecoverUserService).toSelf()

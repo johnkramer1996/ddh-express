@@ -7,9 +7,9 @@ import { CommentVoteEntity } from '../entity/comment-vote/entity'
 import { ForbiddenException } from '@src/shared/exceptions/exceptions'
 import { MemberEntity } from '../entity/member/entity'
 import { CommentRepositoryPort } from '../../repository/comment/repository.port'
-import { PostRepositoryPort } from '../../repository/post/repository.port'
 import { PostVoteRepositoryPort } from '../../repository/post-vote/repository.port'
 import { CommentVoteRepositoryPort } from '../../repository/comment-vote/repository.port'
+import { UpdatePostProps } from '../entity/post/types'
 
 @injectable()
 export class PostService {
@@ -34,6 +34,12 @@ export class PostService {
       parentId: parentComment?.id ?? null,
       points: 0,
     })
+  }
+
+  public updatePost(post: PostEntity, member: MemberEntity, update: UpdatePostProps): void {
+    if (!post.hasAccess(member)) throw new ForbiddenException()
+
+    post.update(update)
   }
 
   public updateComment(post: PostEntity, member: MemberEntity, comment: CommentEntity, text?: string): void {

@@ -6,15 +6,15 @@ const dbDialict = isSqlite3 ? 'sqlite3' : 'postgres'
 if (envCongig.isDevelopment) console.log(`connection to ${dbDialict}.${database}`)
 
 export const sequelize = isSqlite3
-  ? new Sequelize({ dialect: 'sqlite', storage: './database.sqlite', logging: false })
+  ? new Sequelize({ dialect: 'sqlite', storage: './database.sqlite', logging: console.log })
   : new Sequelize({
       username,
       password,
       database,
       host,
       dialect: 'postgres',
-      logging: false,
-      define: { paranoid: true },
+      logging: console.log,
+      // define: { paranoid: true },
     })
 
 // export const sequelize = new Sequelize({

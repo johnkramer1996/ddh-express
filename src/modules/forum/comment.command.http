@@ -3,7 +3,7 @@ POST http://localhost:8086/api/v1/posts/slug4/comments/
 Content-Type: application/json
 
 {
-    "parentId": "80b3344c-c498-4737-938b-c2b53c984f77",
+    "parentId": "49216a8f-2ccb-4abf-afbd-6ab1f142e283",
     "text": "child child"
 }
 ### UPDATE BY ID
@@ -24,11 +24,6 @@ POST http://localhost:8086/api/v1/posts/slug-test/comments/80b3344c-c498-4737-93
 
 ### UPVOTE/DOWNVOTE /upvote /downvote
 POST http://localhost:8086/api/v1/posts/slug-test/comments/80b3344c-c498-4737-938b-c2b53c984f77/downvote
-
-
-router.post('/setting', authMiddleware(true), cabinetController.setting.bind(cabinetController))
-router.get('/posts', authMiddleware(true), postController.getAllByAuthUser.bind(postController))
-router.get('/posts/:postId', authMiddleware(true), postController.getByAuthUser.bind(postController))
 
 
 router.post('/role', adminController.addRole.bind(adminController))

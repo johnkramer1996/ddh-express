@@ -1,6 +1,6 @@
 import { SequelizeRepositoryQueryBase } from '@src/shared/infra/database/sequelize/base-query.repository'
 import { ModelDefined } from 'sequelize'
-import { AttributeStrategyPort, IncludeStrategyPort, Options, Paginated, QueryParams } from '@src/shared/domain/repository.port'
+import { QueryParams } from '@src/shared/domain/repository.port'
 import { inject, injectable } from 'inversify'
 import { UserModelAttributes } from '../domain/user.types'
 import { UserResponseDto } from '../dtos/user.response.dto'

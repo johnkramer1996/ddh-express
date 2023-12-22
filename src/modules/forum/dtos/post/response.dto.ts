@@ -1,17 +1,19 @@
 import { ResponseBase, ResponseBaseProps } from '../../../../shared/api/response.base'
+import { MemberResponseDto } from '../member/response.dto'
 
 export class PostResponseDto extends ResponseBase {
   public readonly memberId: string
   public readonly slug: string
   public readonly title: string
   public readonly type: string
+  public readonly image: string
   public readonly text: string | null
+  public readonly member: MemberResponseDto | null
   // public readonly link: string | null
-  // public readonly totalNumComments: number
-  // public readonly points: number
-  // public readonly wasUpvotedByMe?: boolean
-  // public readonly wasDownvotedByMe?: boolean
-  // public readonly user?: UserResponseDto
+  public readonly totalNumComments: number
+  public readonly points: number
+  public readonly wasUpvotedByMe: boolean
+  public readonly wasDownvotedByMe: boolean
   // public readonly votes?: PostVoteResponseDto[]
   // public readonly comments?: CommentResponseDto[]
 
@@ -21,13 +23,14 @@ export class PostResponseDto extends ResponseBase {
     this.slug = props.slug
     this.title = props.title
     this.type = props.type
+    this.image = props.image
     this.text = props.text
+    this.member = props.member
     // this.link = props.link
-    // this.points = props.points
-    // this.totalNumComments = props.totalNumComments
-    // this.user = props.user
-    // this.wasUpvotedByMe = props.wasUpvotedByMe
-    // this.wasDownvotedByMe = props.wasDownvotedByMe
+    this.points = props.points
+    this.totalNumComments = props.totalNumComments
+    this.wasUpvotedByMe = props.wasUpvotedByMe
+    this.wasDownvotedByMe = props.wasDownvotedByMe
     // this.votes = props.votes
     // this.comments = props.comments
   }

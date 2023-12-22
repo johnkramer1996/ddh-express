@@ -12,9 +12,12 @@ module.exports = {
       [
         {
           id: testId,
-          email: `vitalii@gmail.com`,
+          avatar: 'avatar.jpg',
           login: 'vitalii',
+          email: `vitalii@gmail.com`,
           password: bcrypt.hashSync('12345678', 8),
+          first_name: `Vitalii`,
+          last_name: `Zinoviev`,
           created_at: new Date(),
           updated_at: new Date(),
         },
@@ -22,6 +25,7 @@ module.exports = {
           .fill(null)
           .map((_, i) => ({
             id: '11111111-1111-1111-1111-11111111112' + i,
+            avatar: null,
             email: `user${i}@gmail.com`,
             login: `login-${i}`,
             password: bcrypt.hashSync('12345678', 8),
@@ -77,6 +81,7 @@ module.exports = {
           id: testId,
           member_id: testId,
           type: `text`,
+          image: 'about.jpg',
           title: `Title post  test`,
           text: `Text post test`,
           link: null,
@@ -94,6 +99,7 @@ module.exports = {
             id: uuid.v4(),
             member_id: testId,
             type: `text`,
+            image: 'about.jpg',
             title: `Title post ` + i,
             text: `Text post` + i,
             link: null,

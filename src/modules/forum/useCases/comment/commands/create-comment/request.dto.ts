@@ -1,11 +1,10 @@
 import { IsString, IsOptional, IsEnum, ValidateIf, IsEmpty, IsUUID } from 'class-validator'
 
-export class CommentCreateRequestDto {
+export class CreateCommentRequestDto {
   @IsString()
-  @IsUUID()
   readonly text!: string
 
-  // @IsOptional()
+  @IsOptional()
   @IsUUID()
   readonly parentId?: string
 }

@@ -17,9 +17,12 @@ export class UserMapper implements Mapper<UserEntity, UserModelAttributes, UserR
       createdAt: copy.createdAt,
       updatedAt: copy.updatedAt,
       deletedAt: copy.deletedAt,
+      avatar: copy.avatar,
+      login: copy.login.value,
       email: copy.email.value,
       password: copy.password.value,
-      login: copy.login.value,
+      firstName: copy.firstName,
+      lastName: copy.lastName,
       lastLogin: copy.lastLogin,
       isDeleted: copy.isDeleted,
       isAdminUser: copy.isAdminUser,
@@ -29,41 +32,33 @@ export class UserMapper implements Mapper<UserEntity, UserModelAttributes, UserR
   }
 
   public toDomain(record: UserModelAttributes): UserEntity {
+    if (!record.address) throw new Error('Include address to user is required')
     const entity = new UserEntity({
       id: record.id,
       createdAt: new Date(record.createdAt),
       updatedAt: new Date(record.updatedAt),
       props: {
+        avatar: record.avatar ?? null,
+        login: Login.create({ value: record.login }),
         email: Email.create({ value: record.email }),
         password: Password.create({ value: record.password, hashed: true }),
-        login: Login.create({ value: record.login }),
+        firstName: record.firstName,
+        lastName: record.lastName,
         isDeleted: record.isDeleted,
         isAdminUser: record.isAdminUser,
         isEmailVerified: record.isEmailVerified,
         lastLogin: record.lastLogin,
-        address: record.address
-          ? new Address({
-              country: record.address?.country ?? null,
-              postalCode: record.address?.postalCode ?? null,
-              street: record.address?.street ?? null,
-            })
-          : null,
-        // posts: undefined,
-        // TODO: add posts
-        // posts: record.posts,
+        address: new Address({
+          country: record.address?.country ?? null,
+          postalCode: record.address?.postalCode ?? null,
+          street: record.address?.street ?? null,
+        }),
       },
     })
     return entity
   }
 
   public toResponse(entity: UserEntity): UserResponseDto {
-    const copy = entity.getProps()
-    return new UserResponseDto({
-      ...copy,
-      email: copy.email.value,
-      country: copy.address?.country,
-      postalCode: copy.address?.postalCode,
-      street: copy.address?.street,
-    })
+    throw new Error('not implement')
   }
 }

@@ -2,7 +2,7 @@ import { inject, injectable } from 'inversify'
 import { Mapper } from '../../../../shared/domain/mapper.interface'
 import { MemberResponseDto } from '../../dtos/member/response.dto'
 import { MemberEntity } from '../../domain/entity/member/entity'
-import { MemberModelAttributes, MemberModelWithAdditonAttributes } from '../../domain/entity/member/types'
+import { MemberModelAttributes } from '../../domain/entity/member/types'
 import { USER_TYPES } from '@src/modules/user/di/user.types'
 import { UserMapper } from '@src/modules/user/mappers/user/mapper-domain'
 
@@ -24,7 +24,7 @@ export class MemberMapper implements Mapper<MemberEntity, MemberModelAttributes,
     return record
   }
 
-  public toDomain(record: MemberModelWithAdditonAttributes): MemberEntity {
+  public toDomain(record: MemberModelAttributes): MemberEntity {
     const entity = new MemberEntity({
       id: record.id,
       createdAt: new Date(record.createdAt),

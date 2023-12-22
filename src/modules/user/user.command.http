@@ -32,6 +32,6 @@ POST http://localhost:8086/api/v1/users/refreshToken
 Content-Type: application/json
 
 {
-    "refreshToken": "5950dd1c-d1d3-46f7-bd2a-ee96c4301aee"
+    "refreshToken": "8e02872d-d32b-464b-a25a-8a6f4cbdabd2"
 }
 

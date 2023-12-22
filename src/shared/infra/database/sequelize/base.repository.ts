@@ -45,11 +45,11 @@ export abstract class SequelizeRepositoryBase<EntityDomain extends Entity<any>, 
   }
 
   public async save(entity: EntityDomain): Promise<void> {
-    const rawSequelizePost = this.mapper.toPersistence(entity)
+    const rawSequelizeEntity = this.mapper.toPersistence(entity)
     const exists = await this.exists(entity.id)
-    const isNewPost = !exists
+    const isNewEntity = !exists
 
-    isNewPost ? await this.model.create(rawSequelizePost) : await this.model.update(rawSequelizePost, { where: { id: entity.id } })
+    isNewEntity ? await this.model.create(rawSequelizeEntity) : await this.model.update(rawSequelizeEntity, { where: { id: entity.id } })
   }
 }
 

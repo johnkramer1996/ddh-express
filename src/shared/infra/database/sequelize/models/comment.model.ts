@@ -19,16 +19,16 @@ class CommentModel extends BaseModel<CommentModelAttributes, CommentModelCreatio
   declare points: number
 
   declare countChild?: NonAttribute<number>
-
-  // get countChild(): NonAttribute<number> {
-  //   return this._countChild;
-  // }
-
-  // get countChild(): number {
-  //   return this.att.countChild
-  // }
 }
 
 CommentModel.init(commentInit, { modelName: DB_TABLES.COMMENT, sequelize })
+
+CommentModel.addScope(
+  'defaultScope',
+  {
+    order: [['createdAt', 'desc']],
+  },
+  { override: true }
+)
 
 export default CommentModel

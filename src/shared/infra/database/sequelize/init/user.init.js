@@ -7,6 +7,14 @@ module.exports = {
     allowNull: false,
     primaryKey: true,
   },
+  avatar: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  login: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   email: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -15,9 +23,15 @@ module.exports = {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  login: {
+  firstName: {
+    field: 'first_name',
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
+  },
+  lastName: {
+    field: 'last_name',
+    type: DataTypes.STRING,
+    allowNull: true,
   },
   isEmailVerified: {
     field: 'is_email_verified',

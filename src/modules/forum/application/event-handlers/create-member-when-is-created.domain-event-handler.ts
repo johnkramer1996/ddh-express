@@ -5,6 +5,7 @@ import { MemberEntity } from '../../domain/entity/member/entity'
 import { MemberRepositoryPort } from '../../repository/member/repository.port'
 import { MEMBER_TYPES } from '../../di/member/types'
 
+// TODO: MOVE
 export interface IHandler<T = any, T2 = any> {
   handle(event: T): T2
 }

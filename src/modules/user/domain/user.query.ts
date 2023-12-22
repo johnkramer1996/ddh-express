@@ -5,9 +5,17 @@ interface UserQueryProps {
   id: string
   createdAt: Date
   updatedAt: Date
+  avatar: string | null
   login: string
-  password: string
   email: string
+  firstName: string | null
+  lastName: string | null
+  country: string | null
+  postalCode: string | null
+  street: string | null
+  isDeleted: boolean
+  lastLogin: Date | null
+  posts?: any[]
 }
 
 export class UserQuery extends ValueObject<UserQueryProps> {
@@ -25,15 +33,43 @@ export class UserQuery extends ValueObject<UserQueryProps> {
     return this.props.updatedAt
   }
 
+  get avatar(): string | null {
+    return this.props.avatar
+  }
+
   get login(): string {
     return this.props.login
   }
 
-  get password(): string {
-    return this.props.password
-  }
-
   get email(): string {
     return this.props.email
+  }
+
+  get firstName(): string | null {
+    return this.props.firstName
+  }
+
+  get lastName(): string | null {
+    return this.props.lastName
+  }
+
+  get country(): string | null {
+    return this.props.country
+  }
+
+  get postalCode(): string | null {
+    return this.props.postalCode
+  }
+
+  get street(): string | null {
+    return this.props.street
+  }
+
+  get isDeleted(): boolean {
+    return this.props.isDeleted
+  }
+
+  get lastLogin(): Date | null {
+    return this.props.lastLogin
   }
 }

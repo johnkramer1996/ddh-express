@@ -5,15 +5,16 @@ import { plainToClass } from 'class-transformer'
 import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-request'
 import { routes } from '@src/configs/routes'
 import { ControllerGet } from '@src/shared/infra/http/decorators/controller'
-import { PostControllerBase } from '@src/modules/forum/useCases/post/base.controller'
+import { PostControllerBase, PostControllerQueryBase } from '@src/modules/forum/useCases/post/base.controller'
 import { PostPaginatedQueryRequestDto } from '@src/modules/forum/dtos/paginated-query.request.dto'
 import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
 import { RequestDecodedIfExist } from '@src/shared/infra/http/models/base.controller'
 import { LoginRequestDto } from '@src/modules/forum/dtos/login.request.dto'
+import { PostPaginatedResponseDto } from '@src/modules/forum/dtos/paginated.response.dto.ts'
 
 @injectable()
 @ControllerGet(routes.member.findPostsByLogin)
-export class FindPostsByLoginController extends PostControllerBase {
+export class FindPostsByLoginController extends PostControllerQueryBase {
   @UseGuard(AuthGuard, false)
   @ValidateRequest([['query', PostPaginatedQueryRequestDto]])
   @ValidateRequest([['params', LoginRequestDto]])
@@ -29,6 +30,12 @@ export class FindPostsByLoginController extends PostControllerBase {
 
     const paginated = result.getValue()
 
-    return this.ok(res, paginated)
+    return this.ok(
+      res,
+      new PostPaginatedResponseDto({
+        ...paginated,
+        data: paginated.data.map(this.postMapper.toResponse.bind(this.postMapper)),
+      })
+    )
   }
 }

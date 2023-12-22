@@ -10,12 +10,14 @@ import { PostPaginatedResponseDto } from '@src/modules/forum/dtos/paginated.resp
 import { plainToClass } from 'class-transformer'
 import { PostPaginatedQueryRequestDto } from '@src/modules/forum/dtos/paginated-query.request.dto'
 import { wait } from '@src/shared/utils/wait'
+import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-request'
 
 @injectable()
 @ControllerGet(routes.member.findPostsByAuthUser)
 @ControllerGet(routes.cabinet.posts)
 export class FindPostsByAuthUserController extends PostControllerQueryBase {
   @UseGuard(AuthGuard)
+  @ValidateRequest([['query', PostPaginatedQueryRequestDto]])
   async executeImpl(req: RequestDecoded, res: Response): Promise<any> {
     const query = plainToClass(PostPaginatedQueryRequestDto, req.query)
     const decoded = req.decoded
@@ -27,7 +29,6 @@ export class FindPostsByAuthUserController extends PostControllerQueryBase {
 
     const paginated = result.getValue()
 
-    await wait(800)
     return this.ok(
       res,
       new PostPaginatedResponseDto({

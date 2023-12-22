@@ -24,7 +24,7 @@ export class CommentQueryMapper implements QueryMapper<CommentQuery, CommentMode
       text: record.text,
       parentId: record.parentId,
       points: record.points,
-      countChild: Number(record.countChild) ?? 99,
+      countChild: Number(record.countChild) ?? 0,
       wasUpvotedByMe: Boolean(record.votes?.find((i) => i.type === VoteType.upvote)),
       wasDownvotedByMe: Boolean(record.votes?.find((i) => i.type === VoteType.downvote)),
       member: record.member ? this.memberMapper.toQuery(record.member) : null,

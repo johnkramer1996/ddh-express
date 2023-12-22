@@ -15,11 +15,11 @@ export class FindChildrenCommentByIdService extends CommentServiceQueryBase<Find
   async executeImpl(query: FindChildrenCommentByIdQuery): Promise<Return> {
     const authMember = await this.memberRepository.findOneByUserIdIfExists(query.userId)
 
-    const entity = await this.commentRepository.findOneByIdWithNestedComments2(query.commentId, authMember?.id)
+    const entity = await this.commentRepository.findOneByIdAndAuthUserId(query.commentId, authMember?.id)
     if (!entity) throw new NotFoundException()
 
-    console.log(entity)
+    const children = await this.commentRepository.findChildrenComment(entity, authMember?.id)
 
-    return entity
+    return children
   }
 }

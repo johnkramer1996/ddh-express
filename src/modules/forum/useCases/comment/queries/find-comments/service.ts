@@ -9,7 +9,6 @@ import { CommentQuery } from '@src/modules/forum/domain/entity/comments/query'
 type Return = Paginated<CommentQuery>
 export type CommentFindAllServiceResponse = ResultWithError<Return>
 
-// SearchCustomerQueryHandler
 @injectable()
 @QueryHandler(FindCommentsQuery)
 export class FindCommentsQueryHandler extends CommentServiceQueryBase<FindCommentsQuery, Return> {

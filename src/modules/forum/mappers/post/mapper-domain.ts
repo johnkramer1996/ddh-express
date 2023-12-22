@@ -26,6 +26,7 @@ export class PostMapper implements Mapper<PostEntity, PostModelAttributes, PostR
       id: copy.id,
       memberId: copy.memberId,
       type: copy.type,
+      image: copy.image,
       title: copy.title,
       text: copy.text,
       link: copy.link,
@@ -49,6 +50,7 @@ export class PostMapper implements Mapper<PostEntity, PostModelAttributes, PostR
       props: {
         memberId: record.memberId,
         type: record.type as PostType,
+        image: record.image,
         title: record.title,
         text: record.text,
         link: record.link,

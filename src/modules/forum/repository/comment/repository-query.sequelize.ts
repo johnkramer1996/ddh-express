@@ -7,7 +7,6 @@ import { AttributeStrategyPort, IncludeStrategyPort, Options, Paginated, QueryPa
 import { CommentMemberIncludeStrategy } from './include-strategies/comment-user.include-strategy'
 import { CommentVotesIncludeStrategy } from './include-strategies/comment-votes.include-strategy'
 import { CommentCountChildAttributeStrategy } from './attribute-strategies/comment-count-child-attribute-strategy'
-import { CommentCountLikesAttributeStrategy } from './attribute-strategies/comment-count-likes.attribute-strategy'
 import { CommentByPostSlugIncludeStrategy } from './include-strategies/comment-by-post-slug.include-strategy'
 import { CommentQueryMapper } from '../../mappers/comment/mapper-query'
 import { CommentResponseDto } from '../../dtos/comment/response.dto'
@@ -29,9 +28,10 @@ export class CommentSequelizeRepositoryQuery extends SequelizeRepositoryQueryBas
     authUserId && includeStrategies.push(new CommentVotesIncludeStrategy(authUserId))
 
     attributeStrategies.push(new CommentCountChildAttributeStrategy())
-    attributeStrategies.push(new CommentCountLikesAttributeStrategy())
 
-    return await this.findOneById(commentId, { includeStrategies, attributeStrategies })
+    console.log(attributeStrategies)
+
+    return this.findOneById(commentId, { includeStrategies, attributeStrategies })
   }
 
   public async findAllPaginatedBySlug(query: FindCommentsParams, slug: string, authMemberId?: string): Promise<Paginated<CommentQuery>> {
@@ -39,47 +39,15 @@ export class CommentSequelizeRepositoryQuery extends SequelizeRepositoryQueryBas
     const attributeStrategies: AttributeStrategyPort[] = []
 
     includeStrategies.push(new CommentByPostSlugIncludeStrategy(slug))
-    authMemberId && includeStrategies.push(new CommentVotesIncludeStrategy(authMemberId))
     includeStrategies.push(new CommentMemberIncludeStrategy())
+    authMemberId && includeStrategies.push(new CommentVotesIncludeStrategy(authMemberId))
 
     attributeStrategies.push(new CommentCountChildAttributeStrategy())
-    attributeStrategies.push(new CommentCountLikesAttributeStrategy())
 
     return this.findAllPaginated(query, { where: { parentId: null }, includeStrategies, attributeStrategies })
   }
 
-  public async findAllPaginatedBySlugQuery(query: FindCommentsParams, slug: string, authMemberId?: string): Promise<Paginated<CommentQuery>> {
-    const includeStrategies: IncludeStrategyPort[] = []
-    const attributeStrategies: AttributeStrategyPort[] = []
-
-    includeStrategies.push(new CommentByPostSlugIncludeStrategy(slug))
-    authMemberId && includeStrategies.push(new CommentVotesIncludeStrategy(authMemberId))
-    includeStrategies.push(new CommentMemberIncludeStrategy())
-
-    attributeStrategies.push(new CommentCountChildAttributeStrategy())
-    attributeStrategies.push(new CommentCountLikesAttributeStrategy())
-
-    return this.findAllPaginated(query, { where: { parentId: null }, includeStrategies, attributeStrategies })
-  }
-
-  public async findOneByIdWithNestedComments(commentId: string, userId?: string): Promise<CommentQuery | null> {
-    const entity = await this.findOneByIdAndAuthUserId(commentId, userId)
-    if (!entity) return null
-
-    return entity
-  }
-
-  //TODO: RENAME
-  public async findOneByIdWithNestedComments2(commentId: string, userId?: string): Promise<CommentQuery[] | null> {
-    const entity = await this.findOneByIdAndAuthUserId(commentId, userId)
-    if (!entity) return null
-
-    const children = await this.findAllNestedCommentsQuery(entity, userId)
-
-    return children
-  }
-
-  public async findAllNestedCommentsQuery(comment: CommentQuery, userId?: string): Promise<CommentQuery[]> {
+  public async findChildrenComment(comment: CommentQuery, userId?: string): Promise<CommentQuery[]> {
     const includeStrategies: IncludeStrategyPort[] = []
     const attributeStrategies: AttributeStrategyPort[] = []
 
@@ -87,23 +55,34 @@ export class CommentSequelizeRepositoryQuery extends SequelizeRepositoryQueryBas
     userId && includeStrategies.push(new CommentVotesIncludeStrategy(userId))
 
     attributeStrategies.push(new CommentCountChildAttributeStrategy())
-    attributeStrategies.push(new CommentCountLikesAttributeStrategy())
 
-    return await this.findAllNestedComments([comment], { includeStrategies, attributeStrategies })
+    return this._findChildrenComment(comment, { includeStrategies, attributeStrategies })
   }
 
-  private async findAllNestedComments(comments: CommentQuery[], options: Options = {}): Promise<CommentQuery[]> {
+  public async findAllChildrenComment(comment: CommentQuery, userId?: string): Promise<CommentQuery[]> {
+    const includeStrategies: IncludeStrategyPort[] = []
+    const attributeStrategies: AttributeStrategyPort[] = []
+
+    includeStrategies.push(new CommentMemberIncludeStrategy())
+    userId && includeStrategies.push(new CommentVotesIncludeStrategy(userId))
+
+    attributeStrategies.push(new CommentCountChildAttributeStrategy())
+
+    return this._findAllNestedComments([comment], { includeStrategies, attributeStrategies })
+  }
+
+  private async _findAllNestedComments(comments: CommentQuery[], options: Options = {}): Promise<CommentQuery[]> {
     if (!comments.length) return []
 
-    const childs = await this.findChildrenComments(comments, options)
-    return [...childs, ...(await this.findAllNestedComments(childs, options))]
+    const childs = await this._findChildrenComments(comments, options)
+    return [...childs, ...(await this._findAllNestedComments(childs, options))]
   }
 
-  public async findChildrenComments(comments: CommentQuery[], options: Options = {}): Promise<CommentQuery[]> {
-    return (await Promise.all(comments.map((comment) => this.findChildrenComment(comment, options)))).flat()
+  private async _findChildrenComments(comments: CommentQuery[], options: Options = {}): Promise<CommentQuery[]> {
+    return (await Promise.all(comments.map((comment) => this._findChildrenComment(comment, options)))).flat()
   }
 
-  public async findChildrenComment(comment: CommentQuery, options: Options = {}): Promise<CommentQuery[]> {
-    return await this.findAll({ ...options, where: { parentId: comment.id } })
+  private async _findChildrenComment(comment: CommentQuery, options: Options = {}): Promise<CommentQuery[]> {
+    return this.findAll({ ...options, where: { parentId: comment.id } })
   }
 }

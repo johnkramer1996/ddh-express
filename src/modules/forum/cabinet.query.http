@@ -5,4 +5,4 @@ GET http://localhost:8086/api/v1/cabinet/member
 GET http://localhost:8086/api/v1/cabinet/user
 
 ### GET USER INFO 
-GET http://localhost:8086/api/v1/cabinet/posts?limit=3
+GET http://localhost:8086/api/v1/cabinet/posts

@@ -1,7 +1,7 @@
 import { PostType } from '@src/modules/forum/domain/entity/post/types'
-import { IsString, IsOptional, IsEnum, ValidateIf, IsEmpty } from 'class-validator'
+import { IsString, IsOptional, IsEnum, ValidateIf, IsEmpty, registerDecorator, ValidationOptions, ValidationArguments } from 'class-validator'
 
-export class CreateOneRequestDto {
+export class CreatePostRequestDto {
   @IsEnum(PostType)
   readonly type!: PostType
 

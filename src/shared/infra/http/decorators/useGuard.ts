@@ -44,7 +44,6 @@ export class AuthGuard extends Guard {
     if (!token) return ensure ? this.error('No access token provided') : true
 
     try {
-      console.log(token)
       const decoded = await this.authService.decodeJWT(token)
       const tokens = await this.authService.getTokens(decoded)
 
@@ -55,21 +54,7 @@ export class AuthGuard extends Guard {
       ;(req as RequestDecoded).decoded = decoded
       return true
     } catch (e) {
-      console.log({ e })
       return ensure ? this.error('Token signature expired.') : true
     }
   }
-
-  //   public static restrictedUrl(req: Request, res: Response, next: NextFunction) {
-  //     if (!envCongig.isProduction) {
-  //       return next()
-  //     }
-
-  //     const approvedDomainList = ['https://khalilstemmler.com']
-  //     const domain = req.headers.origin
-  //     const isValidDomain = !!approvedDomainList.find((d) => d === domain)
-  //     console.log(`Domain =${domain}, valid?=${isValidDomain}`)
-
-  //     return isValidDomain ? next() : res.status(403).json({ message: 'Unauthorized' })
-  //   }
 }

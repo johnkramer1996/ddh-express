@@ -2,10 +2,10 @@
 GET http://localhost:8086/api/v1/posts/slug-test/comments
 
 ### GET BY ID
-GET  http://localhost:8086/api/v1/posts/slug-test/comments/80b3344c-c498-4737-938b-c2b53c984f77
+GET  http://localhost:8086/api/v1/posts/slug-test/comments/a3c1ed13-40c7-4e81-8fb7-a8d63e04fd79
 
 ### GET CHILDREN BY ID
-GET  http://localhost:8086/api/v1/posts/slug-test/comments/80b3344c-c498-4737-938b-c2b53c984f77/children
+GET  http://localhost:8086/api/v1/posts/slug1/comments/984e2ff9-6cbe-4c94-82f4-8db5af1d58be/children
 
 ### GET ALL CHILDREN BY ID
-GET  http://localhost:8086/api/v1/posts/slug-test/comments/80b3344c-c498-4737-938b-c2b53c984f77/all-children
+GET  http://localhost:8086/api/v1/posts/slug-test/comments/a3c1ed13-40c7-4e81-8fb7-a8d63e04fd79/all-children

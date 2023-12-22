@@ -21,6 +21,10 @@ module.exports = {
     onDelete: 'cascade',
     onUpdate: 'cascade',
   },
+  image: {
+    allowNull: false,
+    type: DataTypes.STRING,
+  },
   type: {
     allowNull: false,
     type: DataTypes.STRING,

@@ -6,6 +6,7 @@ interface MemberQueryProps {
   createdAt: Date
   updatedAt: Date
   reputation: number
+  avatar: string | null
   login: string
   email: string
 }
@@ -27,6 +28,10 @@ export class MemberQuery extends ValueObject<MemberQueryProps> {
 
   get reputation(): number {
     return this.props.reputation
+  }
+
+  get avatar(): string | null {
+    return this.props.avatar
   }
 
   get login(): string {

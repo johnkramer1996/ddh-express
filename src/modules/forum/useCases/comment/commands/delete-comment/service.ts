@@ -18,7 +18,7 @@ export class CommentDeleteByIdService extends CommentServiceBase<DeleteCommentBy
     const comment = await this.commentRepo.findOneById(command.commentId)
     if (!comment) throw new NotFoundException()
 
-    const member = await this.memberRepo.findOneByUserId(command.userId)
+    const member = await this.memberRepo.findOneByUserId(command.authUserId)
     if (!member) throw new NotFoundException()
 
     this.postService.removeComment(post, member, comment)

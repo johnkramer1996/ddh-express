@@ -1,14 +1,15 @@
 import { AggregateRoot } from '../../../../../shared/domain/aggregate-root.base'
 import { AggregateID, BaseEntityProps } from '../../../../../shared/domain/entity'
-import { PostEntityCreationProps, PostEntityProps } from './types'
+import { PostEntityCreationProps, PostEntityProps, UpdatePostProps } from './types'
 import { PostVotes, Votes } from '../../value-objects/votes.value-objcect'
 import { PostVoteEntity } from '../post-vote/entity'
 import { PostDeletedDomainEvent } from './events/deleted.domain-event'
 import { PostCreatedDomainEvent } from './events/created.domain-event'
 import { PostVoteChangedCreatedDomainEvent } from './events/vote-changed.domain-event'
+import { MemberEntity } from '../member/entity'
 
 export class PostEntity extends AggregateRoot<PostEntityProps> {
-  public static maxCountCommentByUser = 20
+  public static maxCountCommentByUser = 200
   protected readonly _id!: AggregateID
 
   static create(create: PostEntityCreationProps): PostEntity {
@@ -26,6 +27,30 @@ export class PostEntity extends AggregateRoot<PostEntityProps> {
 
   get points(): number {
     return this.props.points + this.votes.points
+  }
+
+  get slug(): string {
+    return this.props.slug.value
+  }
+
+  public hasAccess(member: MemberEntity) {
+    return member.id === this.props.memberId
+  }
+
+  /**@private */
+  public update(props: UpdatePostProps): void {
+    if (props.image && props.image !== this.props.image) {
+      const newImage = props.image
+      this.props.image = newImage
+    }
+    if (props.title && props.title !== this.props.title) {
+      const newTitle = props.title
+      this.props.title = newTitle
+    }
+    if (props.text && props.text !== this.props.text) {
+      const newText = props.text
+      this.props.text = newText
+    }
   }
 
   public placeVote(newVote: PostVoteEntity): void {

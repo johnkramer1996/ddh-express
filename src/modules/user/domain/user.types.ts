@@ -14,14 +14,14 @@ export interface UserEntityCreationProps {
 }
 
 export interface UserEntityProps extends UserEntityCreationProps {
+  avatar: string | null
+  firstName: string | null
+  lastName: string | null
   isEmailVerified: boolean
   isAdminUser: boolean
   isDeleted: boolean
   lastLogin: Date | null
-  address: Address | null
-  // TODO:
-  // try to always make relationships unidirectional when possible
-  // posts?: PostEntity[]
+  address: Address
 }
 
 export interface UserModelCreationAttributes extends PrimaryKey {
@@ -31,6 +31,9 @@ export interface UserModelCreationAttributes extends PrimaryKey {
 }
 
 export interface UserModelAttributes extends UserModelCreationAttributes, TimeStamp {
+  avatar: string | null
+  firstName: string | null
+  lastName: string | null
   isEmailVerified: boolean
   isAdminUser: boolean
   isDeleted: boolean

@@ -10,7 +10,7 @@ export type DeleteUserServiceResponse = ResultWithError<Return>
 
 @injectable()
 @CommandHandler(DeleteUserCommand)
-export class UserDeleteService extends UserServiceBase<DeleteUserCommand, Return> {
+export class DeleteUserService extends UserServiceBase<DeleteUserCommand, Return> {
   async executeImpl(command: DeleteUserCommand): Promise<Return> {
     const user = await this.userRepo.findOneById(command.userId)
     if (!user) throw new NotFoundException()
@@ -18,12 +18,9 @@ export class UserDeleteService extends UserServiceBase<DeleteUserCommand, Return
     const authUser = await this.userRepo.findOneById(command.authUserId)
     if (!authUser) throw new NotFoundException()
 
-    if (!user.hasAccess(authUser)) throw new ForbiddenException()
+    user.delete(authUser)
 
     this.authService.deAuthenticateUser(user)
-
-    // This layer also contains the triggering of Application Events, which represent some outcome of a use case
-    user.delete()
 
     await this.userRepo.delete(user)
   }

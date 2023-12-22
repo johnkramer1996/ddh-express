@@ -7,6 +7,7 @@ export interface FindUsersParams extends QueryParams {
 }
 
 export interface UserRepositoryPort extends RepositoryPort<UserEntity> {
+  // TODO: REMOVE
   findOneByIdWithDeleted(id: string): Promise<UserEntity | null>
   findOneByEmailOrLogin(email: string, login: string): Promise<UserEntity | null>
   findOneByEmail(email: string): Promise<UserEntity | null>

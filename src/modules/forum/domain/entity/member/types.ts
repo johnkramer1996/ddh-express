@@ -22,8 +22,8 @@ export interface MemberModelCreationAttributes extends PrimaryKey {
   isBanned: boolean
 }
 
-export interface MemberModelAttributes extends MemberModelCreationAttributes, TimeStamp {}
-
-export interface MemberModelWithAdditonAttributes extends MemberModelCreationAttributes, TimeStamp {
-  user: UserModelAttributes
+export interface MemberModelAttributes extends MemberModelCreationAttributes, TimeStamp {
+  user?: UserModelAttributes
 }
+
+export interface MemberModelWithAdditonAttributes extends MemberModelCreationAttributes, TimeStamp {}

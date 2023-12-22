@@ -20,7 +20,10 @@ export class PostPaginatedQueryRequestDto extends PaginatedQueryRequestDto {
   @Transform(
     (prop) => {
       const value = orderMap[prop.value as Order]
-      return [[value ?? orderMap.popular, 'desc']]
+      return [
+        [value ?? orderMap.recent, 'desc'],
+        ['id', 'desc'],
+      ]
     },
     { since: 2 } // transform only in controller
   )

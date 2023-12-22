@@ -1,7 +1,7 @@
 import { envCongig } from '@src/configs/config'
 import { JWTClaims } from '@src/shared/core/jwt'
 import { getStringFromUnknown } from '@src/shared/utils/get-error'
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '../../../di/types'
 import { ICommandBus } from '@src/shared/core/cqs/command-bus'
@@ -33,11 +33,11 @@ export interface RequestDecodedIfExist extends Request {
 export abstract class BaseController {
   constructor(protected queryBus: IQueryBus, protected commandBus: ICommandBus) {}
 
-  protected abstract executeImpl(req: RequestDecoded, res: Response): Promise<void | any>
+  protected abstract executeImpl(req: RequestDecoded, res: Response, next: NextFunction): Promise<void | any>
 
-  public async execute(req: Request, res: Response): Promise<void> {
+  public async execute(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      return await this.executeImpl(req as RequestDecoded, res)
+      return await this.executeImpl(req as RequestDecoded, res, next)
     } catch (err) {
       console.log(err)
       if (err instanceof ExceptionBase) {
@@ -70,7 +70,7 @@ export abstract class BaseController {
   }
 
   public static dtoResponse<T extends object>(res: Response, code: number, dto?: T) {
-    if (!dto) return res.sendStatus(code)
+    if (!dto) return res.status(code).json({ message: 'ok' })
     return res.status(code).json(dto)
   }
 

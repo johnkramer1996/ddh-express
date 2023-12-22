@@ -24,7 +24,7 @@ export class DeleteCommentByIdController extends UserController {
     const postParams = plainToClass(SlugRequestDto, req.params)
     const decoded = req.decoded
 
-    const command = new DeleteCommentByIdCommand({ ...params, ...postParams, userId: decoded.id })
+    const command = new DeleteCommentByIdCommand({ ...params, ...postParams, authUserId: decoded.id })
     const result = await this.commandBus.execute(command)
 
     if (!result.isSuccess) return this.handleError(res, result.getValue())

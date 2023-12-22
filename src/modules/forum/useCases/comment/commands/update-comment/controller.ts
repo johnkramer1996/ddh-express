@@ -3,7 +3,7 @@ import { Request, Response } from 'express'
 import { plainToClass } from 'class-transformer'
 import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-request'
 import { CommentUpdateRequestDto } from './request.dto'
-import { CommentUpdateCommand } from './command'
+import { UpdateCommentCommand } from './command'
 import { ControllerPatch, ControllerPost } from '@src/shared/infra/http/decorators/controller'
 import { routes } from '@src/configs/routes'
 import { CommentControllerBase } from '../../base.controller'
@@ -14,7 +14,7 @@ import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
 
 @injectable()
 @ControllerPatch(routes.postComments.updateById)
-export class CommentUpdateController extends CommentControllerBase {
+export class UpdateCommentController extends CommentControllerBase {
   @UseGuard(AuthGuard)
   @ValidateRequest([
     ['body', CommentUpdateRequestDto],
@@ -27,7 +27,7 @@ export class CommentUpdateController extends CommentControllerBase {
     const postParams = plainToClass(SlugRequestDto, req.params)
     const decoded = req.decoded
 
-    const command = new CommentUpdateCommand({ ...params, ...postParams, ...body, userId: decoded.id })
+    const command = new UpdateCommentCommand({ ...params, ...postParams, ...body, userId: decoded.id })
     const result = await this.commandBus.execute(command)
 
     if (!result.isSuccess) return this.handleError(res, result.getValue())

@@ -5,12 +5,14 @@ export class Paginated<T> {
   readonly count: number
   readonly limit: number
   readonly page: number
+  readonly lastPage: number
   readonly data: readonly T[]
 
   constructor(props: Partial<Paginated<T>>) {
     this.count = props.count ?? 0
     this.limit = props.limit ?? repositoryConfig.limit
     this.page = props.page ?? 1
+    this.lastPage = Math.ceil(this.count / this.limit) ?? 1
     this.data = props.data ?? []
   }
 }
@@ -49,8 +51,7 @@ export type Options = {
 export interface RepositoryPort<Entity> {
   findOne(options?: Options): Promise<Entity | null>
   findOneById(id: string, options?: Options): Promise<Entity | null>
-  // findAll(options?: Options): Promise<Entity[]>
-  // findAllPaginated(params: QueryParams, options?: Options): Promise<Paginated<Entity>>
+  // TODO: REMOVE FORCE
   delete(entity: Entity, force?: boolean): Promise<void>
   exists(id: string): Promise<boolean>
   save(entity: Entity): Promise<void>

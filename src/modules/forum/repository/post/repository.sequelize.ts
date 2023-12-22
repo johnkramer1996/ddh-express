@@ -12,7 +12,7 @@ import { FindPostsByMemberParams, FindPostsParams, PostRepositoryPort } from './
 import { PostVotes } from '../../domain/value-objects/votes.value-objcect'
 import { IncludeStrategyPort, Paginated } from '@src/shared/domain/repository.port'
 import { PostVotesByAuthMemberIdIncludeStrategy } from './include-strategies/post.votes-by-auth-member-id.include-strategy'
-import { PostUserIncludeStrategy } from './include-strategies/post.member.include-strategy'
+import { PostMemberIncludeStrategy } from './include-strategies/post.member.include-strategy'
 import { PostVoteEntity } from '../../domain/entity/post-vote/entity'
 import { PostResponseDto } from '../../dtos/post/response.dto'
 import { PostQuery } from '../../domain/entity/post/query'
@@ -64,7 +64,7 @@ export class PostSequelizeRepositoryQuery extends SequelizeRepositoryQueryBase<P
     const includeStrategies: IncludeStrategyPort[] = []
 
     authMemberId && includeStrategies.push(new PostVotesByAuthMemberIdIncludeStrategy(authMemberId))
-    includeStrategies.push(new PostUserIncludeStrategy())
+    includeStrategies.push(new PostMemberIncludeStrategy())
 
     return await super.findAllPaginated(query, { includeStrategies })
   }
@@ -73,7 +73,7 @@ export class PostSequelizeRepositoryQuery extends SequelizeRepositoryQueryBase<P
     const includeStrategies: IncludeStrategyPort[] = []
 
     authMemberId && includeStrategies.push(new PostVotesByAuthMemberIdIncludeStrategy(authMemberId))
-    includeStrategies.push(new PostUserIncludeStrategy())
+    includeStrategies.push(new PostMemberIncludeStrategy())
 
     return await this.findAllPaginated(query, { where: { memberId: query.memberId }, includeStrategies })
   }
@@ -81,7 +81,7 @@ export class PostSequelizeRepositoryQuery extends SequelizeRepositoryQueryBase<P
   public async findBySlugQuery(slug: string, authMemberId?: string): Promise<PostResponseDto | null> {
     const includeStrategies: IncludeStrategyPort[] = []
 
-    includeStrategies.push(new PostUserIncludeStrategy())
+    includeStrategies.push(new PostMemberIncludeStrategy())
     authMemberId && includeStrategies.push(new PostVotesByAuthMemberIdIncludeStrategy(authMemberId))
 
     const post = await this.findOne({ where: { slug }, includeStrategies })

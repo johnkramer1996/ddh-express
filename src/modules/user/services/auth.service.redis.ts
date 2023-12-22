@@ -76,8 +76,8 @@ export class RedisAuthService extends AbstractRedisClient implements AuthService
     return keyValues.map((kv) => kv.value)
   }
 
-  public async getToken(username: string, refreshToken: string): Promise<string | null> {
-    return this.getOne(this.constructKey(username, refreshToken))
+  public async getToken(login: string, refreshToken: string): Promise<string | null> {
+    return this.getOne(this.constructKey(login, refreshToken))
   }
 
   public async clearToken(username: string, refreshToken: string): Promise<any> {

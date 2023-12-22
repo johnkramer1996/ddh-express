@@ -25,8 +25,8 @@ export class CommentEntity extends AggregateRoot<CommentEntityProps> {
     return entity
   }
 
-  public hasAccess(user: MemberEntity) {
-    return user.id === this.props.memberId
+  public hasAccess(member: MemberEntity) {
+    return member.id === this.props.memberId
   }
 
   get points(): number {
@@ -39,12 +39,10 @@ export class CommentEntity extends AggregateRoot<CommentEntityProps> {
 
   public addVote(vote: CommentVoteEntity): void {
     this.props.votes.add(vote)
-    // this.addEvent(new PostVoteChangedCreatedDomainEvent({ entity: this, vote }))
   }
 
   public removeVote(vote: CommentVoteEntity): void {
     this.props.votes.remove(vote)
-    // this.addEvent(new PostVoteChangedCreatedDomainEvent({ entity: this, vote }))
   }
 
   /**@private */

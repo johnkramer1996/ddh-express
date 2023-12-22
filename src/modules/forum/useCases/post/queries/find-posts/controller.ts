@@ -10,6 +10,7 @@ import { PostPaginatedQueryRequestDto } from '@src/modules/forum/dtos/paginated-
 import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
 import { RequestDecodedIfExist } from '@src/shared/infra/http/models/base.controller'
 import { PostPaginatedResponseDto } from '@src/modules/forum/dtos/paginated.response.dto.ts'
+import { wait } from '@src/shared/utils/wait'
 
 @injectable()
 @ControllerGet(routes.post.findAll)

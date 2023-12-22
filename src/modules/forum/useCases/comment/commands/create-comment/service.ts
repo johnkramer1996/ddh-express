@@ -1,19 +1,18 @@
 import { injectable } from 'inversify'
-import { CommentCreateCommand } from './command'
+import { CreateCommentCommand } from './command'
 import { AggregateID } from '@src/shared/domain/entity'
 import { CommandHandler } from '@src/shared/core/cqs/command-handler'
 import { ResultWithError } from '@src/shared/core/result'
 import { CommentServiceBase } from '../../base.service'
-import { CommentEntity } from '@src/modules/forum/domain/entity/comments/entity'
 import { NotFoundException } from '@src/shared/exceptions/exceptions'
 
 type Return = AggregateID
-export type CommentCreateServiceResponse = ResultWithError<Return>
+export type CreateCommentServiceResponse = ResultWithError<Return>
 
 @injectable()
-@CommandHandler(CommentCreateCommand)
-export class CommentCreateService extends CommentServiceBase<CommentCreateCommand, Return> {
-  async executeImpl(command: CommentCreateCommand): Promise<Return> {
+@CommandHandler(CreateCommentCommand)
+export class CreateCommentService extends CommentServiceBase<CreateCommentCommand, Return> {
+  async executeImpl(command: CreateCommentCommand): Promise<Return> {
     const member = await this.memberRepo.findOneByUserId(command.userId)
     if (!member) throw new NotFoundException()
 
@@ -30,7 +29,6 @@ export class CommentCreateService extends CommentServiceBase<CommentCreateComman
     // COUNT COMMENT BY MEMBER
     // BUSINESS RULE -> LESS THAN 10 COMMENTS
     // entity member add prop countPost ???
-    console.log(parentComment)
     const comment = await this.postService.createComment(this.commentRepo, post, member, parentComment, command.text)
 
     await this.commentRepo.save(comment)

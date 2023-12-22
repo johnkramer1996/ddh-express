@@ -9,9 +9,16 @@ const cabinetRoot = 'cabinet'
 const v1 = 'v1'
 
 export const routes = {
+  cabinet: {
+    user: `/${cabinetRoot}/user`,
+    settings: `/${cabinetRoot}/settings`,
+    member: `/${cabinetRoot}/member`,
+    posts: `/${cabinetRoot}/posts`,
+  },
   user: {
     create: `/${usersRoot}`,
     findAll: `/${usersRoot}`,
+    update: `/${usersRoot}`,
     findByLogin: `/${usersRoot}/:login`,
     deleteByLogin: `/${usersRoot}/:login`,
     recoverByLogin: `/${usersRoot}/:login`,
@@ -19,11 +26,6 @@ export const routes = {
     logout: `/${usersRoot}/logout`,
     refreshToken: `/${usersRoot}/refreshToken`,
     currentUser: `/${usersRoot}/currentUser`,
-  },
-  cabinet: {
-    user: `/${cabinetRoot}/user`,
-    member: `/${cabinetRoot}/member`,
-    posts: `/${cabinetRoot}/posts`,
   },
   member: {
     banByLogin: `/${memebersRoot}/:login/ban`,
@@ -36,10 +38,10 @@ export const routes = {
     create: `/${postsRoot}`,
     findAll: `/${postsRoot}`,
     findBySlug: `/${postsRoot}/:slug`,
+    updateBySlug: `/${postsRoot}/:slug`,
+    deleteBySlug: `/${postsRoot}/:slug`,
     upvoteBySlug: `/${postsRoot}/:slug/upvote`,
     downvoteBySlug: `/${postsRoot}/:slug/downvote`,
-    // updateBySlug: `/${postsRoot}/:slug`,
-    // deleteBySlug: `/${postsRoot}/:slug`,
   },
   postComments: {
     create: `/${postsRoot}/:slug/${commentsRoot}/`,

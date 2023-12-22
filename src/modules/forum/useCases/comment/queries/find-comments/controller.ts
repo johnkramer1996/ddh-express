@@ -11,8 +11,6 @@ import { SlugRequestDto } from '@src/modules/forum/dtos/slug.request.dto'
 import { PaginatedQueryRequestDto } from '@src/shared/api/paginated-query.request.dto'
 import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
 import { RequestDecodedIfExist } from '@src/shared/infra/http/models/base.controller'
-import { COMMENT_TYPES } from '@src/modules/forum/di/comment/comment.types'
-import { CommentQueryMapper } from '@src/modules/forum/mappers/comment/mapper-query'
 
 @injectable()
 @ControllerGet(routes.postComments.findAll)

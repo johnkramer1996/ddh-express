@@ -18,11 +18,11 @@ export abstract class PaginatedQueryBase extends QueryBase {
   constructor(props: PaginatedParams<PaginatedQueryBase>) {
     super()
     this.limit = props.limit ?? repositoryConfig.limit
-    this.offset = props.page ? (props.page - 1) * this.limit : 0
+    this.offset = props.offset ?? (props.page ? (props.page - 1) * this.limit : 0)
     this.page = props.page ?? 1
-    this.order = props.order && props.order.length ? props.order : [['id', 'desc']]
+    this.order = props.order && props.order.length ? props.order : [['createdAt', 'desc']]
   }
 }
 
 // Paginated query parameters
-export type PaginatedParams<T> = Omit<T, 'limit' | 'offset' | 'order' | 'page'> & Partial<Omit<QueryParams, 'offset'>>
+export type PaginatedParams<T> = Omit<T, 'limit' | 'offset' | 'order' | 'page'> & Partial<QueryParams>

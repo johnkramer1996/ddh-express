@@ -36,7 +36,7 @@ export class Login extends ValueObject<LoginProps> {
 
   protected validate(props: LoginProps): void {
     if (!Guard.lengthIsBetween(props.value, Login.minLength, Login.maxLength)) {
-      throw new ArgumentOutOfRangeException(`Password is out of range [${Login.minLength}-${Login.maxLength} chars].`)
+      throw new ArgumentOutOfRangeException(`Login is out of range [${Login.minLength}-${Login.maxLength} chars].`)
     }
     if (!this.isValid(props.value)) {
       throw new ArgumentInvalidException('Login not valid')

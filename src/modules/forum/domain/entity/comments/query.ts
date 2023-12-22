@@ -34,10 +34,6 @@ export class CommentQuery extends ValueObject<CommentQueryProps> {
     return this.props.text
   }
 
-  get member(): MemberQuery | null {
-    return this.props.member
-  }
-
   get parentId(): string | null {
     return this.props.parentId
   }
@@ -56,5 +52,9 @@ export class CommentQuery extends ValueObject<CommentQueryProps> {
 
   get wasDownvotedByMe(): boolean {
     return this.props.wasDownvotedByMe
+  }
+
+  get member(): MemberQuery | null {
+    return this.props.member
   }
 }

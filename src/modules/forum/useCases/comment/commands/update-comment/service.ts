@@ -1,17 +1,17 @@
 import { injectable } from 'inversify'
-import { CommentUpdateCommand } from './command'
+import { UpdateCommentCommand } from './command'
 import { NotFoundException } from '@src/shared/exceptions/exceptions'
 import { CommandHandler } from '@src/shared/core/cqs/command-handler'
 import { CommentServiceBase } from '../../base.service'
 import { ResultWithError } from '@src/shared/core/result'
 
 type Return = void
-export type CommentUpdateServiceResponse = ResultWithError<Return>
+export type UpdateCommentServiceResponse = ResultWithError<Return>
 
 @injectable()
-@CommandHandler(CommentUpdateCommand)
-export class CommentUpdateService extends CommentServiceBase<CommentUpdateCommand, Return> {
-  async executeImpl(command: CommentUpdateCommand): Promise<Return> {
+@CommandHandler(UpdateCommentCommand)
+export class UpdateCommentService extends CommentServiceBase<UpdateCommentCommand, Return> {
+  async executeImpl(command: UpdateCommentCommand): Promise<Return> {
     const post = await this.postRepo.findBySlug(command.slug)
     if (!post) throw new NotFoundException()
 
@@ -25,6 +25,7 @@ export class CommentUpdateService extends CommentServiceBase<CommentUpdateComman
 
     this.postService.updateComment(post, member, comment, command.text)
 
+    // TODO:
     await this.commentRepo.save(comment)
     // await this.postRepo.save(post)
   }
