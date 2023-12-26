@@ -1,8 +1,6 @@
 import { Entity } from './entity'
-import { ValueObject } from './value-object.base'
 
-export interface Mapper<DomainEntity extends Entity<any>, DbRecord, Response = any> {
+export interface Mapper<DomainEntity extends Entity<any>, DbRecord> {
   toPersistence(entity: DomainEntity): DbRecord
   toDomain(record: any): DomainEntity
-  toResponse(entity: DomainEntity): Response
 }

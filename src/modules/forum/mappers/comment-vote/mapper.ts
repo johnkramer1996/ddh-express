@@ -6,7 +6,7 @@ import { CommentVoteModelAttributes } from '../../domain/entity/comment-vote/typ
 import { CommentVoteResponseDto } from '../../dtos/comment-vote/response.dto'
 
 @injectable()
-export class CommentVoteMapper implements Mapper<CommentVoteEntity, CommentVoteModelAttributes, CommentVoteResponseDto> {
+export class CommentVoteMapper implements Mapper<CommentVoteEntity, CommentVoteModelAttributes> {
   public toPersistence(entity: CommentVoteEntity): CommentVoteModelAttributes {
     const copy = entity.getProps()
     const record: CommentVoteModelAttributes = {
@@ -24,8 +24,8 @@ export class CommentVoteMapper implements Mapper<CommentVoteEntity, CommentVoteM
   public toDomain(record: CommentVoteModelAttributes): CommentVoteEntity {
     const entity = new CommentVoteEntity({
       id: record.id,
-      createdAt: new Date(record.createdAt),
-      updatedAt: new Date(record.updatedAt),
+      createdAt: record.createdAt,
+      updatedAt: record.updatedAt,
       props: {
         memberId: record.memberId,
         commentId: record.commentId,
@@ -33,10 +33,5 @@ export class CommentVoteMapper implements Mapper<CommentVoteEntity, CommentVoteM
       },
     })
     return entity
-  }
-
-  public toResponse(entity: CommentVoteEntity): CommentVoteResponseDto {
-    const copy = entity.getProps()
-    return new CommentVoteResponseDto(copy)
   }
 }

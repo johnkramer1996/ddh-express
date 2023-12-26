@@ -5,6 +5,7 @@ type UserResponseDtoProps<T> = Omit<T, 'lastLogin'> & {
 }
 
 export class UserResponseDto extends ResponseBase {
+  public readonly permissions: string[]
   public readonly avatar: string | null
   public readonly login: string
   public readonly email: string
@@ -19,6 +20,7 @@ export class UserResponseDto extends ResponseBase {
 
   constructor(props: UserResponseDtoProps<ResponseBaseProps<UserResponseDto>>) {
     super(props)
+    this.permissions = props.permissions
     this.avatar = props.avatar
     this.login = props.login
     this.email = props.email

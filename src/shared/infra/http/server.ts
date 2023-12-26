@@ -8,6 +8,7 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 import path from 'path'
 import fileUpload from 'express-fileupload'
+import { v1 } from '@src/configs/routes'
 
 export interface IServer {
   create(baseUrl?: string): Application
@@ -17,7 +18,7 @@ export interface IServer {
 class Server {
   constructor(@inject(TYPES.HTTP_ROUTER) private _router: HTTPRouter) {}
 
-  public create(baseUrl = '/api/v1'): Application {
+  public create(baseUrl = `/api/${v1}`): Application {
     const app = express()
 
     app.use(cors({ credentials: true, origin: ['http://localhost:8088'] }))

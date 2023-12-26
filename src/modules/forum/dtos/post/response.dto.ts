@@ -3,6 +3,7 @@ import { MemberResponseDto } from '../member/response.dto'
 
 export class PostResponseDto extends ResponseBase {
   public readonly memberId: string
+  public readonly status: string
   public readonly slug: string
   public readonly title: string
   public readonly type: string
@@ -14,12 +15,11 @@ export class PostResponseDto extends ResponseBase {
   public readonly points: number
   public readonly wasUpvotedByMe: boolean
   public readonly wasDownvotedByMe: boolean
-  // public readonly votes?: PostVoteResponseDto[]
-  // public readonly comments?: CommentResponseDto[]
 
   constructor(props: ResponseBaseProps<PostResponseDto>) {
     super(props)
     this.memberId = props.memberId
+    this.status = props.status
     this.slug = props.slug
     this.title = props.title
     this.type = props.type
@@ -31,7 +31,5 @@ export class PostResponseDto extends ResponseBase {
     this.totalNumComments = props.totalNumComments
     this.wasUpvotedByMe = props.wasUpvotedByMe
     this.wasDownvotedByMe = props.wasDownvotedByMe
-    // this.votes = props.votes
-    // this.comments = props.comments
   }
 }

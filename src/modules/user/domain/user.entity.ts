@@ -3,7 +3,7 @@ import { AggregateRoot } from '../../../shared/domain/aggregate-root.base'
 import { AggregateID } from '../../../shared/domain/entity'
 import { JWTClaims, JWTToken, RefreshToken } from '../../../shared/core/jwt'
 import { Address } from '@src/modules/user/domain/value-objects/address.value-object'
-import { UserEntityProps, UserEntityCreationProps } from './user.types'
+import { UserEntityProps, UserEntityCreationProps, UpdateUserProps } from './user.types'
 import { UserLoggedInDomainEvent } from './events/logged-in.domain-event'
 import { UserCreatedDomainEvent } from './events/created.domain-event'
 import { UserDeletedDomainEvent } from './events/deleted.domain-event'
@@ -11,25 +11,7 @@ import { Login } from './value-objects/login.value-object'
 import { Email } from './value-objects/email.value-object'
 import { ForbiddenException } from '@src/shared/exceptions/exceptions'
 import { Password } from './value-objects/password.value-object'
-
-// user -> Account
-
-// Role
-//     {
-//         Member,
-//         Admin,
-//         Client
-//     }
-//  AddRole(Role.Member);
-
-export type UpdateUserProps = {
-  readonly email?: string
-  readonly avatar?: string
-  readonly password?: string
-  readonly deleteAvatar?: boolean
-  readonly firstName?: string
-  readonly lastName?: string
-}
+import { Permission } from './value-objects/permissions.value-object'
 
 export class UserEntity extends AggregateRoot<UserEntityProps> {
   protected readonly _id!: AggregateID
@@ -48,6 +30,7 @@ export class UserEntity extends AggregateRoot<UserEntityProps> {
       isAdminUser: false,
       isDeleted: false,
       lastLogin: null,
+      permissions: [Permission.create({ value: 'member' })],
       address: new Address({
         country: null,
         postalCode: null,
@@ -56,9 +39,13 @@ export class UserEntity extends AggregateRoot<UserEntityProps> {
     }
     const user = new UserEntity({ id, props })
 
-    user.addEvent(new UserCreatedDomainEvent({ entity: user }))
+    user.addEvent(new UserCreatedDomainEvent({ aggregateId: user.id }))
 
     return user
+  }
+
+  get permissions(): Permission[] {
+    return this.props.permissions
   }
 
   get avatar(): string | null {
@@ -98,10 +85,14 @@ export class UserEntity extends AggregateRoot<UserEntityProps> {
   }
 
   public getJWTClaims(): JWTClaims {
+    const permissions = this.permissions.map((p) => p.value)
+
     return {
       id: this.id,
       login: this.login.value,
       email: this.email.value,
+      permissions,
+      isAdmin: permissions.includes('admin'),
     }
   }
 
@@ -110,7 +101,7 @@ export class UserEntity extends AggregateRoot<UserEntityProps> {
   }
 
   public setAccessToken(accessToken: JWTToken, refreshToken: RefreshToken): void {
-    this.addEvent(new UserLoggedInDomainEvent({ entity: this }))
+    this.addEvent(new UserLoggedInDomainEvent({ aggregateId: this.id }))
     this.accessToken = accessToken
     this.refreshToken = refreshToken
     this.props.lastLogin = new Date()
@@ -123,7 +114,7 @@ export class UserEntity extends AggregateRoot<UserEntityProps> {
 
   public delete(authUser: UserEntity): void {
     if (!this.hasAccess(authUser)) throw new ForbiddenException()
-    this.addEvent(new UserDeletedDomainEvent({ entity: this }))
+    this.addEvent(new UserDeletedDomainEvent({ aggregateId: this.id }))
     // this.props.isDeleted = true
   }
 

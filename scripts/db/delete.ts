@@ -5,17 +5,17 @@ import { dbConfig } from '../../src/configs/config'
 const { host, username: user, password, database } = dbConfig
 
 const connection = new Client({ host, user, password, database: 'postgres' })
-console.log(database)
+
 connection.connect((err) => {
   if (err) throw err
   connection.query(`DROP SCHEMA ${database}`, (err: any, result: any) => {
     if (err && err.code === 'ER_DB_CREATE_EXISTS') {
-      console.log('Db already deleted')
+      console.info('Db already deleted')
       process.exit(0)
       return
     }
 
-    console.log('deleted db')
+    console.info('deleted db')
     process.exit(0)
   })
 })

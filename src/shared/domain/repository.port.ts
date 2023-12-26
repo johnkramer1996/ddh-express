@@ -51,10 +51,16 @@ export type Options = {
 export interface RepositoryPort<Entity> {
   findOne(options?: Options): Promise<Entity | null>
   findOneById(id: string, options?: Options): Promise<Entity | null>
-  // TODO: REMOVE FORCE
-  delete(entity: Entity, force?: boolean): Promise<void>
+  delete(entity: Entity): Promise<void>
   exists(id: string): Promise<boolean>
   save(entity: Entity): Promise<void>
   saveBulk(entiries: Entity[]): Promise<any>
-  deleteBulk(entiries: Entity[], force?: boolean): Promise<any>
+  deleteBulk(entiries: Entity[]): Promise<any>
+}
+
+export interface RepositoryQueryPort<Entity> {
+  findAll(): Promise<Entity[]>
+  findAllPaginated(params: QueryParams): Promise<Paginated<Entity>>
+  findOne(): Promise<Entity | null>
+  findOneById(id: string): Promise<Entity | null>
 }

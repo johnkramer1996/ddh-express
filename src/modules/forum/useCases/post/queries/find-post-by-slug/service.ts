@@ -3,12 +3,9 @@ import { injectable } from 'inversify'
 import { FindPostBySlugQuery } from './query'
 import { NotFoundException } from '@src/shared/exceptions/exceptions'
 import { QueryHandler } from '@src/shared/core/cqs/query-handler'
-import { PostServiceBase, PostServiceQueryBase } from '../../base.service'
+import { PostServiceQueryBase } from '../../base.service'
 import { PostResponseDto } from '@src/modules/forum/dtos/post/response.dto'
-import { ServiceBase } from '@src/shared/core/service.base'
 
-//TODO
-// POST DETAIL  ValueObject
 type Return = PostResponseDto
 export type FindPostBySlugServiceResponse = ResultWithError<Return>
 

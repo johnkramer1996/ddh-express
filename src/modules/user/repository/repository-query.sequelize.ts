@@ -7,11 +7,12 @@ import { UserResponseDto } from '../dtos/user.response.dto'
 import { USER_TYPES } from '../di/user.types'
 import { UserQuery } from '../domain/user.query'
 import { UserQueryMapper } from '../mappers/user/mapper-query'
+import { UserRepositoryQueryPort } from './repository.port'
 
 export interface FindCommentsParams extends QueryParams {}
 
 @injectable()
-export class UserSequelizeRepositoryQuery extends SequelizeRepositoryQueryBase<UserQuery, UserModelAttributes, UserResponseDto> {
+export class UserSequelizeRepositoryQuery extends SequelizeRepositoryQueryBase<UserQuery> implements UserRepositoryQueryPort {
   constructor(@inject(USER_TYPES.QUERY_MAPPER) mapper: UserQueryMapper, @inject(USER_TYPES.SEQUELIZE_MODEL) model: ModelDefined<any, any>) {
     super(mapper, model)
   }

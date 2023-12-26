@@ -1,5 +1,5 @@
 import { IncludeStrategyPort, Include } from '@src/shared/domain/repository.port'
-import UserModel from '@src/shared/infra/database/sequelize/models/user.model'
+import { UserModel } from '@src/shared/infra/database/sequelize/models/user.model'
 
 export class MemberUserByLoginIncludeStrategy implements IncludeStrategyPort {
   constructor(private login: string) {}

@@ -1,3 +1,4 @@
+import { AggregateID } from '@src/shared/domain/entity'
 import { DomainEvent, DomainEventProps } from '../../../../shared/domain/events/domain-event.base'
 import { UserEntity } from '../user.entity'
 
@@ -6,8 +7,6 @@ import { UserEntity } from '../user.entity'
 // Complex objects like entities should not be used by events directly because
 //they can be problematic to serialize/unserialize into/from a queue, so the shared code shouldn’t propagate much.
 export class UserCreatedDomainEvent extends DomainEvent {
-  declare entity: UserEntity
-
   constructor(props: DomainEventProps<UserCreatedDomainEvent>) {
     super(props)
   }

@@ -26,8 +26,8 @@ export abstract class SequelizeRepositoryBase<EntityDomain extends Entity<any>, 
     return this.findOne({ where: { id }, ...options })
   }
 
-  public async delete(entity: EntityDomain, force = false): Promise<void> {
-    await this.model.destroy({ where: { id: entity.id }, force })
+  public async delete(entity: EntityDomain): Promise<void> {
+    await this.model.destroy({ where: { id: entity.id } })
   }
 
   public async exists(id: string): Promise<boolean> {
@@ -40,8 +40,8 @@ export abstract class SequelizeRepositoryBase<EntityDomain extends Entity<any>, 
     for (const entity of entiries) await this.save(entity)
   }
 
-  public async deleteBulk(entiries: EntityDomain[], force = false): Promise<any> {
-    for (const entity of entiries) await this.delete(entity, force)
+  public async deleteBulk(entiries: EntityDomain[]): Promise<any> {
+    for (const entity of entiries) await this.delete(entity)
   }
 
   public async save(entity: EntityDomain): Promise<void> {
@@ -58,8 +58,8 @@ export abstract class SequelizeRepositoryAggregateBase<Aggregate extends Aggrega
   Aggregate,
   DbModel
 > {
-  public async delete(aggregate: Aggregate, force = false): Promise<void> {
-    await super.delete(aggregate, force)
+  public async delete(aggregate: Aggregate): Promise<void> {
+    await super.delete(aggregate)
 
     await aggregate.publishEvents()
   }

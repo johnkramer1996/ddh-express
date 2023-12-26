@@ -1,6 +1,10 @@
 ### GET MEMBER INFO
 GET http://localhost:8086/api/v1/cabinet/member
 
+### UDPATE LAST ACTIVE
+POST http://localhost:8086/api/v1/cabinet/member/updateLastActive
+
+
 ### GET USER INFO 
 GET http://localhost:8086/api/v1/cabinet/user
 

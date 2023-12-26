@@ -15,7 +15,6 @@ class PostVoteModel extends Model<PostVoteModelAttributes, PostVoteModelCreation
 
   declare createdAt: Date
   declare updatedAt: Date
-  declare deletedAt: Date | null
 }
 
 PostVoteModel.init(postVoteInit, { modelName: DB_TABLES.POST_VOTE, sequelize })

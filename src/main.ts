@@ -9,26 +9,34 @@ import { AuthServicePort } from './modules/user/services/auth.service.port'
 import associate from './shared/infra/database/sequelize/models/associate'
 import path from 'path'
 import './modules/forum'
+import { ISocketServer } from './shared/infra/socket/server'
+import PostModel from './shared/infra/database/sequelize/models/post.model'
 
-async function bootstrap() {
+const bootstrap = async () => {
   ;(global as any).__basedir = path.resolve(__dirname, '..')
   const app = container.get<IServer>(TYPES.SERVER).create()
   const redis = container.get<AuthServicePort>(USER_TYPES.AUTH_SERVICE)
 
-  app.listen(PORT, () => {
-    console.log(`server started ON PORT ${PORT}`)
+  const server = app.listen(PORT, () => {
+    console.info(`server started ON PORT ${PORT}`)
   })
+  const socket = container.get<ISocketServer>(TYPES.SOCKET_SERVER).create(server)
 
   associate()
+  try {
+    socket.connect()
+  } catch (e) {
+    console.info('[socket]: connection error')
+  }
 
   try {
     envCongig.isProduction
       ? await redis.connect()
       : redis.connect().catch(() => {
-          console.log('[redis]: connection error')
+          console.info('[redis]: connection error')
         })
   } catch {
-    console.log('[redis]: connection error')
+    console.info('[redis]: connection error')
   }
 }
 bootstrap()

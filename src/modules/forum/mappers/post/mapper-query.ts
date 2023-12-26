@@ -14,10 +14,10 @@ export class PostQueryMapper implements QueryMapper<PostQuery, PostModelAttribut
   public toQuery(record: PostModelAttributes): PostQuery {
     return new PostQuery({
       id: record.id,
-      // TODO: REMOVE NEW DATE
-      createdAt: new Date(record.createdAt),
-      updatedAt: new Date(record.updatedAt),
+      createdAt: record.createdAt,
+      updatedAt: record.updatedAt,
       memberId: record.memberId,
+      status: record.status,
       slug: record.slug,
       type: record.type,
       image: record.image,
@@ -37,6 +37,7 @@ export class PostQueryMapper implements QueryMapper<PostQuery, PostModelAttribut
       createdAt: query.createdAt,
       updatedAt: query.updatedAt,
       memberId: query.memberId,
+      status: query.status,
       slug: query.slug,
       type: query.type,
       image: query.image,

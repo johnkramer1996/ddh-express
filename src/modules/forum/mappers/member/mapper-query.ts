@@ -10,12 +10,14 @@ export class MemberQueryMapper implements QueryMapper<MemberQuery, MemberModelAt
     if (!record.user) throw new Error('Include user to member is required')
     return new MemberQuery({
       id: record.id,
-      createdAt: new Date(record.createdAt),
-      updatedAt: new Date(record.updatedAt),
+      createdAt: record.createdAt,
+      updatedAt: record.updatedAt,
       reputation: record.reputation,
       avatar: record.user.avatar,
       login: record.user.login,
       email: record.user.email,
+      lastActiveAt: record.lastActiveAt,
+      isBanned: record.isBanned,
     })
   }
 
@@ -28,6 +30,8 @@ export class MemberQueryMapper implements QueryMapper<MemberQuery, MemberModelAt
       avatar: query.avatar,
       login: query.login,
       email: query.email,
+      isOnline: query.isOnline,
+      isBanned: query.isBanned,
     })
   }
 }

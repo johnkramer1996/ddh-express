@@ -6,7 +6,6 @@ import { TYPES } from '@src/shared/di/types'
 import { Response } from 'express'
 import { PostMapper } from '../../mappers/post/mapper-domain'
 import { POST_TYPES } from '../../di/post/post.types'
-import { CommentQueryMapper } from '../../mappers/comment/mapper-query'
 import { PostQueryMapper } from '../../mappers/post/mapper-query'
 
 export abstract class PostControllerBase extends BaseController {

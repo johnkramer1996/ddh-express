@@ -6,11 +6,11 @@ import { PostControllerQueryBase } from '../../base.controller'
 import { RequestDecoded } from '@src/shared/infra/http/models/base.controller'
 import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
 import { FindPostsByAuthUserQuery } from './query'
-import { PostPaginatedResponseDto } from '@src/modules/forum/dtos/paginated.response.dto.ts'
 import { plainToClass } from 'class-transformer'
-import { PostPaginatedQueryRequestDto } from '@src/modules/forum/dtos/paginated-query.request.dto'
+import { PostPaginatedQueryRequestDto } from '@src/modules/forum/dtos/post/post.paginated-query.request.dto'
 import { wait } from '@src/shared/utils/wait'
 import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-request'
+import { PostPaginatedResponseDto } from '@src/modules/forum/dtos/post/post.paginated.response.dto'
 
 @injectable()
 @ControllerGet(routes.member.findPostsByAuthUser)

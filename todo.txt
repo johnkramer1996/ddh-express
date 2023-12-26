@@ -1,0 +1,5 @@
+2
+'// ideally, you should always put most of the business logic into value objects
+// Entities in this situation would act as wrappers upon them and represent more high-level functionality.
+// don’t hesitate to refactor your domain model and convert the entity into a value object.
+// 7. Value objects shouldn’t have their own tables in the database.

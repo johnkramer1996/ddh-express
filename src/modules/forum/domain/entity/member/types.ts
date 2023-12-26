@@ -4,9 +4,6 @@ import { UserModelAttributes } from '@src/modules/user/domain/user.types'
 import { UserEntity } from '@src/modules/user/domain/user.entity'
 import { AggregateID } from '@src/shared/domain/entity'
 
-// TODO:
-// Раз клиент не может быть создан без пользователя, то отразим это в коде класса Client:
-// create simple entity
 export interface MemberEntityCreationProps {
   userId: AggregateID
 }
@@ -14,6 +11,7 @@ export interface MemberEntityCreationProps {
 export interface MemberEntityProps extends MemberEntityCreationProps {
   reputation: number
   isBanned: boolean
+  lastActiveAt: Date | null
 }
 
 export interface MemberModelCreationAttributes extends PrimaryKey {
@@ -24,6 +22,5 @@ export interface MemberModelCreationAttributes extends PrimaryKey {
 
 export interface MemberModelAttributes extends MemberModelCreationAttributes, TimeStamp {
   user?: UserModelAttributes
+  lastActiveAt: Date | null
 }
-
-export interface MemberModelWithAdditonAttributes extends MemberModelCreationAttributes, TimeStamp {}

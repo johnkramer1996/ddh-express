@@ -5,7 +5,7 @@ import { FindPostsController } from '../../useCases/post/queries/find-posts/cont
 import { FindPostsService } from '../../useCases/post/queries/find-posts/service'
 import { PostMapper } from '../../mappers/post/mapper-domain'
 import PostModel from '@src/shared/infra/database/sequelize/models/post.model'
-import { PostRepositoryPort } from '../../repository/post/repository.port'
+import { PostRepositoryPort, PostRepositoryQueryPort } from '../../repository/post/repository.port'
 import { CreatePostController } from '../../useCases/post/commands/create-post/controller'
 import { CreatePostService as CreatePostService } from '../../useCases/post/commands/create-post/service'
 import { FindPostBySlugController } from '../../useCases/post/queries/find-post-by-slug/controller'
@@ -17,7 +17,8 @@ import PostVoteModel from '@src/shared/infra/database/sequelize/models/post-vote
 import { PostVoteMapper } from '../../mappers/post-vote/mapper'
 import { PostService } from '../../domain/service/post.service'
 import { PostVoteRepositoryPort } from '../../repository/post-vote/repository.port'
-import { PostSequelizeRepository, PostSequelizeRepositoryQuery } from '../../repository/post/repository.sequelize'
+import { PostSequelizeRepository } from '../../repository/post/repository.sequelize'
+import { PostSequelizeRepositoryQuery } from '../../repository/post/repository.query.sequelize'
 import { FindPostsByLoginController } from '../../useCases/post/queries/find-posts-by-user-login/controller'
 import { FindPostsByLoginService } from '../../useCases/post/queries/find-posts-by-user-login/service'
 import { PostQueryMapper } from '../../mappers/post/mapper-query'
@@ -32,6 +33,7 @@ const postModule = (container: Container) => {
   container.bind(POST_TYPES.MAPPER).to(PostMapper)
   container.bind(POST_TYPES.QUERY_MAPPER).to(PostQueryMapper)
   container.bind<PostRepositoryPort>(POST_TYPES.REPOSITORY).to(PostSequelizeRepository)
+  container.bind<PostRepositoryQueryPort>(POST_TYPES.QUERY_REPOSITORY).to(PostSequelizeRepositoryQuery)
   container.bind(POST_TYPES.SEQUELIZE_MODEL).toConstantValue(PostModel)
 
   container.bind(POST_VOTE_TYPES.MAPPER).to(PostVoteMapper)
@@ -39,7 +41,6 @@ const postModule = (container: Container) => {
   container.bind(POST_VOTE_TYPES.SEQUELIZE_MODEL).toConstantValue(PostVoteModel)
 
   container.bind(PostService).toSelf()
-  container.bind(PostSequelizeRepositoryQuery).toSelf()
 
   container.bind(FindPostsController).toSelf()
   container.bind(FindPostsService).toSelf()

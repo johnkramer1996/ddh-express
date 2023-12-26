@@ -39,14 +39,13 @@ export abstract class BaseController {
     try {
       return await this.executeImpl(req as RequestDecoded, res, next)
     } catch (err) {
-      console.log(err)
       if (err instanceof ExceptionBase) {
         this.handleError(res, err)
         return
       }
       if (envCongig.isDevelopment) {
-        console.log(`[BaseController]: Uncaught controller error`)
-        console.log(err)
+        console.error(`[BaseController]: Uncaught controller error`)
+        console.error(err)
       }
 
       this.fail(res, 'An unexpected error occurred')
@@ -111,7 +110,7 @@ export abstract class BaseController {
   }
 
   public fail(res: Response, error: Error | string) {
-    if (envCongig.isDevelopment) console.log(error)
+    if (envCongig.isDevelopment) console.error(error)
     return BaseController.jsonResponse(res, 500, getStringFromUnknown(error))
   }
 }

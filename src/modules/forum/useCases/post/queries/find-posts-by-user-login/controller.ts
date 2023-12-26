@@ -6,11 +6,11 @@ import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-requ
 import { routes } from '@src/configs/routes'
 import { ControllerGet } from '@src/shared/infra/http/decorators/controller'
 import { PostControllerBase, PostControllerQueryBase } from '@src/modules/forum/useCases/post/base.controller'
-import { PostPaginatedQueryRequestDto } from '@src/modules/forum/dtos/paginated-query.request.dto'
+import { PostPaginatedQueryRequestDto } from '@src/modules/forum/dtos/post/post.paginated-query.request.dto'
 import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
 import { RequestDecodedIfExist } from '@src/shared/infra/http/models/base.controller'
 import { LoginRequestDto } from '@src/modules/forum/dtos/login.request.dto'
-import { PostPaginatedResponseDto } from '@src/modules/forum/dtos/paginated.response.dto.ts'
+import { PostPaginatedResponseDto } from '@src/modules/forum/dtos/post/post.paginated.response.dto'
 
 @injectable()
 @ControllerGet(routes.member.findPostsByLogin)

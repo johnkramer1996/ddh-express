@@ -5,6 +5,7 @@ interface UserQueryProps {
   id: string
   createdAt: Date
   updatedAt: Date
+  permissions: string[]
   avatar: string | null
   login: string
   email: string
@@ -31,6 +32,10 @@ export class UserQuery extends ValueObject<UserQueryProps> {
 
   get updatedAt(): Date {
     return this.props.updatedAt
+  }
+
+  get permissions(): string[] {
+    return this.props.permissions
   }
 
   get avatar(): string | null {

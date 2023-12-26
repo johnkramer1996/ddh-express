@@ -26,7 +26,5 @@ POST http://localhost:8086/api/v1/posts/slug-test/comments/80b3344c-c498-4737-93
 POST http://localhost:8086/api/v1/posts/slug-test/comments/80b3344c-c498-4737-938b-c2b53c984f77/downvote
 
 
-router.post('/role', adminController.addRole.bind(adminController))
 router.post('/users/:userId/setRole', authMiddleware(true), adminController.setRole.bind(adminController))
-router.get('/users/:userId/loginAsUser', authMiddleware(true), adminController.loginAsUser.bind(adminController))
 

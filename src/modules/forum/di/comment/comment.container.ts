@@ -3,7 +3,7 @@ import { COMMENT_VOTE_TYPES } from './comment-vote.types'
 import { COMMENT_TYPES } from './comment.types'
 import { FindCommentsController } from '../../useCases/comment/queries/find-comments/controller'
 import { FindCommentsQueryHandler } from '../../useCases/comment/queries/find-comments/service'
-import { CommentRepositoryPort } from '../../repository/comment/repository.port'
+import { CommentRepositoryPort, CommentRepositoryQueryPort } from '../../repository/comment/repository.port'
 import CommentVoteModel from '@src/shared/infra/database/sequelize/models/comment-vote.model'
 import { CommentSequelizeRepository } from '../../repository/comment/repository.sequelize'
 import { CommentMapper } from '../../mappers/comment/mapper-domain'
@@ -27,19 +27,18 @@ import { FindChildrenCommentByIdService } from '../../useCases/comment/queries/f
 import { FindAllChildrenCommentByIdService } from '../../useCases/comment/queries/find-all-children-comment-by-id/service'
 import { FindAllChildrenCommentByIdController } from '../../useCases/comment/queries/find-all-children-comment-by-id/controller'
 import { CommentSequelizeRepositoryQuery } from '../../repository/comment/repository-query.sequelize'
+import { SequelizeRepositoryQueryBase } from '@src/shared/infra/database/sequelize/base-query.repository'
 
 const commentModule = (container: Container) => {
   container.bind(COMMENT_TYPES.MAPPER).to(CommentMapper)
   container.bind(COMMENT_TYPES.QUERY_MAPPER).to(CommentQueryMapper)
   container.bind<CommentRepositoryPort>(COMMENT_TYPES.REPOSITORY).to(CommentSequelizeRepository)
+  container.bind<CommentRepositoryQueryPort>(COMMENT_TYPES.QUERY_REPOSITORY).to(CommentSequelizeRepositoryQuery)
   container.bind(COMMENT_TYPES.SEQUELIZE_MODEL).toConstantValue(CommentModel)
 
   container.bind(COMMENT_VOTE_TYPES.MAPPER).to(CommentVoteMapper)
   container.bind<CommentVoteRepositoryPort>(COMMENT_VOTE_TYPES.REPOSITORY).to(CommentVoteSequelizeRepository)
   container.bind(COMMENT_VOTE_TYPES.SEQUELIZE_MODEL).toConstantValue(CommentVoteModel)
-
-  // TODO: ADD INTERFACE
-  container.bind(CommentSequelizeRepositoryQuery).toSelf()
 
   container.bind(FindCommentsController).toSelf()
   container.bind(FindCommentsQueryHandler).toSelf()

@@ -3,14 +3,14 @@ import { Response } from 'express'
 import { plainToClass } from 'class-transformer'
 import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-request'
 import { CreatePostRequestDto } from './request.dto'
-import { CreateOneCommand } from './command'
-import { IdResponse } from '@src/shared/api/id.response.dto'
+import { CreatePostCommand } from './command'
 import { ControllerPost } from '@src/shared/infra/http/decorators/controller'
 import { routes } from '@src/configs/routes'
 import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
 import { RequestDecoded } from '@src/shared/infra/http/models/base.controller'
 import { PostControllerBase } from '../../base.controller'
-import { ArgumentInvalidException, ForbiddenException } from '@src/shared/exceptions/exceptions'
+import { ArgumentInvalidException } from '@src/shared/exceptions/exceptions'
+import { SlugResponse } from '@src/modules/forum/dtos/slug.response.dto'
 
 @injectable()
 @ControllerPost(routes.post.create)
@@ -23,18 +23,13 @@ export class CreatePostController extends PostControllerBase {
     const image = req.files?.image
     if (!image) return this.handleError(res, new ArgumentInvalidException('image is requred'))
 
-    const command = new CreateOneCommand({ ...body, image, userId: decoded.id })
+    const command = new CreatePostCommand({ ...body, image, authUserId: decoded.id })
     const result = await this.commandBus.execute(command)
 
     if (!result.isSuccess) return this.handleError(res, result.getValue())
 
-    const id = result.getValue()
+    const slug = result.getValue()
 
-    return this.created(res, new SlugResponse(id))
+    return this.created(res, new SlugResponse(slug))
   }
-}
-
-// TODO: extends id
-export class SlugResponse {
-  constructor(public readonly slug: string) {}
 }

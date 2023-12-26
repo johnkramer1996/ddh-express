@@ -1,3 +1,5 @@
+import path from 'path'
+import fs from 'fs'
 import { injectable } from 'inversify'
 import { UpdatePostCommand } from './command'
 import { NotFoundException } from '@src/shared/exceptions/exceptions'
@@ -19,10 +21,19 @@ export class UpdatePostService extends PostServiceBase<UpdatePostCommand, Return
     const member = await this.memberRepo.findOneByUserId(command.authUserId)
     if (!member) throw new NotFoundException()
 
-    const fileName = command.image ? await loadImage(command.image) : undefined
+    const newFileName = command.image ? await loadImage(command.image) : undefined
+    const oldImagePath = command.image ? path.resolve((global as any).__basedir, 'static', post.image) : null
 
-    this.postService.updatePost(post, member, { ...command, image: fileName })
+    this.postService.updatePost(post, member, { ...command, image: newFileName })
 
-    await this.postRepo.save(post)
+    try {
+      await this.postRepo.save(post)
+      oldImagePath && fs.existsSync(oldImagePath) && fs.unlink(oldImagePath, console.error)
+    } catch (e) {
+      if (newFileName) {
+        const pathNewImage = path.resolve((global as any).__basedir, 'static', newFileName)
+        fs.unlink(pathNewImage, console.error)
+      }
+    }
   }
 }

@@ -2,9 +2,9 @@ import CommentVoteModel from '@src/shared/infra/database/sequelize/models/commen
 import { IncludeStrategyPort, Include } from '@src/shared/domain/repository.port'
 
 export class CommentVotesIncludeStrategy implements IncludeStrategyPort {
-  constructor(private memberId: string) {}
+  constructor(private authMemberId: string) {}
 
   public apply(): Include {
-    return { as: 'votes', model: CommentVoteModel, where: { memberId: this.memberId }, required: false }
+    return { as: 'votes', model: CommentVoteModel, where: { memberId: this.authMemberId }, required: false }
   }
 }

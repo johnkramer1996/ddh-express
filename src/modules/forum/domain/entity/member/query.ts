@@ -1,7 +1,7 @@
 import { AggregateID } from '@src/shared/domain/entity'
 import { ValueObject } from '@src/shared/domain/value-object.base'
 
-interface MemberQueryProps {
+type QueryProps = {
   id: string
   createdAt: Date
   updatedAt: Date
@@ -9,9 +9,11 @@ interface MemberQueryProps {
   avatar: string | null
   login: string
   email: string
+  lastActiveAt: Date | null
+  isBanned: boolean
 }
 
-export class MemberQuery extends ValueObject<MemberQueryProps> {
+export class MemberQuery extends ValueObject<QueryProps> {
   validate(): void {}
 
   get id(): AggregateID {
@@ -40,5 +42,15 @@ export class MemberQuery extends ValueObject<MemberQueryProps> {
 
   get email(): string {
     return this.props.email
+  }
+
+  get isOnline(): boolean {
+    const lastTime = Date.now() - 1000 * 60 * 10 // 10 min
+    const lastActive = this.props.lastActiveAt
+    return lastActive ? lastActive.getTime() > lastTime : false
+  }
+
+  get isBanned(): boolean {
+    return this.props.isBanned
   }
 }

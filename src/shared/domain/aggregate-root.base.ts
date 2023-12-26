@@ -22,7 +22,7 @@ export abstract class AggregateRoot<EntityProps> extends Entity<EntityProps> {
   public async publishEvents(): Promise<void> {
     await Promise.all(
       this.domainEvents.map(async (event) => {
-        if (!envCongig.isTest) console.log(`[Domain Event Execute]: ${event.constructor.name} event published for aggregate : ${this.id}`)
+        if (!envCongig.isTest) console.info(`[Domain Event Execute]: ${event.constructor.name} event published for aggregate : ${this.id}`)
         return DomainEvents.dispatch(event)
       })
     )

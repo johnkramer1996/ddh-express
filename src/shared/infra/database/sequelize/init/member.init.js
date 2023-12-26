@@ -30,5 +30,10 @@ module.exports = {
     allowNull: false,
     type: DataTypes.BOOLEAN,
   },
+  lastActiveAt: {
+    field: 'last_active_at',
+    allowNull: true,
+    type: DataTypes.DATE,
+  },
   ...timeStamp,
 }

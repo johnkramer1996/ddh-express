@@ -15,7 +15,7 @@ export class FindPostsService extends PostServiceQueryBase<FindPostsQuery, Retur
   async executeImpl(query: FindPostsQuery): Promise<Return> {
     const authMember = await this.memberRepo.findOneByUserIdIfExists(query.userId)
 
-    const posts = await this.postRepo.findAllPaginatedAuth(query, authMember?.id)
+    const posts = await this.postRepo.findAllPaginatedWithAuthMeberId(query, authMember?.id)
 
     return posts
   }

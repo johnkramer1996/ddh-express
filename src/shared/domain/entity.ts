@@ -21,7 +21,7 @@ export interface BaseEntityProps {
   deletedAt: Date | null
 }
 // PrimaryKey
-export abstract class Entity<EntityProps> implements TimeStamp {
+export abstract class Entity<EntityProps> implements TimeStamp, PrimaryKey {
   constructor({ id, createdAt, updatedAt, props }: CreationEntityProps<EntityProps>) {
     this.setId(id)
     this.validateProps(props)

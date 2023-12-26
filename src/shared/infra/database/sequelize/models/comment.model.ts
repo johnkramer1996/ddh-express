@@ -1,7 +1,6 @@
 import { ForeignKey, NonAttribute } from 'sequelize'
 import { sequelize } from '../config/connection'
 import { injectable } from 'inversify'
-import UserModel from './user.model'
 import commentInit from '../init/comment.init'
 import { CommentModelAttributes, CommentModelCreationAttributes } from '@src/modules/forum/domain/entity/comments/types'
 import { DB_TABLES } from '@src/configs/dbtables'

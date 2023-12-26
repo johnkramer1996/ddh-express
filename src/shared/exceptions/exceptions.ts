@@ -25,7 +25,7 @@ export class ArgumentOutOfRangeException extends ExceptionBase {
 export class UnauthorizedException extends ExceptionBase {
   static readonly message = 'Not unauthorized'
 
-  constructor(message = ForbiddenException.message, readonly code = UNAUTHORIZED) {
+  constructor(message = UnauthorizedException.message, readonly code = UNAUTHORIZED) {
     super(message)
   }
 }

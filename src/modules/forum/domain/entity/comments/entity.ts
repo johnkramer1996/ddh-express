@@ -1,16 +1,11 @@
-import { UserEntity } from '@src/modules/user/domain/user.entity'
 import { AggregateRoot } from '../../../../../shared/domain/aggregate-root.base'
 import { AggregateID, BaseEntityProps } from '../../../../../shared/domain/entity'
 import { CommentVotes } from '../../value-objects/votes.value-objcect'
 import { CommentVoteEntity } from '../comment-vote/entity'
 import { CommentCreatedDomainEvent } from './events/created.domain-event'
 import { CommentDeletedDomainEvent } from './events/deleted.domain-event'
-import { CommentEntityCreationProps, CommentEntityProps } from './types'
+import { CommentEntityCreationProps, CommentEntityProps, CommentUpdateTextProps } from './types'
 import { MemberEntity } from '../member/entity'
-
-export type CommentUpdateTextProps = {
-  text: string
-}
 
 export class CommentEntity extends AggregateRoot<CommentEntityProps> {
   protected readonly _id!: AggregateID
@@ -20,13 +15,17 @@ export class CommentEntity extends AggregateRoot<CommentEntityProps> {
     const props: CommentEntityProps = { ...create, votes: new CommentVotes() }
     const entity = new CommentEntity({ props })
 
-    entity.addEvent(new CommentCreatedDomainEvent({ entity }))
+    entity.addEvent(new CommentCreatedDomainEvent({ aggregateId: entity.id }))
 
     return entity
   }
 
-  public hasAccess(member: MemberEntity) {
-    return member.id === this.props.memberId
+  public hasAccess(authUser: MemberEntity) {
+    return authUser.id === this.props.memberId
+  }
+
+  get postId(): string {
+    return this.props.postId
   }
 
   get points(): number {
@@ -45,12 +44,11 @@ export class CommentEntity extends AggregateRoot<CommentEntityProps> {
     this.props.votes.remove(vote)
   }
 
-  /**@private */
+  /**@private PostService*/
   public updateText(props: CommentUpdateTextProps): void {
     if (props.text === this.props.text) return
 
     const newText = props.text
-    // this.addEvent(new TodoTextChangedDomainEvent({ entity: this, oldText: this.props.text, newText }))
     this.props.text = newText
   }
 
@@ -59,7 +57,7 @@ export class CommentEntity extends AggregateRoot<CommentEntityProps> {
   }
 
   public delete(): void {
-    this.addEvent(new CommentDeletedDomainEvent({ entity: this }))
+    this.addEvent(new CommentDeletedDomainEvent({ aggregateId: this.id }))
   }
 
   public validate(): void {}

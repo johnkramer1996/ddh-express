@@ -1,15 +1,15 @@
 import { injectable } from 'inversify'
 import { Mapper } from '../../../../shared/domain/mapper.interface'
-import { UserResponseDto } from '../../dtos/user.response.dto'
 import { UserEntity } from '../../domain/user.entity'
 import { UserModelAttributes } from '../../domain/user.types'
 import { Address } from '@src/modules/user/domain/value-objects/address.value-object'
 import { Password } from '../../domain/value-objects/password.value-object'
 import { Email } from '../../domain/value-objects/email.value-object'
 import { Login } from '../../domain/value-objects/login.value-object'
+import { Permission } from '../../domain/value-objects/permissions.value-object'
 
 @injectable()
-export class UserMapper implements Mapper<UserEntity, UserModelAttributes, UserResponseDto> {
+export class UserMapper implements Mapper<UserEntity, UserModelAttributes> {
   public toPersistence(entity: UserEntity): UserModelAttributes {
     const copy = entity.getProps()
     const record: UserModelAttributes = {
@@ -35,9 +35,10 @@ export class UserMapper implements Mapper<UserEntity, UserModelAttributes, UserR
     if (!record.address) throw new Error('Include address to user is required')
     const entity = new UserEntity({
       id: record.id,
-      createdAt: new Date(record.createdAt),
-      updatedAt: new Date(record.updatedAt),
+      createdAt: record.createdAt,
+      updatedAt: record.updatedAt,
       props: {
+        permissions: record.permissions ? record.permissions.map((p) => new Permission({ value: p.permission })) : [],
         avatar: record.avatar ?? null,
         login: Login.create({ value: record.login }),
         email: Email.create({ value: record.email }),
@@ -56,9 +57,5 @@ export class UserMapper implements Mapper<UserEntity, UserModelAttributes, UserR
       },
     })
     return entity
-  }
-
-  public toResponse(entity: UserEntity): UserResponseDto {
-    throw new Error('not implement')
   }
 }

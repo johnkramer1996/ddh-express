@@ -9,10 +9,12 @@ export class UserQueryMapper implements QueryMapper<UserQuery, UserModelAttribut
   public toQuery(record: UserModelAttributes): UserQuery {
     // get users throw error
     if (!record.address) throw new Error('Include address to user is required')
+    if (!record.permissions) throw new Error('Include permissions to user is required')
     return new UserQuery({
       id: record.id,
       createdAt: new Date(record.createdAt),
       updatedAt: new Date(record.updatedAt),
+      permissions: record.permissions.map((p) => p.permission),
       avatar: record.avatar ?? null,
       login: record.login,
       email: record.email,
@@ -31,6 +33,7 @@ export class UserQueryMapper implements QueryMapper<UserQuery, UserModelAttribut
       id: query.id,
       createdAt: query.createdAt,
       updatedAt: query.updatedAt,
+      permissions: query.permissions,
       avatar: query.avatar,
       email: query.email,
       login: query.login,

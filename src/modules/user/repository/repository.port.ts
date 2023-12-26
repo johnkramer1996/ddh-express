@@ -1,16 +1,15 @@
-import { QueryParams, RepositoryPort } from '../../../shared/domain/repository.port'
+import { QueryParams, RepositoryPort, RepositoryQueryPort } from '../../../shared/domain/repository.port'
 import { UserEntity } from '../domain/user.entity'
-import { UserModelAttributes } from '../domain/user.types'
+import { UserQuery } from '../domain/user.query'
 
-export interface FindUsersParams extends QueryParams {
-  // readonly where: Partial<UserModelAttributes>
-}
+export interface FindUsersParams extends QueryParams {}
 
 export interface UserRepositoryPort extends RepositoryPort<UserEntity> {
-  // TODO: REMOVE
-  findOneByIdWithDeleted(id: string): Promise<UserEntity | null>
   findOneByEmailOrLogin(email: string, login: string): Promise<UserEntity | null>
   findOneByEmail(email: string): Promise<UserEntity | null>
   findOneByLogin(login: string): Promise<UserEntity | null>
-  restore(entity: UserEntity): Promise<void>
+}
+
+export interface UserRepositoryQueryPort extends RepositoryQueryPort<UserQuery> {
+  findOneByLogin(login: string): Promise<UserQuery | null>
 }

@@ -2,8 +2,6 @@ import { DomainEvent, DomainEventProps } from '../../../../shared/domain/events/
 import { UserEntity } from '../user.entity'
 
 export class UserDeletedDomainEvent extends DomainEvent {
-  declare entity: UserEntity
-
   constructor(props: DomainEventProps<UserDeletedDomainEvent>) {
     super(props)
   }

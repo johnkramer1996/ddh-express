@@ -4,19 +4,15 @@ import { UserCreatedDomainEvent } from '@src/modules/user/domain/events/created.
 import { MemberEntity } from '../../domain/entity/member/entity'
 import { MemberRepositoryPort } from '../../repository/member/repository.port'
 import { MEMBER_TYPES } from '../../di/member/types'
-
-// TODO: MOVE
-export interface IHandler<T = any, T2 = any> {
-  handle(event: T): T2
-}
+import { IHandler } from '@src/shared/domain/events/ihandler'
 
 @injectable()
 @OnEvent(UserCreatedDomainEvent.name)
-export class CreateMemberWhenUserIsCreatedDomainEventHandler implements IHandler<UserCreatedDomainEvent, void> {
+export class CreateMemberWhenUserIsCreatedDomainEventHandler implements IHandler<UserCreatedDomainEvent> {
   constructor(@inject(MEMBER_TYPES.REPOSITORY) protected memberRepo: MemberRepositoryPort) {}
 
   async handle(event: UserCreatedDomainEvent): Promise<any> {
-    const member = MemberEntity.create({ userId: event.entity.id })
+    const member = MemberEntity.create({ userId: event.getAggregateId() })
     await this.memberRepo.save(member)
   }
 }

@@ -1,5 +1,5 @@
 ### GET COMMENTS BY POST SLUG
-GET http://localhost:8086/api/v1/posts/slug-test/comments
+GET http://localhost:8086/api/v1/posts/slug-test/comments?limit=3&page=3
 
 ### GET BY ID
 GET  http://localhost:8086/api/v1/posts/slug-test/comments/a3c1ed13-40c7-4e81-8fb7-a8d63e04fd79

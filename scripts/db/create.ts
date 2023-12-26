@@ -10,12 +10,12 @@ connection.connect((err) => {
   if (err) throw err
   connection.query(`CREATE DATABASE ${database}`, (err: any, result: any) => {
     if (err && err.code === 'ER_DB_CREATE_EXISTS') {
-      console.log('Db already created')
+      console.info('Db already created')
       process.exit(0)
       return
     }
 
-    console.log('Created db')
+    console.info('Created db')
     process.exit(0)
   })
 })

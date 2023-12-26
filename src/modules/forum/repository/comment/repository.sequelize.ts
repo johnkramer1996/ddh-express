@@ -23,7 +23,7 @@ export class CommentSequelizeRepository extends SequelizeRepositoryBase<CommentE
     super(mapper, model)
   }
 
-  public async countCommentsByPostIdMemberId(postId: string, memberId: string): Promise<number> {
+  public async countByPostIdMemberId(postId: string, memberId: string): Promise<number> {
     return await this.model.count({ where: { postId, memberId } })
   }
 

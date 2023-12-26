@@ -2,7 +2,6 @@ import { inject, injectable } from 'inversify'
 import { Mapper } from '../../../../shared/domain/mapper.interface'
 import { PostEntity } from '../../domain/entity/post/entity'
 import { PostModelAttributes, PostType } from '../../domain/entity/post/types'
-import { PostResponseDto } from '../../dtos/post/response.dto'
 import { Slug } from '../../domain/value-objects/slug.value-object'
 import { PostVotes, Votes } from '../../domain/value-objects/votes.value-objcect'
 import { PostVoteMapper } from '../post-vote/mapper'
@@ -13,7 +12,7 @@ import { UserMapper } from '@src/modules/user/mappers/user/mapper-domain'
 import { USER_TYPES } from '@src/modules/user/di/user.types'
 
 @injectable()
-export class PostMapper implements Mapper<PostEntity, PostModelAttributes, PostResponseDto> {
+export class PostMapper implements Mapper<PostEntity, PostModelAttributes> {
   constructor(
     @inject(COMMENT_TYPES.MAPPER) protected commentMapper: CommentMapper,
     @inject(USER_TYPES.MAPPER) protected userMapper: UserMapper,
@@ -25,6 +24,7 @@ export class PostMapper implements Mapper<PostEntity, PostModelAttributes, PostR
     const record: PostModelAttributes = {
       id: copy.id,
       memberId: copy.memberId,
+      status: copy.status,
       type: copy.type,
       image: copy.image,
       title: copy.title,
@@ -49,7 +49,8 @@ export class PostMapper implements Mapper<PostEntity, PostModelAttributes, PostR
       updatedAt: new Date(record.updatedAt),
       props: {
         memberId: record.memberId,
-        type: record.type as PostType,
+        status: record.status,
+        type: record.type,
         image: record.image,
         title: record.title,
         text: record.text,
@@ -61,9 +62,5 @@ export class PostMapper implements Mapper<PostEntity, PostModelAttributes, PostR
       },
     })
     return entity
-  }
-
-  public toResponse(entity: PostEntity): PostResponseDto {
-    throw new Error(' not implement')
   }
 }

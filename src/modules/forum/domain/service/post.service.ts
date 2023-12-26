@@ -9,30 +9,25 @@ import { MemberEntity } from '../entity/member/entity'
 import { CommentRepositoryPort } from '../../repository/comment/repository.port'
 import { PostVoteRepositoryPort } from '../../repository/post-vote/repository.port'
 import { CommentVoteRepositoryPort } from '../../repository/comment-vote/repository.port'
-import { UpdatePostProps } from '../entity/post/types'
+import { PostEntityCreationProps, PostType, UpdatePostProps } from '../entity/post/types'
+import { PostRepositoryPort } from '../../repository/post/repository.port'
+import { Slug } from '../value-objects/slug.value-object'
 
 @injectable()
 export class PostService {
-  public async createComment(
-    commentRepo: CommentRepositoryPort,
-    post: PostEntity,
-    member: MemberEntity,
-    parentComment: CommentEntity | null,
-    text: string
-  ): Promise<CommentEntity> {
-    // IF POST NOT ACTIVE THROW ERROR
-    const countUserComment = await commentRepo.countCommentsByPostIdMemberId(post.id, member.id)
-    if (countUserComment > PostEntity.maxCountCommentByUser)
-      throw new ForbiddenException(`LIMIT COUNT COMMENT CURRENT = ${countUserComment} MAX = ${PostEntity.maxCountCommentByUser}`)
+  public async createPost(postRepo: PostRepositoryPort, member: MemberEntity, create: Omit<PostEntityCreationProps, 'memberId' | 'slug'>): Promise<PostEntity> {
+    const countUserComment = await postRepo.countByPostIdMemberId(member.id)
+    if (countUserComment > PostEntity.maxCountPostByUser)
+      throw new ForbiddenException(`Limit count post by user. Current = ${countUserComment} / Maximum = ${PostEntity.maxCountPostByUser}`)
 
-    post.addComment()
-
-    return CommentEntity.create({
-      postId: post.id,
+    return PostEntity.create({
       memberId: member.id,
-      text,
-      parentId: parentComment?.id ?? null,
-      points: 0,
+      type: create.type,
+      image: create.image,
+      title: create.title,
+      text: create.type === PostType.text ? create.text : null,
+      link: create.type === PostType.text ? null : create.link,
+      slug: Slug.create({ value: create.title }),
     })
   }
 
@@ -48,6 +43,30 @@ export class PostService {
     if (text !== undefined) comment.updateText({ text })
   }
 
+  public async createComment(
+    commentRepo: CommentRepositoryPort,
+    post: PostEntity,
+    member: MemberEntity,
+    parentComment: CommentEntity | null,
+    text: string
+  ): Promise<CommentEntity> {
+    if (post.status !== 'approved') throw new Error('Unable to add a comment to a message that has not been approved')
+
+    const countUserComment = await commentRepo.countByPostIdMemberId(post.id, member.id)
+    if (countUserComment > PostEntity.maxCountCommentByUser)
+      throw new ForbiddenException(`Limit count comment by user. Current = ${countUserComment} / Maximum = ${PostEntity.maxCountPostByUser}`)
+
+    post.addComment()
+
+    return CommentEntity.create({
+      postId: post.id,
+      memberId: member.id,
+      text,
+      parentId: parentComment?.id ?? null,
+      points: 0,
+    })
+  }
+
   public removeComment(post: PostEntity, member: MemberEntity, comment: CommentEntity): void {
     if (!comment.hasAccess(member)) throw new ForbiddenException()
 
@@ -57,6 +76,8 @@ export class PostService {
   }
 
   public async addVoteToPost(postVoteRepo: PostVoteRepositoryPort, post: PostEntity, member: MemberEntity, type: VoteType) {
+    if (post.status !== 'approved') throw new Error('A post that has not been approved cannot be voted on')
+
     const currentVote = await postVoteRepo.findOneByPostIdAndMemberId(post.id, member.id)
 
     if (!currentVote) {

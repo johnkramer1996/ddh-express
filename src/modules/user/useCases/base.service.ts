@@ -14,7 +14,7 @@ export abstract class UserServiceBase<T1, T2> extends ServiceBase<T1, T2> {
 
 export abstract class UserServiceQueryBase<T1, T2> extends ServiceBase<T1, T2> {
   constructor(
-    @inject(UserSequelizeRepositoryQuery) protected userRepo: UserSequelizeRepositoryQuery,
+    @inject(USER_TYPES.QUERY_REPOSITORY) protected userRepo: UserSequelizeRepositoryQuery,
     @inject(USER_TYPES.QUERY_MAPPER) protected userMapper: UserQueryMapper
   ) {
     super()

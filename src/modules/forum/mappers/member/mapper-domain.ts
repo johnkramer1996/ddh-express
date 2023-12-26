@@ -3,13 +3,9 @@ import { Mapper } from '../../../../shared/domain/mapper.interface'
 import { MemberResponseDto } from '../../dtos/member/response.dto'
 import { MemberEntity } from '../../domain/entity/member/entity'
 import { MemberModelAttributes } from '../../domain/entity/member/types'
-import { USER_TYPES } from '@src/modules/user/di/user.types'
-import { UserMapper } from '@src/modules/user/mappers/user/mapper-domain'
 
 @injectable()
-export class MemberMapper implements Mapper<MemberEntity, MemberModelAttributes, MemberResponseDto> {
-  constructor(@inject(USER_TYPES.MAPPER) protected userMapper: UserMapper) {}
-
+export class MemberMapper implements Mapper<MemberEntity, MemberModelAttributes> {
   public toPersistence(entity: MemberEntity): MemberModelAttributes {
     const copy = entity.getProps()
     const record: MemberModelAttributes = {
@@ -17,6 +13,7 @@ export class MemberMapper implements Mapper<MemberEntity, MemberModelAttributes,
       userId: copy.userId,
       reputation: copy.reputation,
       isBanned: copy.isBanned,
+      lastActiveAt: copy.lastActiveAt,
       createdAt: copy.createdAt,
       updatedAt: copy.updatedAt,
       deletedAt: copy.deletedAt,
@@ -27,21 +24,15 @@ export class MemberMapper implements Mapper<MemberEntity, MemberModelAttributes,
   public toDomain(record: MemberModelAttributes): MemberEntity {
     const entity = new MemberEntity({
       id: record.id,
-      createdAt: new Date(record.createdAt),
-      updatedAt: new Date(record.updatedAt),
+      createdAt: record.createdAt,
+      updatedAt: record.updatedAt,
       props: {
         userId: record.userId,
         reputation: record.reputation,
         isBanned: record.isBanned,
+        lastActiveAt: record.lastActiveAt,
       },
     })
     return entity
-  }
-
-  public toResponse(entity: MemberEntity): MemberResponseDto {
-    throw 'not impemented'
-    // const copy = entity.getProps()
-    // login: copy.user.login.value, email: copy.user.email.value
-    // return new MemberResponseDto({ ...copy })
   }
 }

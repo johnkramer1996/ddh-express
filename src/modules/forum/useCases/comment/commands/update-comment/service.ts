@@ -15,8 +15,6 @@ export class UpdateCommentService extends CommentServiceBase<UpdateCommentComman
     const post = await this.postRepo.findBySlug(command.slug)
     if (!post) throw new NotFoundException()
 
-    console.log(command.commentId)
-
     const comment = await this.commentRepo.findOneById(command.commentId)
     if (!comment) throw new NotFoundException()
 
@@ -25,8 +23,6 @@ export class UpdateCommentService extends CommentServiceBase<UpdateCommentComman
 
     this.postService.updateComment(post, member, comment, command.text)
 
-    // TODO:
     await this.commentRepo.save(comment)
-    // await this.postRepo.save(post)
   }
 }

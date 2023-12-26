@@ -1,5 +1,5 @@
 import { ModelDefined } from 'sequelize'
-import { AttributeStrategyPort, IncludeStrategyPort, Options, Paginated, QueryParams } from '../../../domain/repository.port'
+import { AttributeStrategyPort, IncludeStrategyPort, Options, Paginated, QueryParams, RepositoryQueryPort } from '../../../domain/repository.port'
 import { injectable } from 'inversify'
 import { Literal } from 'sequelize/types/utils'
 import { sequelize } from './config/connection'
@@ -14,13 +14,13 @@ export const getAttributeStrategies = (attributeStrategies?: AttributeStrategyPo
 }
 
 @injectable()
-export class SequelizeRepositoryQueryBase<T1, T2, T3> {
-  constructor(protected readonly mapper: QueryMapper<T1, T2, T3>, protected readonly model: ModelDefined<any, any>) {}
+export class SequelizeRepositoryQueryBase<Entity> implements RepositoryQueryPort<Entity> {
+  constructor(protected readonly mapper: QueryMapper<Entity>, protected readonly model: ModelDefined<any, any>) {}
 
-  public async findAll(options: Options = {}): Promise<T1[]> {
+  public async findAll(options: Options = {}): Promise<Entity[]> {
     const rows = await this.model.findAll({
       where: options.where ? options.where : {},
-      // order: [['createdAt', 'desc']],
+      order: [['createdAt', 'desc']],
       attributes: {
         include: getAttributeStrategies(options.attributeStrategies),
       },
@@ -30,7 +30,7 @@ export class SequelizeRepositoryQueryBase<T1, T2, T3> {
     return rows.map((i) => this.mapper.toQuery(i.toJSON()))
   }
 
-  public async findAllPaginated(params: QueryParams, options: Options = {}): Promise<Paginated<T1>> {
+  public async findAllPaginated(params: QueryParams, options: Options = {}): Promise<Paginated<Entity>> {
     const { rows, count } = await this.model.findAndCountAll({
       where: options.where ? options.where : {},
       limit: params.limit,
@@ -45,7 +45,7 @@ export class SequelizeRepositoryQueryBase<T1, T2, T3> {
     return new Paginated({ data: rows.map((i) => this.mapper.toQuery(i.toJSON())), count, limit: params.limit, page: params.page })
   }
 
-  public async findOne(options: Options = {}): Promise<T1 | null> {
+  public async findOne(options: Options = {}): Promise<Entity | null> {
     const row = await this.model.findOne({
       where: options.where ? options.where : {},
       attributes: {
@@ -54,10 +54,10 @@ export class SequelizeRepositoryQueryBase<T1, T2, T3> {
       include: getIncludeStrategies(options.includeStrategies),
     })
 
-    return row ? this.mapper.toQuery(row.toJSON() as T2) : null
+    return row ? this.mapper.toQuery(row.toJSON()) : null
   }
 
-  public async findOneById(id: string, options: Options = {}): Promise<T1 | null> {
+  public async findOneById(id: string, options: Options = {}): Promise<Entity | null> {
     return this.findOne({ where: { id }, ...options })
   }
 }

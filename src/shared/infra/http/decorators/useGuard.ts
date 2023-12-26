@@ -26,6 +26,15 @@ export abstract class Guard {
 }
 
 @injectable()
+export class AdminGuard extends Guard {
+  public async execute(req: RequestDecoded): Promise<any> {
+    const decoded = req.decoded
+    if (decoded?.isAdmin) return
+    throw new UnauthorizedException('Only with admin permission')
+  }
+}
+
+@injectable()
 export class AuthGuard extends Guard {
   constructor(@inject(USER_TYPES.AUTH_SERVICE) private authService: AuthServicePort) {
     super()
@@ -40,6 +49,7 @@ export class AuthGuard extends Guard {
   }
 
   public async execute(req: Request, ensure = true): Promise<boolean> {
+    console.log('2')
     const token = this.getTokenFromRequest(req)
     if (!token) return ensure ? this.error('No access token provided') : true
 

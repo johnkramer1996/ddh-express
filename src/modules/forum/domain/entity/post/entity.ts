@@ -1,6 +1,6 @@
 import { AggregateRoot } from '../../../../../shared/domain/aggregate-root.base'
 import { AggregateID, BaseEntityProps } from '../../../../../shared/domain/entity'
-import { PostEntityCreationProps, PostEntityProps, UpdatePostProps } from './types'
+import { PostEntityCreationProps, PostEntityProps, PostStatus, UpdatePostProps } from './types'
 import { PostVotes, Votes } from '../../value-objects/votes.value-objcect'
 import { PostVoteEntity } from '../post-vote/entity'
 import { PostDeletedDomainEvent } from './events/deleted.domain-event'
@@ -9,16 +9,25 @@ import { PostVoteChangedCreatedDomainEvent } from './events/vote-changed.domain-
 import { MemberEntity } from '../member/entity'
 
 export class PostEntity extends AggregateRoot<PostEntityProps> {
+  public static maxCountPostByUser = 5
   public static maxCountCommentByUser = 200
   protected readonly _id!: AggregateID
 
   static create(create: PostEntityCreationProps): PostEntity {
-    const props: PostEntityProps = { ...create, points: 0, totalNumComments: 0, votes: PostVotes.create() }
+    const props: PostEntityProps = { ...create, points: 0, totalNumComments: 0, votes: PostVotes.create(), status: 'draft' }
     const entity = new PostEntity({ props })
 
-    entity.addEvent(new PostCreatedDomainEvent({ entity }))
+    entity.addEvent(new PostCreatedDomainEvent({ aggregateId: entity.id }))
 
     return entity
+  }
+
+  get status(): PostStatus {
+    return this.props.status
+  }
+
+  get image(): string {
+    return this.props.image
   }
 
   get votes(): PostVotes {
@@ -53,35 +62,24 @@ export class PostEntity extends AggregateRoot<PostEntityProps> {
     }
   }
 
-  public placeVote(newVote: PostVoteEntity): void {
-    // TODO: https://medium.com/ssense-tech/ddd-beyond-the-basics-mastering-aggregate-design-26591e218c8c
-    // private status: 'approved' | 'cancelled' | 'draft';
-    //   if (this.status !== 'draft') {
-    //     throw new Error('Cannot add item to a purchase order that is not in draft
-  }
-
   /**@private */
   public addVote(vote: PostVoteEntity): void {
     this.props.votes.add(vote)
-    this.addEvent(new PostVoteChangedCreatedDomainEvent({ entity: this, vote }))
+    this.addEvent(new PostVoteChangedCreatedDomainEvent({ aggregateId: this.id, voteAggregateId: vote.id }))
   }
 
   /**@private */
   public removeVote(vote: PostVoteEntity): void {
     this.props.votes.remove(vote)
-    this.addEvent(new PostVoteChangedCreatedDomainEvent({ entity: this, vote }))
+    this.addEvent(new PostVoteChangedCreatedDomainEvent({ aggregateId: this.id, voteAggregateId: vote.id }))
   }
 
   public addComment(): void {
-    // this.props.commentIds.push(commentId)
     this.props.totalNumComments++
-    // this.addEvent(new CommentPosted(this, comment));
   }
 
   public removeComment(): void {
-    // this.props.commentIds.remove(comment)
     this.props.totalNumComments--
-    // this.addEvent(new CommentPosted(this, comment));
   }
 
   public getProps(): PostEntityProps & BaseEntityProps {
@@ -89,12 +87,8 @@ export class PostEntity extends AggregateRoot<PostEntityProps> {
   }
 
   public delete(): void {
-    this.addEvent(new PostDeletedDomainEvent({ entity: this }))
+    this.addEvent(new PostDeletedDomainEvent({ aggregateId: this.id }))
   }
 
-  validate(): void {
-    // if (!this.isValidPostType(props.type)) {
-    //   return Result.fail<Post>("Invalid post type provided.")
-    // }
-  }
+  validate(): void {}
 }

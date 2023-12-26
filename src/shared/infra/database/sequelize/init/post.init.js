@@ -21,6 +21,19 @@ module.exports = {
     onDelete: 'cascade',
     onUpdate: 'cascade',
   },
+  status: {
+    allowNull: false,
+    type: DataTypes.STRING,
+    references: {
+      model: {
+        tableName: 'statuses',
+        // schema: 'public',
+      },
+      key: 'status',
+    },
+    onDelete: 'cascade',
+    onUpdate: 'cascade',
+  },
   image: {
     allowNull: false,
     type: DataTypes.STRING,

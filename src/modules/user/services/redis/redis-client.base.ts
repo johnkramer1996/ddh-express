@@ -4,13 +4,13 @@ import { RedisClientType, createClient } from 'redis'
 
 @injectable()
 export abstract class AbstractRedisClient {
-  protected client: RedisClientType
+  protected client!: RedisClientType
 
   constructor() {
     const { port, host } = redisConfig
     this.client = createClient()
     this.client.on('connect', () => {
-      console.log(`[Redis]: Connected to redis server at ${host}:${port}`)
+      console.info(`[Redis]: Connected to redis server at ${host}:${port}`)
     })
   }
 

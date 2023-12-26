@@ -1,12 +1,11 @@
 import { injectable } from 'inversify'
 import { Mapper } from '../../../../shared/domain/mapper.interface'
-import { PostVoteResponseDto } from '../../dtos/post-vote/post-vote.response.dto'
 import { VoteType } from '../../domain/entity/vote.base.entity'
 import { PostVoteEntity } from '../../domain/entity/post-vote/entity'
 import { PostVoteModelAttributes } from '../../domain/entity/post-vote/types'
 
 @injectable()
-export class PostVoteMapper implements Mapper<PostVoteEntity, PostVoteModelAttributes, PostVoteResponseDto> {
+export class PostVoteMapper implements Mapper<PostVoteEntity, PostVoteModelAttributes> {
   public toPersistence(entity: PostVoteEntity): PostVoteModelAttributes {
     const copy = entity.getProps()
     const record: PostVoteModelAttributes = {
@@ -24,8 +23,8 @@ export class PostVoteMapper implements Mapper<PostVoteEntity, PostVoteModelAttri
   public toDomain(record: PostVoteModelAttributes): PostVoteEntity {
     const entity = new PostVoteEntity({
       id: record.id,
-      createdAt: new Date(record.createdAt),
-      updatedAt: new Date(record.updatedAt),
+      createdAt: record.createdAt,
+      updatedAt: record.updatedAt,
       props: {
         memberId: record.memberId,
         postId: record.postId,
@@ -33,10 +32,5 @@ export class PostVoteMapper implements Mapper<PostVoteEntity, PostVoteModelAttri
       },
     })
     return entity
-  }
-
-  public toResponse(entity: PostVoteEntity): PostVoteResponseDto {
-    const copy = entity.getProps()
-    return new PostVoteResponseDto(copy)
   }
 }

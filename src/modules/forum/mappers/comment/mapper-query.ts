@@ -19,8 +19,8 @@ export class CommentQueryMapper implements QueryMapper<CommentQuery, CommentMode
   public toQuery(record: CommentModelAttributes): CommentQuery {
     return new CommentQuery({
       id: record.id,
-      createdAt: new Date(record.createdAt),
-      updatedAt: new Date(record.updatedAt),
+      createdAt: record.createdAt,
+      updatedAt: record.updatedAt,
       text: record.text,
       parentId: record.parentId,
       points: record.points,

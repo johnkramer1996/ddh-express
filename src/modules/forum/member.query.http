@@ -3,7 +3,7 @@ GET http://localhost:8086/api/v1/members/currentMember
 
 
 ### GET MEMBER BY LOGIN
-GET http://localhost:8086/api/v1/members/vitalii
+GET http://localhost:8086/api/v1/members/victor
 
 ### GET POSTS BY LOGIN
 GET http://localhost:8086/api/v1/members/vitalii/posts

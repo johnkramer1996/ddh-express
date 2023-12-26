@@ -1,13 +1,11 @@
 import { DomainEvent, DomainEventProps } from '@src/shared/domain/events/domain-event.base'
-import { PostEntity } from '../entity'
-import { PostVoteEntity } from '../../post-vote/entity'
+import { AggregateID } from '@src/shared/domain/entity'
 
 export class PostVoteChangedCreatedDomainEvent extends DomainEvent {
-  public declare readonly entity: PostEntity
-  public readonly vote: PostVoteEntity
+  public readonly voteAggregateId: AggregateID
 
   constructor(props: DomainEventProps<PostVoteChangedCreatedDomainEvent>) {
     super(props)
-    this.vote = props.vote
+    this.voteAggregateId = props.voteAggregateId
   }
 }

@@ -2,7 +2,7 @@ import { TimeStamp } from '@src/shared/core/time-stamp'
 import { PrimaryKey } from '@src/shared/core/primary-key'
 import { CommentVoteModelAttributes } from '../comment-vote/types'
 import { CommentVotes } from '../../value-objects/votes.value-objcect'
-import { MemberModelWithAdditonAttributes } from '../member/types'
+import { MemberModelAttributes } from '../member/types'
 
 // TODO:
 // POST ID -> VALUE OBJECT
@@ -28,6 +28,10 @@ export interface CommentModelCreationAttributes extends PrimaryKey {
 
 export interface CommentModelAttributes extends CommentModelCreationAttributes, TimeStamp {
   countChild?: string
-  member?: MemberModelWithAdditonAttributes
+  member?: MemberModelAttributes
   votes?: CommentVoteModelAttributes[]
+}
+
+export type CommentUpdateTextProps = {
+  text: string
 }

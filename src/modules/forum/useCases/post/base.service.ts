@@ -5,8 +5,8 @@ import { PostRepositoryPort } from '../../repository/post/repository.port'
 import { MemberRepositoryPort } from '../../repository/member/repository.port'
 import { MEMBER_TYPES } from '../../di/member/types'
 import { PostService } from '../../domain/service/post.service'
-import { PostSequelizeRepositoryQuery } from '../../repository/post/repository.sequelize'
-import { MemberSequelizeRepositoryQuery } from '../../repository/member/repository.sequelize'
+import { PostSequelizeRepositoryQuery } from '../../repository/post/repository.query.sequelize'
+import { MemberSequelizeRepositoryQuery } from '../../repository/member/repository.query.sequelize'
 import { PostQueryMapper } from '../../mappers/post/mapper-query'
 import { POST_VOTE_TYPES } from '../../di/post/post-vote.types'
 import { PostVoteRepositoryPort } from '../../repository/post-vote/repository.port'
@@ -24,8 +24,8 @@ export abstract class PostServiceBase<T1, T2> extends ServiceBase<T1, T2> {
 
 export abstract class PostServiceQueryBase<T1, T2> extends ServiceBase<T1, T2> {
   constructor(
-    @inject(PostSequelizeRepositoryQuery) protected postRepo: PostSequelizeRepositoryQuery,
-    @inject(MemberSequelizeRepositoryQuery) protected memberRepo: MemberSequelizeRepositoryQuery,
+    @inject(POST_TYPES.QUERY_REPOSITORY) protected postRepo: PostSequelizeRepositoryQuery,
+    @inject(MEMBER_TYPES.QUERY_REPOSITORY) protected memberRepo: MemberSequelizeRepositoryQuery,
     @inject(POST_TYPES.QUERY_MAPPER) protected postMapper: PostQueryMapper
   ) {
     super()

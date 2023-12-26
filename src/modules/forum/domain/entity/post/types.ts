@@ -21,18 +21,20 @@ export interface PostEntityProps extends PostEntityCreationProps {
   points: number
   totalNumComments: number
   votes: PostVotes
+  status: PostStatus
 }
 
 export interface PostModelCreationAttributes extends PrimaryKey {
   memberId: string
   image: string
-  type: string
+  type: PostType
   title: string
   text: string | null
   link: string | null
   slug: string
   points: number
   totalNumComments: number
+  status: PostStatus
 }
 
 export interface PostModelAttributes extends PostModelCreationAttributes, TimeStamp {
@@ -51,3 +53,5 @@ export type UpdatePostProps = {
   title?: string
   text?: string
 }
+
+export type PostStatus = 'approved' | 'cancelled' | 'draft'

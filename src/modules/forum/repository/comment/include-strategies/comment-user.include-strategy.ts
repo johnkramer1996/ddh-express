@@ -1,6 +1,6 @@
 import { IncludeStrategyPort, Include } from '@src/shared/domain/repository.port'
 import MemberModel from '@src/shared/infra/database/sequelize/models/member.model'
-import UserModel from '@src/shared/infra/database/sequelize/models/user.model'
+import { UserModel } from '@src/shared/infra/database/sequelize/models/user.model'
 
 export class CommentMemberIncludeStrategy implements IncludeStrategyPort {
   public apply(): Include {

@@ -6,6 +6,8 @@ import { PostModelAttributes } from '@src/modules/forum/domain/entity/post/types
 import { PostEntity } from '@src/modules/forum/domain/entity/post/entity'
 import { Login } from './value-objects/login.value-object'
 import { Email } from './value-objects/email.value-object'
+import { Permission } from './value-objects/permissions.value-object'
+import { PermissionModel } from '@src/shared/infra/database/sequelize/models/permisison.model'
 
 export interface UserEntityCreationProps {
   login: Login
@@ -14,6 +16,7 @@ export interface UserEntityCreationProps {
 }
 
 export interface UserEntityProps extends UserEntityCreationProps {
+  permissions: Permission[]
   avatar: string | null
   firstName: string | null
   lastName: string | null
@@ -28,6 +31,7 @@ export interface UserModelCreationAttributes extends PrimaryKey {
   login: string
   email: string
   password: string
+  permissions?: PermissionModel[]
 }
 
 export interface UserModelAttributes extends UserModelCreationAttributes, TimeStamp {
@@ -40,4 +44,13 @@ export interface UserModelAttributes extends UserModelCreationAttributes, TimeSt
   lastLogin: Date | null
   address?: AddressModelAttributes
   posts?: PostModelAttributes[]
+}
+
+export type UpdateUserProps = {
+  readonly email?: string
+  readonly avatar?: string
+  readonly password?: string
+  readonly deleteAvatar?: boolean
+  readonly firstName?: string
+  readonly lastName?: string
 }

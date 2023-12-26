@@ -5,9 +5,10 @@ import { UserModelAttributes, UserModelCreationAttributes } from '@src/modules/u
 import { DB_TABLES } from '@src/configs/dbtables'
 import userInit from '../init/user.init.js'
 import AddressModel from './address.model'
+import { PermissionModel } from './permisison.model'
 
 @injectable()
-class UserModel extends Model<UserModelAttributes, UserModelCreationAttributes> {
+export class UserModel extends Model<UserModelAttributes, UserModelCreationAttributes> {
   declare id: string
   declare avatar: string | null
   declare email: string
@@ -20,7 +21,6 @@ class UserModel extends Model<UserModelAttributes, UserModelCreationAttributes> 
 
   declare createdAt: Date
   declare updatedAt: Date
-  declare deletedAt: Date | null
 }
 
 UserModel.init(userInit, {
@@ -28,8 +28,9 @@ UserModel.init(userInit, {
   sequelize,
   hooks: {},
   defaultScope: {
-    include: [{ as: 'address', model: AddressModel }],
+    include: [
+      { as: 'address', model: AddressModel },
+      { as: 'permissions', model: PermissionModel, attributes: ['permission'], through: { attributes: [] } },
+    ],
   },
 })
-
-export default UserModel

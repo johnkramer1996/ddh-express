@@ -19,7 +19,7 @@ export class FindPostsByLoginService extends PostServiceQueryBase<FindPostsByLog
     const member = await this.memberRepo.findOneByLogin(query.login)
     if (!member) throw new NotFoundException()
 
-    const posts = await this.postRepo.findAllPaginatedByMemberId({ ...query, memberId: member.id }, authMember?.id)
+    const posts = await this.postRepo.findAllPaginatedByMemberId(query, member.id, authMember?.id)
 
     return posts
   }

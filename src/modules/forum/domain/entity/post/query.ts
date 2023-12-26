@@ -1,12 +1,14 @@
 import { AggregateID } from '@src/shared/domain/entity'
 import { ValueObject } from '@src/shared/domain/value-object.base'
 import { MemberQuery } from '../member/query'
+import { PostStatus } from './types'
 
-interface MemberQueryProps {
+type QueryProps = {
   id: string
   createdAt: Date
   updatedAt: Date
   memberId: string
+  status: PostStatus
   slug: string
   type: string
   image: string
@@ -19,7 +21,7 @@ interface MemberQueryProps {
   member: MemberQuery | null
 }
 
-export class PostQuery extends ValueObject<MemberQueryProps> {
+export class PostQuery extends ValueObject<QueryProps> {
   validate(): void {}
 
   get id(): string {
@@ -36,6 +38,10 @@ export class PostQuery extends ValueObject<MemberQueryProps> {
 
   get memberId(): string {
     return this.props.memberId
+  }
+
+  get status(): PostStatus {
+    return this.props.status
   }
 
   get slug(): string {

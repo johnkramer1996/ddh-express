@@ -2,9 +2,10 @@ export interface JWTClaims {
   id: string
   email: string
   login: string
-  // username: string | null
+  permissions: UserPermission[]
+  isAdmin: boolean
+  // TODO:
   // isEmailVerified: boolean
-  // adminUser: boolean
 }
 
 export type JWTToken = string
@@ -12,3 +13,5 @@ export type JWTToken = string
 export type SessionId = string
 
 export type RefreshToken = string
+
+export type UserPermission = 'admin' | 'member'

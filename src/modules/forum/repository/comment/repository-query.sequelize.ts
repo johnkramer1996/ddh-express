@@ -9,13 +9,11 @@ import { CommentVotesIncludeStrategy } from './include-strategies/comment-votes.
 import { CommentCountChildAttributeStrategy } from './attribute-strategies/comment-count-child-attribute-strategy'
 import { CommentByPostSlugIncludeStrategy } from './include-strategies/comment-by-post-slug.include-strategy'
 import { CommentQueryMapper } from '../../mappers/comment/mapper-query'
-import { CommentResponseDto } from '../../dtos/comment/response.dto'
 import { CommentQuery } from '../../domain/entity/comments/query'
-
-export interface FindCommentsParams extends QueryParams {}
+import { CommentRepositoryQueryPort, FindCommentsParams } from './repository.port'
 
 @injectable()
-export class CommentSequelizeRepositoryQuery extends SequelizeRepositoryQueryBase<CommentQuery, CommentModelAttributes, CommentResponseDto> {
+export class CommentSequelizeRepositoryQuery extends SequelizeRepositoryQueryBase<CommentQuery> implements CommentRepositoryQueryPort {
   constructor(@inject(COMMENT_TYPES.QUERY_MAPPER) mapper: CommentQueryMapper, @inject(COMMENT_TYPES.SEQUELIZE_MODEL) model: ModelDefined<any, any>) {
     super(mapper, model)
   }
@@ -28,8 +26,6 @@ export class CommentSequelizeRepositoryQuery extends SequelizeRepositoryQueryBas
     authUserId && includeStrategies.push(new CommentVotesIncludeStrategy(authUserId))
 
     attributeStrategies.push(new CommentCountChildAttributeStrategy())
-
-    console.log(attributeStrategies)
 
     return this.findOneById(commentId, { includeStrategies, attributeStrategies })
   }
@@ -47,24 +43,24 @@ export class CommentSequelizeRepositoryQuery extends SequelizeRepositoryQueryBas
     return this.findAllPaginated(query, { where: { parentId: null }, includeStrategies, attributeStrategies })
   }
 
-  public async findChildrenComment(comment: CommentQuery, userId?: string): Promise<CommentQuery[]> {
+  public async findChildrenComment(comment: CommentQuery, authUserId?: string): Promise<CommentQuery[]> {
     const includeStrategies: IncludeStrategyPort[] = []
     const attributeStrategies: AttributeStrategyPort[] = []
 
     includeStrategies.push(new CommentMemberIncludeStrategy())
-    userId && includeStrategies.push(new CommentVotesIncludeStrategy(userId))
+    authUserId && includeStrategies.push(new CommentVotesIncludeStrategy(authUserId))
 
     attributeStrategies.push(new CommentCountChildAttributeStrategy())
 
     return this._findChildrenComment(comment, { includeStrategies, attributeStrategies })
   }
 
-  public async findAllChildrenComment(comment: CommentQuery, userId?: string): Promise<CommentQuery[]> {
+  public async findAllChildrenComment(comment: CommentQuery, authUserId?: string): Promise<CommentQuery[]> {
     const includeStrategies: IncludeStrategyPort[] = []
     const attributeStrategies: AttributeStrategyPort[] = []
 
     includeStrategies.push(new CommentMemberIncludeStrategy())
-    userId && includeStrategies.push(new CommentVotesIncludeStrategy(userId))
+    authUserId && includeStrategies.push(new CommentVotesIncludeStrategy(authUserId))
 
     attributeStrategies.push(new CommentCountChildAttributeStrategy())
 
