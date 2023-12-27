@@ -7,6 +7,7 @@ type QueryProps = {
   id: string
   createdAt: Date
   updatedAt: Date
+  moderatedAt: Date | null
   memberId: string
   status: PostStatus
   slug: string
@@ -34,6 +35,10 @@ export class PostQuery extends ValueObject<QueryProps> {
 
   get updatedAt(): Date {
     return this.props.updatedAt
+  }
+
+  get moderatedAt(): Date | null {
+    return this.props.moderatedAt
   }
 
   get memberId(): string {

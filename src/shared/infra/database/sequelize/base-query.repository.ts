@@ -40,6 +40,7 @@ export class SequelizeRepositoryQueryBase<Entity> implements RepositoryQueryPort
         include: getAttributeStrategies(options.attributeStrategies),
       },
       include: getIncludeStrategies(options.includeStrategies),
+      distinct: true,
     })
 
     return new Paginated({ data: rows.map((i) => this.mapper.toQuery(i.toJSON())), count, limit: params.limit, page: params.page })

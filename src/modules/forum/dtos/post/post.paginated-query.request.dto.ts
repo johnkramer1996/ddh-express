@@ -1,6 +1,6 @@
 import { PaginatedQueryRequestDto } from '@src/shared/api/paginated-query.request.dto'
 import { OrderBy } from '@src/shared/domain/repository.port'
-import { IsEnum, IsOptional } from 'class-validator'
+import { IsEnum, IsOptional, IsString } from 'class-validator'
 import { PostModelAttributes } from '../../domain/entity/post/types'
 import { Transform } from 'class-transformer'
 

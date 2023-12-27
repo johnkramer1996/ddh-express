@@ -18,6 +18,8 @@ export class BanMemberService extends MemberServiceBase<BanMemberCommand, Return
     const member = await this.memberRepo.findOneByLogin(command.login)
     if (!member) throw new NotFoundException()
 
+    // TODO: ADD PERMISSION TO MEMBER  AND CHECK THEM HERE
+
     command.action === 'ban' ? member.ban(authMember) : member.recover(authMember)
 
     await this.memberRepo.save(member)

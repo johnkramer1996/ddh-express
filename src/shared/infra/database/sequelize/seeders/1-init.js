@@ -9,14 +9,30 @@ module.exports = {
     const testId1 = `11111111-1111-1111-1111-111111111111`
     const testId2 = `11111111-1111-1111-1111-111111111120`
     const testId3 = `11111111-1111-1111-1111-111111111121`
-    await queryInterface.bulkInsert('permissions', [
+
+    await queryInterface.bulkInsert('roles', [
       {
-        permission: 'admin',
+        role: 'admin',
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
-        permission: 'member',
+        role: 'editor',
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        role: 'author',
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        role: 'contributor',
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        role: 'subscriber',
         created_at: new Date(),
         updated_at: new Date(),
       },
@@ -62,24 +78,6 @@ module.exports = {
       {}
     )
 
-    const [permissions] = await queryInterface.sequelize.query(`SELECT permission from permissions;`)
-    const [users] = await queryInterface.sequelize.query(`SELECT id from users;`)
-
-    await queryInterface.bulkInsert('user_permissions', [
-      {
-        user_id: users[0].id,
-        permission: permissions[0].permission, // admin
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      ...users.map((user) => ({
-        user_id: user.id,
-        permission: permissions[1].permission,
-        created_at: new Date(),
-        updated_at: new Date(),
-      })),
-    ])
-
     await queryInterface.bulkInsert(
       'user_addresses',
       users.map((i, index) => ({
@@ -92,6 +90,9 @@ module.exports = {
         updated_at: new Date(),
       }))
     )
+
+    const [users] = await queryInterface.sequelize.query(`SELECT id from users;`)
+    const [roles] = await queryInterface.sequelize.query(`SELECT permission from roles;`)
 
     await queryInterface.bulkInsert(
       'members',
@@ -107,6 +108,21 @@ module.exports = {
     )
 
     const [members] = await queryInterface.sequelize.query(`SELECT id from members;`)
+
+    await queryInterface.bulkInsert('member_roles', [
+      {
+        user_id: members[0].id,
+        permission: roles[0].permission, // admin
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      ...members.map((user) => ({
+        user_id: user.id,
+        permission: roles[1].permission,
+        created_at: new Date(),
+        updated_at: new Date(),
+      })),
+    ])
 
     await queryInterface.bulkInsert('messages', [
       {
@@ -128,7 +144,13 @@ module.exports = {
         updated_at: new Date(),
       },
     ])
+    // / scheduled / / private / auto-draft
 
+    //draft / publish / trash / pending
+    // publish — опубликованный пост. Доступен на сайте для просмотра каждому. Этот статус присваивается записям при нажатии на кнопку «Опубликовать».
+    // draft — черновики (записи, которые ещё находятся в процессе написания и не готовы к публикации). Для создания черновика нажмите кнопку «Сохранить».
+    // pending — пост, ожидающий проверки редактором или администратором. Все записи пользователей с ролью «Участник» отправляются на модерацию.
+    // trash — посты, находящиеся в корзине. Для того, чтобы переместить пост в корзину, нажмите на ссылку «Удалить».
     await queryInterface.bulkInsert('statuses', [
       {
         status: 'approved',

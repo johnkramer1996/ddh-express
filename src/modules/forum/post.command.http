@@ -13,12 +13,10 @@ Content-Type: application/json
 
 
 ### UPDATE ONE
-PATCH http://localhost:8086/api/v1/posts/6974007-post-created-user-1
+PATCH http://localhost:8086/api/v1/posts/slug-test/moderate
 Content-Type: application/json
 
 {
-    "title": "new title",
-    "text": "new text",
-    "type": "text"
+  "status": "approved"
 }
 

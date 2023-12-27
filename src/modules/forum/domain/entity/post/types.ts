@@ -22,6 +22,7 @@ export interface PostEntityProps extends PostEntityCreationProps {
   totalNumComments: number
   votes: PostVotes
   status: PostStatus
+  moderatedAt: Date | null
 }
 
 export interface PostModelCreationAttributes extends PrimaryKey {
@@ -35,6 +36,7 @@ export interface PostModelCreationAttributes extends PrimaryKey {
   points: number
   totalNumComments: number
   status: PostStatus
+  moderatedAt: Date | null
 }
 
 export interface PostModelAttributes extends PostModelCreationAttributes, TimeStamp {

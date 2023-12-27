@@ -1,6 +1,11 @@
 
 ### GET LIST ?order=popular ?order=recent
 GET http://localhost:8086/api/v1/posts?order=recent&offset=0
+Content-Type: application/json
+
+{
+    "moderated": true
+}
 
 ### GET BY SLUG
-GET http://localhost:8086/api/v1/posts/8448938-post-291123
+GET http://localhost:8086/api/v1/posts/slug-test

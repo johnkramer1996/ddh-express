@@ -67,5 +67,10 @@ module.exports = {
     allowNull: false,
     type: DataTypes.INTEGER,
   },
+  moderatedAt: {
+    field: 'moderated_at',
+    allowNull: true,
+    type: DataTypes.DATE,
+  },
   ...timeStamp,
 }

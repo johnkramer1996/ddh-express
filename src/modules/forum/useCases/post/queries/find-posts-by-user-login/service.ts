@@ -3,7 +3,7 @@ import { Paginated } from '@src/shared/domain/repository.port'
 import { injectable } from 'inversify'
 import { FindPostsByLoginQuery } from './query'
 import { QueryHandler } from '@src/shared/core/cqs/query-handler'
-import { PostServiceBase, PostServiceQueryBase } from '../../base.service'
+import { PostServiceQueryBase } from '../../base.service'
 import { NotFoundException } from '@src/shared/exceptions/exceptions'
 import { PostQuery } from '@src/modules/forum/domain/entity/post/query'
 
@@ -19,7 +19,7 @@ export class FindPostsByLoginService extends PostServiceQueryBase<FindPostsByLog
     const member = await this.memberRepo.findOneByLogin(query.login)
     if (!member) throw new NotFoundException()
 
-    const posts = await this.postRepo.findAllPaginatedByMemberId(query, member.id, authMember?.id)
+    const posts = await this.postRepo.findAllPaginatedWithAuthMeberId({ ...query, memberId: member.id }, authMember?.id)
 
     return posts
   }

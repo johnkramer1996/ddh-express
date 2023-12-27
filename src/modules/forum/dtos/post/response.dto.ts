@@ -2,6 +2,7 @@ import { ResponseBase, ResponseBaseProps } from '../../../../shared/api/response
 import { MemberResponseDto } from '../member/response.dto'
 
 export class PostResponseDto extends ResponseBase {
+  public readonly moderatedAt: Date | null
   public readonly memberId: string
   public readonly status: string
   public readonly slug: string
@@ -18,6 +19,7 @@ export class PostResponseDto extends ResponseBase {
 
   constructor(props: ResponseBaseProps<PostResponseDto>) {
     super(props)
+    this.moderatedAt = props.moderatedAt
     this.memberId = props.memberId
     this.status = props.status
     this.slug = props.slug

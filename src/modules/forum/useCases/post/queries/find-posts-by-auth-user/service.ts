@@ -14,10 +14,10 @@ export type FindPostsServiceByUserResponse = ResultWithError<Return>
 @QueryHandler(FindPostsByAuthUserQuery)
 export class FindPostsByAuthUserService extends PostServiceQueryBase<FindPostsByAuthUserQuery, Return> {
   async executeImpl(query: FindPostsByAuthUserQuery): Promise<Return> {
-    const member = await this.memberRepo.findOneByLogin(query.login)
-    if (!member) throw new NotFoundException()
+    const authMember = await this.memberRepo.findOneByLogin(query.login)
+    if (!authMember) throw new NotFoundException()
 
-    const posts = await this.postRepo.findAllPaginatedByMemberId(query, member.id, member?.id)
+    const posts = await this.postRepo.findAllPaginatedWithAuthMeberId({ ...query, memberId: authMember.id }, authMember?.id)
 
     return posts
   }

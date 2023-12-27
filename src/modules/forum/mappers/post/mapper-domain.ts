@@ -36,6 +36,7 @@ export class PostMapper implements Mapper<PostEntity, PostModelAttributes> {
       createdAt: copy.createdAt,
       updatedAt: copy.updatedAt,
       deletedAt: copy.deletedAt,
+      moderatedAt: copy.moderatedAt,
     }
     return record
   }
@@ -45,8 +46,8 @@ export class PostMapper implements Mapper<PostEntity, PostModelAttributes> {
 
     const entity = new PostEntity({
       id: record.id,
-      createdAt: new Date(record.createdAt),
-      updatedAt: new Date(record.updatedAt),
+      createdAt: record.createdAt,
+      updatedAt: record.updatedAt,
       props: {
         memberId: record.memberId,
         status: record.status,
@@ -59,6 +60,7 @@ export class PostMapper implements Mapper<PostEntity, PostModelAttributes> {
         points: record.points,
         totalNumComments: record.totalNumComments,
         votes: new PostVotes(votes),
+        moderatedAt: record.moderatedAt,
       },
     })
     return entity

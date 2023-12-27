@@ -15,7 +15,7 @@ export class FindPostBySlugService extends PostServiceQueryBase<FindPostBySlugQu
   async executeImpl(query: FindPostBySlugQuery): Promise<Return> {
     const authMember = await this.memberRepo.findOneByUserIdIfExists(query.userId)
 
-    const post = await this.postRepo.findBySlugQuery(query.slug, authMember?.id)
+    const post = await this.postRepo.findBySlug(query.slug, authMember?.id)
     if (!post) throw new NotFoundException()
 
     return post

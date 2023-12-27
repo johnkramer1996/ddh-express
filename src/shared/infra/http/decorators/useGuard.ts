@@ -49,7 +49,6 @@ export class AuthGuard extends Guard {
   }
 
   public async execute(req: Request, ensure = true): Promise<boolean> {
-    console.log('2')
     const token = this.getTokenFromRequest(req)
     if (!token) return ensure ? this.error('No access token provided') : true
 

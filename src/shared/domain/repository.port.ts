@@ -43,9 +43,9 @@ export interface WhereStrategyPort {
 }
 
 export type Options = {
+  where?: ObjectLiteral
   includeStrategies?: IncludeStrategyPort[]
   attributeStrategies?: AttributeStrategyPort[]
-  where?: ObjectLiteral
 }
 
 export interface RepositoryPort<Entity> {
@@ -59,8 +59,8 @@ export interface RepositoryPort<Entity> {
 }
 
 export interface RepositoryQueryPort<Entity> {
-  findAll(): Promise<Entity[]>
-  findAllPaginated(params: QueryParams): Promise<Paginated<Entity>>
+  findAll(options: Options): Promise<Entity[]>
+  findAllPaginated(params: QueryParams, options: Options): Promise<Paginated<Entity>>
   findOne(): Promise<Entity | null>
   findOneById(id: string): Promise<Entity | null>
 }

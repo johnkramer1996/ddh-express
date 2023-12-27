@@ -28,6 +28,8 @@ import { UpdatePostController } from '../../useCases/post/commands/update-post/c
 import { UpdatePostService } from '../../useCases/post/commands/update-post/service'
 import { DeletePostController } from '../../useCases/post/commands/delete-post/controller'
 import { DeletePostService } from '../../useCases/post/commands/delete-post/service'
+import { ModeratePostService } from '../../useCases/post/commands/moderate-post/service'
+import { ModeratePostController } from '../../useCases/post/commands/moderate-post/controller'
 
 const postModule = (container: Container) => {
   container.bind(POST_TYPES.MAPPER).to(PostMapper)
@@ -50,6 +52,9 @@ const postModule = (container: Container) => {
 
   container.bind(UpdatePostController).toSelf()
   container.bind(UpdatePostService).toSelf()
+
+  container.bind(ModeratePostController).toSelf()
+  container.bind(ModeratePostService).toSelf()
 
   container.bind(DeletePostController).toSelf()
   container.bind(DeletePostService).toSelf()

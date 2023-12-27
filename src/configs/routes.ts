@@ -45,6 +45,7 @@ export const routes = {
     findAll: `/${postsRoot}`,
     findBySlug: `/${postsRoot}/:slug`,
     updateBySlug: `/${postsRoot}/:slug`,
+    moderateBySlug: `/${postsRoot}/:slug/moderate`,
     deleteBySlug: `/${postsRoot}/:slug`,
     upvoteBySlug: `/${postsRoot}/:slug/upvote`,
     downvoteBySlug: `/${postsRoot}/:slug/downvote`,
