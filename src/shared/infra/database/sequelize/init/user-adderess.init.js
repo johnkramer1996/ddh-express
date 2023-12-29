@@ -28,6 +28,7 @@ module.exports = {
     allowNull: true,
   },
   postalCode: {
+    field: 'postal_code',
     type: DataTypes.STRING,
     allowNull: true,
   },

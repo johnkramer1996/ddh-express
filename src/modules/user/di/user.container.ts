@@ -1,8 +1,8 @@
 import { Container } from 'inversify'
 import { USER_TYPES } from './user.types'
-import { UserMapper } from '../mappers/user/mapper-domain'
-import { UserRepositoryPort, UserRepositoryQueryPort } from '../repository/repository.port'
-import { UserSequelizeRepository } from '../repository/repository.sequelize'
+import { UserMapper } from '../mappers/user/user.mapper'
+import { UserRepositoryPort, UserRepositoryQueryPort } from '../repository/user.repository.port'
+import { UserSequelizeRepository } from '../repository/user.repository.sequelize'
 import { FindUsersController } from '../useCases/queries/find-users/controller'
 import { FindUsersService } from '../useCases/queries/find-users/service'
 import { RedisAuthService } from '../services/auth.service.redis'
@@ -21,15 +21,14 @@ import { DeleteUserController } from '../useCases/commands/delete-user-by-login/
 import { DeleteUserService } from '../useCases/commands/delete-user-by-login/service'
 import { CreateUserController } from '../useCases/commands/create-user/controller'
 import { CreateUserService } from '../useCases/commands/create-user/service'
-import { UserSequelizeRepositoryQuery } from '../repository/repository-query.sequelize'
-import { UserQueryMapper } from '../mappers/user/mapper-query'
+import { UserSequelizeRepositoryQuery } from '../repository/user.repository-query.sequelize'
+import { UserQueryMapper } from '../mappers/user/user.query-mapper'
 import { UpdateUserController } from '../useCases/commands/update-user/controller'
 import { UpdateUserService } from '../useCases/commands/update-user/service'
-import AddressModel from '@src/shared/infra/database/sequelize/models/address.model'
+import { AddressModel } from '@src/shared/infra/database/sequelize/models/address.model'
 import { UserModel } from '@src/shared/infra/database/sequelize/models/user.model'
-import { UserPermissionModel } from '@src/shared/infra/database/sequelize/models/user-permissions.model'
 
-const userModule = (container: Container) => {
+export const userModule = (container: Container) => {
   container.bind(USER_TYPES.MAPPER).to(UserMapper)
   container.bind(USER_TYPES.QUERY_MAPPER).to(UserQueryMapper)
   container.bind<UserRepositoryPort>(USER_TYPES.REPOSITORY).to(UserSequelizeRepository)
@@ -37,7 +36,6 @@ const userModule = (container: Container) => {
   container.bind<AuthServicePort>(USER_TYPES.AUTH_SERVICE).to(RedisAuthService)
   container.bind(USER_TYPES.SEQUELIZE_MODEL).toConstantValue(UserModel)
   container.bind(USER_TYPES.SEQUELIZE_ADDRESS_MODEL).toConstantValue(AddressModel)
-  container.bind(USER_TYPES.SEQUELIZE_USER_PERMISSION_MODEL).toConstantValue(UserPermissionModel)
 
   container.bind(FindUsersController).toSelf()
   container.bind(FindUsersService).toSelf()
@@ -66,5 +64,3 @@ const userModule = (container: Container) => {
   container.bind(RefreshTokenController).toSelf()
   container.bind(RefreshTokenService).toSelf()
 }
-
-export default userModule

@@ -23,7 +23,6 @@ export type QueryParams = {
   limit: number
   page: number
   offset: number
-  order: OrderBy[]
 }
 
 export type Include = { model: any; as: string; where?: any; required?: boolean; include?: Include[] }
@@ -44,8 +43,10 @@ export interface WhereStrategyPort {
 
 export type Options = {
   where?: ObjectLiteral
+  order?: OrderBy[]
   includeStrategies?: IncludeStrategyPort[]
   attributeStrategies?: AttributeStrategyPort[]
+  distinct?: boolean
 }
 
 export interface RepositoryPort<Entity> {

@@ -11,13 +11,13 @@ export interface CreationEntityProps<T> {
   id?: AggregateID
   props: T
   createdAt?: Date
-  updatedAt?: Date
+  updatedAt?: Date | null
 }
 
 export interface BaseEntityProps {
   id: AggregateID
   createdAt: Date
-  updatedAt: Date
+  updatedAt: Date | null
   deletedAt: Date | null
 }
 // PrimaryKey
@@ -27,7 +27,7 @@ export abstract class Entity<EntityProps> implements TimeStamp, PrimaryKey {
     this.validateProps(props)
     const now = new Date()
     this._createdAt = createdAt || now
-    this._updatedAt = updatedAt || now
+    this._updatedAt = updatedAt ?? null
     this._deletedAt = null
     this.props = props
     this.validate()
@@ -39,7 +39,7 @@ export abstract class Entity<EntityProps> implements TimeStamp, PrimaryKey {
 
   private readonly _createdAt: Date
 
-  private _updatedAt: Date
+  private _updatedAt: Date | null
 
   private _deletedAt: Date | null
 
@@ -55,7 +55,7 @@ export abstract class Entity<EntityProps> implements TimeStamp, PrimaryKey {
     return this._createdAt
   }
 
-  get updatedAt(): Date {
+  get updatedAt(): Date | null {
     return this._updatedAt
   }
 

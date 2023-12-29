@@ -26,15 +26,6 @@ export abstract class Guard {
 }
 
 @injectable()
-export class AdminGuard extends Guard {
-  public async execute(req: RequestDecoded): Promise<any> {
-    const decoded = req.decoded
-    if (decoded?.isAdmin) return
-    throw new UnauthorizedException('Only with admin permission')
-  }
-}
-
-@injectable()
 export class AuthGuard extends Guard {
   constructor(@inject(USER_TYPES.AUTH_SERVICE) private authService: AuthServicePort) {
     super()

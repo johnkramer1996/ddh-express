@@ -1,5 +1,5 @@
 import { IncludeStrategyPort, Include } from '@src/shared/domain/repository.port'
-import PostVoteModel from '@src/shared/infra/database/sequelize/models/post-vote.model'
+import { PostVoteModel } from '@src/shared/infra/database/sequelize/models/post-vote.model'
 
 export class PostVotesByAuthMemberIdIncludeStrategy implements IncludeStrategyPort {
   constructor(private authMemberId: string) {}

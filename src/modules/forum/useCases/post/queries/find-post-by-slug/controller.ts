@@ -6,14 +6,13 @@ import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-requ
 import { ControllerGet } from '@src/shared/infra/http/decorators/controller'
 import { routes } from '@src/configs/routes'
 import { SlugRequestDto } from '@src/modules/forum/dtos/slug.request.dto'
-import { PostControllerBase } from '../../base.controller'
+import { PostControllerQueryBase } from '../../base.controller'
 import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
-import { UserRequestDto } from '@src/modules/user/dtos/user.request.dto'
 import { RequestDecoded, RequestDecodedIfExist } from '@src/shared/infra/http/models/base.controller'
 
 @injectable()
 @ControllerGet(routes.post.findBySlug)
-export class FindPostBySlugController extends PostControllerBase {
+export class FindPostBySlugController extends PostControllerQueryBase {
   @UseGuard(AuthGuard, false)
   @ValidateRequest([['params', SlugRequestDto]])
   async executeImpl(req: RequestDecodedIfExist, res: Response): Promise<any> {
@@ -25,8 +24,8 @@ export class FindPostBySlugController extends PostControllerBase {
 
     if (!result.isSuccess) return this.handleError(res, result.getValue())
 
-    const item = result.getValue()
+    const post = result.getValue()
 
-    return this.ok(res, item)
+    return this.ok(res, this.postMapper.toResponse(post))
   }
 }

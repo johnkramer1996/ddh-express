@@ -4,7 +4,7 @@ import { Options, RepositoryPort } from '../../../domain/repository.port'
 import { injectable } from 'inversify'
 import { Entity } from '@src/shared/domain/entity'
 import { AggregateRoot } from '@src/shared/domain/aggregate-root.base'
-import { getAttributeStrategies, getIncludeStrategies } from './base-query.repository'
+import { getAttributeStrategies, getIncludeStrategies } from './base.repository-query'
 
 @injectable()
 export abstract class SequelizeRepositoryBase<EntityDomain extends Entity<any>, DbModel extends { id: string }> implements RepositoryPort<EntityDomain> {
@@ -36,20 +36,20 @@ export abstract class SequelizeRepositoryBase<EntityDomain extends Entity<any>, 
     return Boolean(found)
   }
 
-  public async saveBulk(entiries: EntityDomain[]): Promise<any> {
-    for (const entity of entiries) await this.save(entity)
-  }
-
-  public async deleteBulk(entiries: EntityDomain[]): Promise<any> {
-    for (const entity of entiries) await this.delete(entity)
-  }
-
   public async save(entity: EntityDomain): Promise<void> {
     const rawSequelizeEntity = this.mapper.toPersistence(entity)
     const exists = await this.exists(entity.id)
     const isNewEntity = !exists
 
     isNewEntity ? await this.model.create(rawSequelizeEntity) : await this.model.update(rawSequelizeEntity, { where: { id: entity.id } })
+  }
+
+  public async saveBulk(entiries: EntityDomain[]): Promise<any> {
+    for (const entity of entiries) await this.save(entity)
+  }
+
+  public async deleteBulk(entiries: EntityDomain[]): Promise<any> {
+    for (const entity of entiries) await this.delete(entity)
   }
 }
 

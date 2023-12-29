@@ -1,12 +1,31 @@
-import { PostStatus } from '@src/modules/forum/domain/entity/post/types'
-import { IsBoolean, IsOptional, IsString } from 'class-validator'
+import { PaginatedQueryRequestDto } from '@src/shared/api/paginated-query.request.dto'
+import { OrderBy } from '@src/shared/domain/repository.port'
+import { IsEnum, IsOptional } from 'class-validator'
+import { PostModelAttributes } from '../../../../domain/entity/post/post.types'
+import { Transform } from 'class-transformer'
 
-export class FindPostsRequestDto {
-  @IsBoolean()
-  @IsOptional()
-  readonly moderated?: boolean
+export enum Order {
+  popular = 'popular',
+  recent = 'recent',
+}
 
-  @IsString()
+const orderMap: { [key in keyof typeof Order]: keyof PostModelAttributes } = {
+  popular: 'points',
+  recent: 'createdAt',
+}
+
+export class FindPostsPaginatedQueryRequestDto extends PaginatedQueryRequestDto {
   @IsOptional()
-  readonly status?: PostStatus
+  @IsEnum(Order)
+  @Transform(
+    (prop) => {
+      const value = orderMap[prop.value as Order]
+      return [
+        [value ?? orderMap.recent, 'desc'],
+        ['id', 'desc'],
+      ]
+    },
+    { since: 2 } // transform only in controller
+  )
+  order?: OrderBy[]
 }

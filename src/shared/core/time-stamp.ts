@@ -1,5 +1,5 @@
 export interface TimeStamp {
   createdAt: Date
-  updatedAt: Date
+  updatedAt: Date | null
   deletedAt: Date | null
 }

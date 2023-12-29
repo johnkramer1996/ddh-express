@@ -6,7 +6,7 @@ import { BaseModel } from './base.model'
 import { DB_TABLES } from '@src/configs/dbtables'
 import { UserModel } from './user.model'
 
-class AddressModel extends BaseModel<AddressModelAttributes, AddressModelCreationAttributes> {
+export class AddressModel extends BaseModel<AddressModelAttributes, AddressModelCreationAttributes> {
   declare userId: ForeignKey<UserModel['id']>
   declare country: string | null
   declare postalCode: string | null
@@ -14,5 +14,3 @@ class AddressModel extends BaseModel<AddressModelAttributes, AddressModelCreatio
 }
 
 AddressModel.init(userAdderessInit, { tableName: DB_TABLES.USER_ADDRESS, sequelize })
-
-export default AddressModel

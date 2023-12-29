@@ -4,10 +4,10 @@ import { BaseController, RequestDecoded, RequestDecodedIfExist } from '@src/shar
 import { inject } from 'inversify'
 import { TYPES } from '@src/shared/di/types'
 import { Response } from 'express'
-import { PostMapper } from '../../mappers/post/mapper-domain'
-import { MessageQueryMapper } from '../../mappers/message/mapper-query'
-import { MESSAGE_TYPES } from '../../di/message/types'
-import { MEMBER_TYPES } from '../../di/member/types'
+import { PostMapper } from '../../mappers/post/post.mapper'
+import { MessageQueryMapper } from '../../mappers/message/message.mapper-query'
+import { MESSAGE_TYPES } from '../../di/message/message.types'
+import { MEMBER_TYPES } from '../../di/member/member.types'
 import { MemberQueryMapper } from '../../mappers/member/mapper-query'
 
 export abstract class MessageControllerBase extends BaseController {

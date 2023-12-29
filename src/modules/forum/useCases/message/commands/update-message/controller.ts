@@ -10,8 +10,8 @@ import { routes } from '@src/configs/routes'
 import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
 import { RequestDecoded } from '@src/shared/infra/http/models/base.controller'
 import { MessageControllerBase } from '../../base.controller'
-import { CommentIdRequestDto } from '@src/modules/forum/dtos/comment/id.request.dto'
-import { MessageIdRequestDto } from '@src/modules/forum/dtos/message/id.request.dto'
+import { CommentIdRequestDto } from '@src/modules/forum/dtos/comment/comment.id.request.dto'
+import { MessageIdRequestDto } from '@src/modules/forum/dtos/message/message.id.request.dto'
 
 @injectable()
 @ControllerPatch(routes.message.updateById)

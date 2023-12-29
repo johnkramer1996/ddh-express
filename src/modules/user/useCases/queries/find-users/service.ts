@@ -2,9 +2,8 @@ import { Result, ResultWithError } from '@src/shared/core/result'
 import { Paginated } from '@src/shared/domain/repository.port'
 import { injectable } from 'inversify'
 import { FindUsersQuery } from './query'
-import { UserEntity } from '@src/modules/user/domain/user.entity'
 import { QueryHandler } from '@src/shared/core/cqs/query-handler'
-import { UserServiceBase, UserServiceQueryBase } from '../../base.service'
+import { UserServiceQueryBase } from '../../base.service'
 import { UserQuery } from '@src/modules/user/domain/user.query'
 
 type FindUsersServiceReturn = Paginated<UserQuery>
@@ -14,7 +13,7 @@ export type FindUsersServiceResponse = ResultWithError<FindUsersServiceReturn>
 @QueryHandler(FindUsersQuery)
 export class FindUsersService extends UserServiceQueryBase<FindUsersQuery, FindUsersServiceReturn> {
   async executeImpl(query: FindUsersQuery): Promise<FindUsersServiceReturn> {
-    const entities = await this.userRepo.findAllPaginated(query)
+    const entities = await this.userRepo.findAllPaginated(query, { distinct: false })
 
     return entities
   }

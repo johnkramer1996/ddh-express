@@ -8,5 +8,8 @@ POST http://localhost:8086/api/v1/cabinet/member/updateLastActive
 ### GET USER INFO 
 GET http://localhost:8086/api/v1/cabinet/user
 
-### GET USER INFO 
+### GET POSTS
 GET http://localhost:8086/api/v1/cabinet/posts
+
+### GET USER INFO 
+GET http://localhost:8086/api/v1/cabinet/admin/posts

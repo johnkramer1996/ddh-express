@@ -9,7 +9,7 @@ import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
 import { RequestDecoded, RequestDecodedIfExist } from '@src/shared/infra/http/models/base.controller'
 import { LoginRequestDto } from '@src/modules/forum/dtos/login.request.dto'
 import { MessageControllerQueryBase } from '../../base.controller'
-import { MessagePaginatedResponseDto } from '@src/modules/forum/dtos/message.paginated.response.dto'
+import { MessagePaginatedResponseDto } from '@src/modules/forum/dtos/message/message.paginated.response.dto'
 import { MessagePaginatedQueryRequestDto } from '@src/modules/forum/dtos/message/message.paginated-query.request.dto'
 
 @injectable()

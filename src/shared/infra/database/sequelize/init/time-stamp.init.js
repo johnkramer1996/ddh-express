@@ -8,7 +8,7 @@ module.exports = {
   },
   updatedAt: {
     field: 'updated_at',
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.DATE,
   },
   deletedAt: {

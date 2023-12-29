@@ -3,3 +3,12 @@ POST http://localhost:8086/api/v1/members/victor/ban
 
 ### POSTS
 GET http://localhost:8086/api/v1/members/login-1/posts
+
+
+### BAN MEMBER BY LOGIN
+POST http://localhost:8086/api/v1/members/victor-editor/addRole
+Content-Type: application/json
+
+{
+    "role": "author"
+}

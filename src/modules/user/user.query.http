@@ -9,3 +9,12 @@ GET http://localhost:8086/api/v1/users/vitalii
 
 ### GET CURRENT USER
 GET http://localhost:8086/api/v1/users/currentUser
+
+
+select count(DISTINCT("users"."id")) AS "count" FROM "users" AS "users" 
+    LEFT OUTER JOIN "user_addresses" AS "address" ON "users"."id" = "address"."user_id";
+
+SELECT "users"."id", "users"."avatar", "users"."login", "users"."email", "users"."password", "users"."first_name" AS "firstName", "users"."last_name" AS "lastName", "users"."is_email_verified" AS "isEmailVerified", "users"."is_deleted" AS "isDeleted", "users"."last_login" AS "lastLogin", "users"."created_at" AS "createdAt", "users"."updated_at" AS "updatedAt", "users"."deleted_at" AS "deletedAt", 
+"address"."id" AS "address.id", "address"."user_id" AS "address.userId", "address"."country" AS "address.country", "address"."postal_code" AS "address.postalCode", "address"."street" AS "address.street", "address"."created_at" AS "address.createdAt", "address"."updated_at" AS "address.updatedAt", "address"."deleted_at" AS "address.deletedAt" FROM "users" AS "users" INNER 
+JOIN "user_addresses" AS "address" ON "users"."id" 
+= "address"."user_id" ORDER BY "createdAt" DESC LIMIT 15 OFFSET 0;

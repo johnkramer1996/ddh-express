@@ -1,0 +1,40 @@
+import { inject, injectable } from 'inversify'
+import { ServiceBase } from '@src/shared/core/service.base'
+import { POST_TYPES } from '../../di/post/post.types'
+import { COMMENT_VOTE_TYPES } from '../../di/comment/comment-vote.types'
+import { COMMENT_TYPES } from '../../di/comment/comment.types'
+import { CommentRepositoryPort } from '../../repository/comment/comment.repository.port'
+import { USER_TYPES } from '@src/modules/user/di/user.types'
+import { PostService } from '../../domain/service/post.service'
+import { UserRepositoryPort } from '@src/modules/user/repository/user.repository.port'
+import { PostRepositoryPort } from '../../repository/post/post.repository.port'
+import { CommentVoteRepositoryPort } from '../../repository/comment-vote/comment-vote.repository.port'
+import { MEMBER_TYPES } from '../../di/member/member.types'
+import { MemberRepositoryPort } from '../../repository/member/member.repository.port'
+import { MemberSequelizeRepositoryQuery } from '../../repository/member/member.repository.query.sequelize'
+import { CommentQueryMapper } from '../../mappers/comment/comment.mapper-query'
+import { CommentSequelizeRepositoryQuery } from '../../repository/comment/comment.repository-query.sequelize'
+
+@injectable()
+export abstract class CommentServiceBase<T1, T2> extends ServiceBase<T1, T2> {
+  constructor(
+    @inject(COMMENT_TYPES.REPOSITORY) protected commentRepo: CommentRepositoryPort,
+    @inject(USER_TYPES.REPOSITORY) protected userRepo: UserRepositoryPort,
+    @inject(POST_TYPES.REPOSITORY) protected postRepo: PostRepositoryPort,
+    @inject(COMMENT_VOTE_TYPES.REPOSITORY) protected commentVoteRepo: CommentVoteRepositoryPort,
+    @inject(MEMBER_TYPES.REPOSITORY) protected memberRepo: MemberRepositoryPort,
+    @inject(PostService) protected postService: PostService
+  ) {
+    super()
+  }
+}
+
+export abstract class CommentServiceQueryBase<T1, T2> extends ServiceBase<T1, T2> {
+  constructor(
+    @inject(COMMENT_TYPES.QUERY_REPOSITORY) protected commentRepository: CommentSequelizeRepositoryQuery,
+    @inject(MEMBER_TYPES.QUERY_REPOSITORY) protected memberRepository: MemberSequelizeRepositoryQuery,
+    @inject(COMMENT_TYPES.QUERY_MAPPER) protected commentMapper: CommentQueryMapper
+  ) {
+    super()
+  }
+}

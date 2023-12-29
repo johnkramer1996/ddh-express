@@ -10,7 +10,7 @@ import associate from './shared/infra/database/sequelize/models/associate'
 import path from 'path'
 import './modules/forum'
 import { ISocketServer } from './shared/infra/socket/server'
-import PostModel from './shared/infra/database/sequelize/models/post.model'
+import { PostModel } from './shared/infra/database/sequelize/models/post.model'
 
 const bootstrap = async () => {
   ;(global as any).__basedir = path.resolve(__dirname, '..')

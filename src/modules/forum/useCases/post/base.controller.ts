@@ -4,9 +4,9 @@ import { BaseController, RequestDecoded, RequestDecodedIfExist } from '@src/shar
 import { inject } from 'inversify'
 import { TYPES } from '@src/shared/di/types'
 import { Response } from 'express'
-import { PostMapper } from '../../mappers/post/mapper-domain'
+import { PostMapper } from '../../mappers/post/post.mapper'
 import { POST_TYPES } from '../../di/post/post.types'
-import { PostQueryMapper } from '../../mappers/post/mapper-query'
+import { PostQueryMapper } from '../../mappers/post/post.mapper-query'
 
 export abstract class PostControllerBase extends BaseController {
   constructor(

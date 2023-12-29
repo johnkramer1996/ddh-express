@@ -4,8 +4,7 @@ import { ValueObject } from '@src/shared/domain/value-object.base'
 interface UserQueryProps {
   id: string
   createdAt: Date
-  updatedAt: Date
-  permissions: string[]
+  updatedAt: Date | null
   avatar: string | null
   login: string
   email: string
@@ -30,12 +29,8 @@ export class UserQuery extends ValueObject<UserQueryProps> {
     return this.props.createdAt
   }
 
-  get updatedAt(): Date {
+  get updatedAt(): Date | null {
     return this.props.updatedAt
-  }
-
-  get permissions(): string[] {
-    return this.props.permissions
   }
 
   get avatar(): string | null {

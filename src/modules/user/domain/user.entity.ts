@@ -11,7 +11,6 @@ import { Login } from './value-objects/login.value-object'
 import { Email } from './value-objects/email.value-object'
 import { ForbiddenException } from '@src/shared/exceptions/exceptions'
 import { Password } from './value-objects/password.value-object'
-import { Permission } from './value-objects/permissions.value-object'
 
 export class UserEntity extends AggregateRoot<UserEntityProps> {
   protected readonly _id!: AggregateID
@@ -27,10 +26,8 @@ export class UserEntity extends AggregateRoot<UserEntityProps> {
       firstName: null,
       lastName: null,
       isEmailVerified: false,
-      isAdminUser: false,
       isDeleted: false,
       lastLogin: null,
-      permissions: [Permission.create({ value: 'member' })],
       address: new Address({
         country: null,
         postalCode: null,
@@ -42,10 +39,6 @@ export class UserEntity extends AggregateRoot<UserEntityProps> {
     user.addEvent(new UserCreatedDomainEvent({ aggregateId: user.id }))
 
     return user
-  }
-
-  get permissions(): Permission[] {
-    return this.props.permissions
   }
 
   get avatar(): string | null {
@@ -85,14 +78,10 @@ export class UserEntity extends AggregateRoot<UserEntityProps> {
   }
 
   public getJWTClaims(): JWTClaims {
-    const permissions = this.permissions.map((p) => p.value)
-
     return {
       id: this.id,
       login: this.login.value,
       email: this.email.value,
-      permissions,
-      isAdmin: permissions.includes('admin'),
     }
   }
 

@@ -4,9 +4,9 @@ import { FindPostBySlugQuery } from './query'
 import { NotFoundException } from '@src/shared/exceptions/exceptions'
 import { QueryHandler } from '@src/shared/core/cqs/query-handler'
 import { PostServiceQueryBase } from '../../base.service'
-import { PostResponseDto } from '@src/modules/forum/dtos/post/response.dto'
+import { PostQuery } from '@src/modules/forum/domain/entity/post/post.query'
 
-type Return = PostResponseDto
+type Return = PostQuery
 export type FindPostBySlugServiceResponse = ResultWithError<Return>
 
 @injectable()

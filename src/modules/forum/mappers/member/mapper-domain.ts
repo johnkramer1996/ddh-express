@@ -1,8 +1,10 @@
 import { inject, injectable } from 'inversify'
 import { Mapper } from '../../../../shared/domain/mapper.interface'
-import { MemberResponseDto } from '../../dtos/member/response.dto'
-import { MemberEntity } from '../../domain/entity/member/entity'
-import { MemberModelAttributes } from '../../domain/entity/member/types'
+import { MemberResponseDto } from '../../dtos/member/member.response.dto'
+import { MemberEntity } from '../../domain/entity/member/member.entity'
+import { MemberModelAttributes } from '../../domain/entity/member/member.types'
+import { Role } from '@src/modules/forum/domain/value-objects/role.value-object'
+import { Roles } from '../../domain/value-objects/roles.value-object'
 
 @injectable()
 export class MemberMapper implements Mapper<MemberEntity, MemberModelAttributes> {
@@ -28,6 +30,7 @@ export class MemberMapper implements Mapper<MemberEntity, MemberModelAttributes>
       updatedAt: record.updatedAt,
       props: {
         userId: record.userId,
+        roles: new Roles(record.roles ? record.roles.map((p) => new Role({ value: p.role })) : []),
         reputation: record.reputation,
         isBanned: record.isBanned,
         lastActiveAt: record.lastActiveAt,

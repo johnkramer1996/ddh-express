@@ -5,7 +5,7 @@ import { FindPostsByLoginQuery } from './query'
 import { QueryHandler } from '@src/shared/core/cqs/query-handler'
 import { PostServiceQueryBase } from '../../base.service'
 import { NotFoundException } from '@src/shared/exceptions/exceptions'
-import { PostQuery } from '@src/modules/forum/domain/entity/post/query'
+import { PostQuery } from '@src/modules/forum/domain/entity/post/post.query'
 
 type Return = Paginated<PostQuery>
 export type FindPostsServiceByUserResponse = ResultWithError<Return>
@@ -19,7 +19,7 @@ export class FindPostsByLoginService extends PostServiceQueryBase<FindPostsByLog
     const member = await this.memberRepo.findOneByLogin(query.login)
     if (!member) throw new NotFoundException()
 
-    const posts = await this.postRepo.findAllPaginatedWithAuthMeberId({ ...query, memberId: member.id }, authMember?.id)
+    const posts = await this.postRepo.findAllPaginatedWithPostVotesByAuthMemberId({ ...query, memberId: member.id, status: 'publish' }, authMember?.id)
 
     return posts
   }

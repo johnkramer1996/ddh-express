@@ -18,6 +18,10 @@ export const routes = {
     posts: `/${cabinetRoot}/posts`,
     membersForMessage: `/${cabinetRoot}/messages`,
     messagesByLogin: `/${cabinetRoot}/messages/:login`,
+    admin: {
+      root: `/${cabinetRoot}/admin`,
+      posts: `/${cabinetRoot}/admin/posts`,
+    },
   },
   user: {
     create: `/${usersRoot}`,
@@ -32,13 +36,12 @@ export const routes = {
     currentUser: `/${usersRoot}/currentUser`,
   },
   member: {
+    findByLogin: `/${membersRoot}/:login`,
+    findPostsByLogin: `/${membersRoot}/:login/posts`,
+    attachRoleByLogin: `/${membersRoot}/:login/attachRole`,
+    detachRoleByLogin: `/${membersRoot}/:login/detachRole`,
     banByLogin: `/${membersRoot}/:login/ban`,
     recoverByLogin: `/${membersRoot}/:login/recover`,
-    updateLastActiveByLogin: `/${membersRoot}/:login/lastActive`,
-    findByLogin: `/${membersRoot}/:login`,
-    currentMember: `/${membersRoot}/currentMember`,
-    findPostsByAuthUser: `/${membersRoot}/posts`,
-    findPostsByLogin: `/${membersRoot}/:login/posts`,
   },
   post: {
     create: `/${postsRoot}`,
@@ -54,7 +57,7 @@ export const routes = {
     create: `/${postsRoot}/:slug/${commentsRoot}`,
     findAll: `/${postsRoot}/:slug/${commentsRoot}`,
     findChildrenById: `/${postsRoot}/:slug/${commentsRoot}/:commentId/children`,
-    findAllChildrenById: `/${postsRoot}/:slug/${commentsRoot}/:commentId/all-children`,
+    findAllChildrenById: `/${postsRoot}/:slug/${commentsRoot}/:commentId/allChildren`,
     findById: `/${postsRoot}/:slug/${commentsRoot}/:commentId`,
     updateById: `/${postsRoot}/:slug/${commentsRoot}/:commentId`,
     deleteById: `/${postsRoot}/:slug/${commentsRoot}/:commentId`,

@@ -1,8 +1,8 @@
 import { IQuery } from '@src/shared/core/cqs/query.interface'
 import { PaginatedParams, PaginatedQueryBase } from '@src/shared/domain/query.base'
 import { FindPostsServiceResponse } from './service'
-import { FindPostsParams } from '@src/modules/forum/repository/post/repository.port'
-import { PostStatus } from '@src/modules/forum/domain/entity/post/types'
+import { FindPostsParams } from '@src/modules/forum/repository/post/post.repository.port'
+import { PostStatus } from '@src/modules/forum/domain/entity/post/post.types'
 
 export class FindPostsQuery extends PaginatedQueryBase implements FindPostsParams, IQuery<FindPostsServiceResponse> {
   declare response?: FindPostsServiceResponse

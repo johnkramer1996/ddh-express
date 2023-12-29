@@ -4,7 +4,7 @@ import { ValueObject } from '@src/shared/domain/value-object.base'
 interface MessageQueryProps {
   id: string
   createdAt: Date
-  updatedAt: Date
+  updatedAt: Date | null
   fromMemberId: string
   toMemberId: string
   message: string
@@ -22,7 +22,7 @@ export class MessageQuery extends ValueObject<MessageQueryProps> {
     return this.props.createdAt
   }
 
-  get updatedAt(): Date {
+  get updatedAt(): Date | null {
     return this.props.updatedAt
   }
 

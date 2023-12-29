@@ -4,8 +4,7 @@ import { injectable } from 'inversify'
 import { UserModelAttributes, UserModelCreationAttributes } from '@src/modules/user/domain/user.types'
 import { DB_TABLES } from '@src/configs/dbtables'
 import userInit from '../init/user.init.js'
-import AddressModel from './address.model'
-import { PermissionModel } from './permisison.model'
+import { AddressModel } from './address.model'
 
 @injectable()
 export class UserModel extends Model<UserModelAttributes, UserModelCreationAttributes> {
@@ -15,22 +14,17 @@ export class UserModel extends Model<UserModelAttributes, UserModelCreationAttri
   declare password: string
   declare username: string | null
   declare isEmailVerified: boolean
-  declare isAdminUser: boolean
   declare isDeleted: boolean
   declare lastLogin: Date | null
 
   declare createdAt: Date
-  declare updatedAt: Date
+  declare updatedAt: Date | null
 }
 
 UserModel.init(userInit, {
   modelName: DB_TABLES.USER,
   sequelize,
-  hooks: {},
   defaultScope: {
-    include: [
-      { as: 'address', model: AddressModel },
-      { as: 'permissions', model: PermissionModel, attributes: ['permission'], through: { attributes: [] } },
-    ],
+    include: [{ as: 'address', model: AddressModel }],
   },
 })

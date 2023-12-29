@@ -6,6 +6,7 @@ POST http://localhost:8086/api/v1/posts/
 Content-Type: application/json
 
 {
+    "status": "draft",
     "title": "POST CREATED USER 1",
     "text": "Text post",
     "type": "text"
@@ -13,10 +14,12 @@ Content-Type: application/json
 
 
 ### UPDATE ONE
-PATCH http://localhost:8086/api/v1/posts/slug-test/moderate
+PATCH http://localhost:8086/api/v1/posts/slug-test1
 Content-Type: application/json
 
 {
-  "status": "approved"
+  "status": "pending"
 }
 
+###
+GET http://localhost:8086/api/v1/posts/slug-test1

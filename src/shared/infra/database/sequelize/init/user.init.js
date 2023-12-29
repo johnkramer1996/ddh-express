@@ -39,12 +39,6 @@ module.exports = {
     allowNull: false,
     defaultValue: false,
   },
-  isAdminUser: {
-    field: 'is_admin_user',
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-    defaultValue: false,
-  },
   isDeleted: {
     field: 'is_deleted',
     type: DataTypes.BOOLEAN,

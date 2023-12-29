@@ -22,7 +22,7 @@ module.exports = {
     onUpdate: 'cascade',
   },
   status: {
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.STRING,
     references: {
       model: {
@@ -38,20 +38,12 @@ module.exports = {
     allowNull: false,
     type: DataTypes.STRING,
   },
-  type: {
-    allowNull: false,
-    type: DataTypes.STRING,
-  },
   title: {
     allowNull: false,
     type: DataTypes.STRING,
   },
   text: {
-    allowNull: true,
-    type: DataTypes.STRING,
-  },
-  link: {
-    allowNull: true,
+    allowNull: false,
     type: DataTypes.STRING,
   },
   slug: {
@@ -67,6 +59,7 @@ module.exports = {
     allowNull: false,
     type: DataTypes.INTEGER,
   },
+  // TODO: REMOVE
   moderatedAt: {
     field: 'moderated_at',
     allowNull: true,

@@ -1,5 +1,5 @@
 import { WatchedList } from '@src/shared/domain/watched-list'
-import { CommentEntity } from '../entity/comments/entity'
+import { CommentEntity } from '../entity/comment/comment.entity'
 import { Entity } from '@src/shared/domain/entity'
 
 export class Comments<T extends Entity<any>> extends WatchedList<T> {

@@ -1,44 +1,54 @@
 import { injectable } from 'inversify'
 import { VoteType } from '../entity/vote.base.entity'
-import { PostVoteEntity } from '../entity/post-vote/entity'
-import { PostEntity } from '../entity/post/entity'
-import { CommentEntity } from '../entity/comments/entity'
-import { CommentVoteEntity } from '../entity/comment-vote/entity'
+import { PostVoteEntity } from '../entity/post-vote/post-vote.entity'
+import { PostEntity } from '../entity/post/post.entity'
+import { CommentEntity } from '../entity/comment/comment.entity'
+import { CommentVoteEntity } from '../entity/comment-vote/comment-vote.entity'
 import { ForbiddenException } from '@src/shared/exceptions/exceptions'
-import { MemberEntity } from '../entity/member/entity'
-import { CommentRepositoryPort } from '../../repository/comment/repository.port'
-import { PostVoteRepositoryPort } from '../../repository/post-vote/repository.port'
-import { CommentVoteRepositoryPort } from '../../repository/comment-vote/repository.port'
-import { PostEntityCreationProps, PostType, UpdatePostProps } from '../entity/post/types'
-import { PostRepositoryPort } from '../../repository/post/repository.port'
+import { MemberEntity } from '../entity/member/member.entity'
+import { CommentRepositoryPort } from '../../repository/comment/comment.repository.port'
+import { PostVoteRepositoryPort } from '../../repository/post-vote/post-vote.repository.port'
+import { CommentVoteRepositoryPort } from '../../repository/comment-vote/comment-vote.repository.port'
+import { PostEntityCreationProps, PostStatus, UpdatePostProps } from '../entity/post/post.types'
+import { PostRepositoryPort } from '../../repository/post/post.repository.port'
 import { Slug } from '../value-objects/slug.value-object'
+import { Role } from '../value-objects/role.value-object'
 
 @injectable()
 export class PostService {
+  static rolesWithoutPending: Role[] = [new Role({ value: 'admin' }), new Role({ value: 'editor' }), new Role({ value: 'author' })]
+
   public async createPost(postRepo: PostRepositoryPort, member: MemberEntity, create: Omit<PostEntityCreationProps, 'memberId' | 'slug'>): Promise<PostEntity> {
     const countUserComment = await postRepo.countByPostIdMemberId(member.id)
     if (countUserComment > PostEntity.maxCountPostByUser)
       throw new ForbiddenException(`Limit count post by user. Current = ${countUserComment} / Maximum = ${PostEntity.maxCountPostByUser}`)
 
+    const status = create.status === 'publish' ? this.getStatusByMember(member) : create.status
+
     return PostEntity.create({
       memberId: member.id,
-      type: create.type,
       image: create.image,
       title: create.title,
-      text: create.type === PostType.text ? create.text : null,
-      link: create.type === PostType.text ? null : create.link,
+      text: create.text,
+      status,
       slug: Slug.create({ value: create.title }),
     })
   }
 
-  public updatePost(post: PostEntity, member: MemberEntity, update: UpdatePostProps): void {
-    if (!post.hasAccess(member)) throw new ForbiddenException()
+  private getStatusByMember(member: MemberEntity): PostStatus {
+    return member.hasPermission(['admin', 'editor', 'author']) ? 'publish' : 'pending'
+  }
 
-    post.update(update)
+  public updatePost(post: PostEntity, member: MemberEntity, update: UpdatePostProps): void {
+    if (!(post.hasAccess(member) || member.hasPermission(['admin', 'editor']))) throw new ForbiddenException()
+
+    const status = update.status === 'publish' ? this.getStatusByMember(member) : update.status
+
+    post.update({ ...update, status })
   }
 
   public updateComment(post: PostEntity, member: MemberEntity, comment: CommentEntity, text?: string): void {
-    if (!comment.hasAccess(member)) throw new ForbiddenException()
+    if (!(post.hasAccess(member) || member.hasPermission(['admin', 'editor']))) throw new ForbiddenException()
 
     if (text !== undefined) comment.updateText({ text })
   }
@@ -50,7 +60,7 @@ export class PostService {
     parentComment: CommentEntity | null,
     text: string
   ): Promise<CommentEntity> {
-    if (post.status !== 'approved') throw new Error('Unable to add a comment to a message that has not been approved')
+    if (post.status !== 'publish') throw new Error('Unable to add a comment to a message that has not been published')
 
     const countUserComment = await commentRepo.countByPostIdMemberId(post.id, member.id)
     if (countUserComment > PostEntity.maxCountCommentByUser)
@@ -76,7 +86,7 @@ export class PostService {
   }
 
   public async addVoteToPost(postVoteRepo: PostVoteRepositoryPort, post: PostEntity, member: MemberEntity, type: VoteType) {
-    if (post.status !== 'approved') throw new Error('A post that has not been approved cannot be voted on')
+    if (post.status !== 'publish') throw new Error('A post that has not been published cannot be voted on')
 
     const currentVote = await postVoteRepo.findOneByPostIdAndMemberId(post.id, member.id)
 

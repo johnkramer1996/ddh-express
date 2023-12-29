@@ -1,4 +1,4 @@
-import PostModel from '@src/shared/infra/database/sequelize/models/post.model'
+import { PostModel } from '@src/shared/infra/database/sequelize/models/post.model'
 import { IncludeStrategyPort, Include } from '@src/shared/domain/repository.port'
 
 export class CommentByPostSlugIncludeStrategy implements IncludeStrategyPort {

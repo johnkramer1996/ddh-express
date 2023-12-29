@@ -2,12 +2,12 @@ import { ICommandBus } from '@src/shared/core/cqs/command-bus'
 import { IQueryBus } from '@src/shared/core/cqs/query-bus'
 import { BaseController } from '@src/shared/infra/http/models/base.controller'
 import { inject } from 'inversify'
-import { UserMapper } from '../mappers/user/mapper-domain'
+import { UserMapper } from '../mappers/user/user.mapper'
 import { USER_TYPES } from '../di/user.types'
 import { TYPES } from '@src/shared/di/types'
 import { PasswordDoesntMatchException, UserAlreadyExistsError } from '../domain/user.errors'
 import { Response } from 'express'
-import { UserQueryMapper } from '../mappers/user/mapper-query'
+import { UserQueryMapper } from '../mappers/user/user.query-mapper'
 
 export abstract class UserController extends BaseController {
   constructor(

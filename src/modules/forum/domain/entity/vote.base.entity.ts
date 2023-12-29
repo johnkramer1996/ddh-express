@@ -2,6 +2,7 @@ import { AggregateRoot } from '../../../../shared/domain/aggregate-root.base'
 import { AggregateID, Entity } from '../../../../shared/domain/entity'
 import { PrimaryKey } from '@src/shared/core/primary-key'
 
+// TODO: TRANSALTE TO TYPE
 export enum VoteType {
   'upvote' = 'upvote',
   'downvote' = 'downvote',

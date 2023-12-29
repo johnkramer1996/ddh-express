@@ -1,0 +1,20 @@
+import { inject, injectable } from 'inversify'
+import { SequelizeRepositoryBase } from '../../../../shared/infra/database/sequelize/base.repository'
+import { ModelDefined } from 'sequelize'
+import { POST_VOTE_TYPES } from '../../di/post/post-vote.types'
+import { PostVoteRepositoryPort } from './post-vote.repository.port'
+import { PostVoteModelAttributes } from '../../domain/entity/post-vote/post-vote-types'
+import { PostVoteMapper } from '../../mappers/post-vote/post-vote.mapper'
+import { PostVoteEntity } from '../../domain/entity/post-vote/post-vote.entity'
+
+@injectable()
+export class PostVoteSequelizeRepository extends SequelizeRepositoryBase<PostVoteEntity, PostVoteModelAttributes> implements PostVoteRepositoryPort {
+  constructor(@inject(POST_VOTE_TYPES.MAPPER) mapper: PostVoteMapper, @inject(POST_VOTE_TYPES.SEQUELIZE_MODEL) model: ModelDefined<any, any>) {
+    super(mapper, model)
+  }
+
+  public async findOneByPostIdAndMemberId(postId: string, memberId: string): Promise<PostVoteEntity | null> {
+    const row = await this.model.findOne({ where: { postId, memberId } })
+    return row ? this.mapper.toDomain(row) : null
+  }
+}
