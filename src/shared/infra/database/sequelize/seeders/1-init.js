@@ -14,7 +14,7 @@ module.exports = {
         {
           id: testId1,
           avatar: 'vitalii.jpg',
-          login: 'vitalii-admin',
+          login: 'vitalii',
           email: 'vitalii@gmail.com',
           password: bcrypt.hashSync('12345678', 8),
           first_name: 'Vitalii',
@@ -24,7 +24,7 @@ module.exports = {
         {
           id: uuid.v4(),
           avatar: 'victor.jpg',
-          login: 'victor-editor',
+          login: 'victor',
           email: 'victor@gmail.com',
           password: bcrypt.hashSync('12345678', 8),
           first_name: 'Victor',
@@ -34,7 +34,7 @@ module.exports = {
         {
           id: uuid.v4(),
           avatar: 'nina.jpg',
-          login: 'nina-author',
+          login: 'nina',
           email: 'nina@gmail.com',
           password: bcrypt.hashSync('12345678', 8),
           first_name: 'Nina',
@@ -44,7 +44,7 @@ module.exports = {
         {
           id: uuid.v4(),
           avatar: null,
-          login: 'arthur-author',
+          login: 'arthur',
           email: 'arthur@gmail.com',
           password: bcrypt.hashSync('12345678', 8),
           first_name: 'Arthur',
@@ -54,17 +54,17 @@ module.exports = {
         {
           id: uuid.v4(),
           avatar: null,
-          login: 'nataliya-subscriber',
+          login: 'nataliya',
           email: 'Nataliya@gmail.com',
           password: bcrypt.hashSync('12345678', 8),
-          first_name: 'nataliya',
+          first_name: 'Nataliya',
           last_name: 'Zinovieva',
           created_at: new Date(),
         },
         {
           id: uuid.v4(),
           avatar: null,
-          login: 'oleg-subscriber',
+          login: 'oleg',
           email: 'oleg@gmail.com',
           password: bcrypt.hashSync('12345678', 8),
           first_name: 'Oleg',
@@ -74,7 +74,7 @@ module.exports = {
         {
           id: uuid.v4(),
           avatar: null,
-          login: 'nadiya-subscriber',
+          login: 'nadiya',
           email: 'nadiya@gmail.com',
           password: bcrypt.hashSync('12345678', 8),
           first_name: 'Nadiya',
@@ -164,31 +164,31 @@ module.exports = {
         created_at: new Date(),
       },
     ])
-    // / scheduled / / private / auto-draft
 
-    //draft / pending / publish / trash
-    // publish — опубликованный пост. Доступен на сайте для просмотра каждому. Этот статус присваивается записям при нажатии на кнопку «Опубликовать».
-    // draft — черновики (записи, которые ещё находятся в процессе написания и не готовы к публикации). Для создания черновика нажмите кнопку «Сохранить».
-    // pending — пост, ожидающий проверки редактором или администратором. Все записи пользователей с ролью «Участник» отправляются на модерацию.
-    // trash — посты, находящиеся в корзине. Для того, чтобы переместить пост в корзину, нажмите на ссылку «Удалить».
     await queryInterface.bulkInsert('statuses', [
       {
+        order: 1,
         status: 'publish',
         created_at: new Date(),
       },
       {
+        order: 2,
         status: 'pending',
         created_at: new Date(),
       },
       {
+        order: 3,
         status: 'draft',
         created_at: new Date(),
       },
       {
+        order: 4,
         status: 'trash',
         created_at: new Date(),
       },
     ])
+
+    const [statuses] = await queryInterface.sequelize.query(`SELECT status from statuses ORDER BY 'order';`)
 
     await queryInterface.bulkInsert(
       'posts',
@@ -205,20 +205,18 @@ module.exports = {
           total_num_comments: 0,
           created_at: new Date(),
         },
-        ...Array(3)
-          .fill(null)
-          .map((el, i) => ({
-            id: uuid.v4(),
-            status: 'draft',
-            member_id: members[0].id,
-            image: 'about.jpg',
-            title: `Title post test`,
-            text: `Text post test`,
-            slug: 'slug-test' + i,
-            points: 0,
-            total_num_comments: 0,
-            created_at: new Date(),
-          })),
+        ...statuses.map((status, i) => ({
+          id: uuid.v4(),
+          status: status.status,
+          member_id: members[i].id,
+          image: 'about.jpg',
+          title: `Title post test ` + i,
+          text: `Text post test`,
+          slug: 'slug-test' + i,
+          points: 0,
+          total_num_comments: 0,
+          created_at: new Date(),
+        })),
       ],
       {}
     )

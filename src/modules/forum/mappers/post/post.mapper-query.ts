@@ -5,7 +5,6 @@ import { PostQuery } from '../../domain/entity/post/post.query'
 import { PostModelAttributes } from '../../domain/entity/post/post.types'
 import { MemberQueryMapper } from '../member/mapper-query'
 import { MEMBER_TYPES } from '../../di/member/member.types'
-import { VoteType } from '../../domain/entity/vote.base.entity'
 
 @injectable()
 export class PostQueryMapper implements QueryMapper<PostQuery, PostModelAttributes, PostResponseDto> {
@@ -17,7 +16,6 @@ export class PostQueryMapper implements QueryMapper<PostQuery, PostModelAttribut
       id: record.id,
       createdAt: record.createdAt,
       updatedAt: record.updatedAt,
-      moderatedAt: record.moderatedAt,
       memberId: record.memberId,
       status: record.status,
       slug: record.slug,
@@ -26,8 +24,8 @@ export class PostQueryMapper implements QueryMapper<PostQuery, PostModelAttribut
       text: record.text,
       points: record.points,
       totalNumComments: record.totalNumComments,
-      wasUpvotedByMe: Boolean(record.votes?.find((i) => i.type === VoteType.upvote)),
-      wasDownvotedByMe: Boolean(record.votes?.find((i) => i.type === VoteType.downvote)),
+      wasUpvotedByMe: Boolean(record.votes?.find((i) => i.type === 'upvote')),
+      wasDownvotedByMe: Boolean(record.votes?.find((i) => i.type === 'downvote')),
       member: this.memberMapper.toQuery(record.member),
     })
   }
@@ -37,7 +35,6 @@ export class PostQueryMapper implements QueryMapper<PostQuery, PostModelAttribut
       id: query.id,
       createdAt: query.createdAt,
       updatedAt: query.updatedAt,
-      moderatedAt: query.moderatedAt,
       memberId: query.memberId,
       status: query.status,
       slug: query.slug,

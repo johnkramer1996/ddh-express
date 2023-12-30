@@ -59,11 +59,5 @@ module.exports = {
     allowNull: false,
     type: DataTypes.INTEGER,
   },
-  // TODO: REMOVE
-  moderatedAt: {
-    field: 'moderated_at',
-    allowNull: true,
-    type: DataTypes.DATE,
-  },
   ...timeStamp,
 }

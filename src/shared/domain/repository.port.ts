@@ -61,7 +61,7 @@ export interface RepositoryPort<Entity> {
 
 export interface RepositoryQueryPort<Entity> {
   findAll(options: Options): Promise<Entity[]>
-  findAllPaginated(params: QueryParams, options: Options): Promise<Paginated<Entity>>
+  findAllPaginated(params: QueryParams, options?: Options): Promise<Paginated<Entity>>
   findOne(): Promise<Entity | null>
   findOneById(id: string): Promise<Entity | null>
 }

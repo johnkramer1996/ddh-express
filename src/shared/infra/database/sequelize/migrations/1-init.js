@@ -33,8 +33,6 @@ module.exports = {
     await queryInterface.dropTable('comments')
     await queryInterface.dropTable('post_votes')
     await queryInterface.dropTable('posts')
-    // TODO: DELETE
-    await queryInterface.dropTable('states')
     await queryInterface.dropTable('statuses')
     await queryInterface.dropTable('member_roles')
     await queryInterface.dropTable('members')

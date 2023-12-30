@@ -16,7 +16,7 @@ export class PostEntity extends AggregateRoot<PostEntityProps> {
   protected readonly _id!: AggregateID
 
   static create(create: PostEntityCreationProps): PostEntity {
-    const props: PostEntityProps = { ...create, points: 0, totalNumComments: 0, votes: PostVotes.create(), moderatedAt: null }
+    const props: PostEntityProps = { ...create, points: 0, totalNumComments: 0, votes: PostVotes.create() }
     const entity = new PostEntity({ props })
 
     entity.addEvent(new PostCreatedDomainEvent({ aggregateId: entity.id }))
@@ -51,17 +51,6 @@ export class PostEntity extends AggregateRoot<PostEntityProps> {
   public hasAccess(member: MemberEntity): boolean {
     return this.id === member.id || this.hasPermission(member)
   }
-
-  // public hasPermission(member: MemberEntity) {
-  //   return member.id === this.props.memberId
-  // }
-
-  // TODO: REMOVE
-  // public moderate(status: PostStatus) {
-  //   if (!['pending', 'resolved', 'rejected'].includes(status)) throw new Error('State must be pending | resolved | rejected')
-  //   this.props.status = status
-  //   this.props.moderatedAt = new Date()
-  // }
 
   /**@private */
   public update(props: UpdatePostProps): void {

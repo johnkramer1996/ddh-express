@@ -10,7 +10,7 @@ import { RequestDecoded } from '@src/shared/infra/http/models/base.controller'
 import { UserRequestDto } from '@src/modules/user/dtos/user.request.dto'
 import { SlugRequestDto } from '@src/modules/forum/dtos/slug.request.dto'
 import { VoteType } from '@src/modules/forum/domain/entity/vote.base.entity'
-import { PostControllerBase } from '../../base.controller'
+import { PostControllerBase } from '../../post.base.controller'
 
 @injectable()
 @ControllerPost(routes.post.upvoteBySlug)

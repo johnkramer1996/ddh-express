@@ -11,5 +11,8 @@ GET http://localhost:8086/api/v1/cabinet/user
 ### GET POSTS
 GET http://localhost:8086/api/v1/cabinet/posts
 
+### COUNT POSTS BY STATUS
+GET http://localhost:8086/api/v1/cabinet/posts/count
+
 ### GET USER INFO 
 GET http://localhost:8086/api/v1/cabinet/admin/posts

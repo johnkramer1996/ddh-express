@@ -16,12 +16,9 @@ export const routes = {
     member: `/${cabinetRoot}/member`,
     updateLastActiveMember: `/${cabinetRoot}/member/updateLastActive`,
     posts: `/${cabinetRoot}/posts`,
+    countPosts: `/${cabinetRoot}/posts/count`,
     membersForMessage: `/${cabinetRoot}/messages`,
     messagesByLogin: `/${cabinetRoot}/messages/:login`,
-    admin: {
-      root: `/${cabinetRoot}/admin`,
-      posts: `/${cabinetRoot}/admin/posts`,
-    },
   },
   user: {
     create: `/${usersRoot}`,

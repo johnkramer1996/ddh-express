@@ -2,7 +2,7 @@ import '@src/shared/utils/dotenv' // load jest
 import { container } from '@src/shared/di/container'
 import { TodoRepositoryPort } from '@src/modules/todo/repository/repository.port'
 import { FindTodosQuery } from '@src/modules/todo/useCases/queries/find-todos/find-todos.query'
-import { mock, mockTodo } from '../useCases/todos'
+import { mock, mockItems } from '../useCases/todos'
 import { repositoryConfig } from '@src/configs/config'
 import { TODO_TYPES } from '@src/modules/todo/infra/di/types'
 
@@ -22,8 +22,8 @@ describe('Todo Repository', () => {
   test('Should return todo list with pagination', async () => {
     //arrange
     const expectedData: Awaited<ReturnType<typeof todoRepository.findAllPaginated>> = {
-      data: mockTodo.map((_, i) => i) as any,
-      count: mockTodo.length,
+      data: mockItems.map((_, i) => i) as any,
+      count: mockItems.length,
       limit: repositoryConfig.limit,
       page: 1,
     }

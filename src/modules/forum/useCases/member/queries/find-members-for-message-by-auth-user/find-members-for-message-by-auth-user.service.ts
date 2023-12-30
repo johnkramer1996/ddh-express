@@ -5,7 +5,7 @@ import { FindMembersForMessageByAuthUserQuery as FindMembersForMessageByAuthUser
 import { QueryHandler } from '@src/shared/core/cqs/query-handler'
 import { NotFoundException } from '@src/shared/exceptions/exceptions'
 import { PostQuery } from '@src/modules/forum/domain/entity/post/post.query'
-import { MessageServiceQueryBase } from '../../../message/base.service'
+import { MessageServiceQueryBase } from '../../../message/message.base.service'
 import { MemberQuery } from '@src/modules/forum/domain/entity/member/member.query'
 import { Op } from 'sequelize'
 

@@ -5,7 +5,7 @@ import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-requ
 import { DeletePostCommand } from './delete-post.command'
 import { ControllerDelete } from '@src/shared/infra/http/decorators/controller'
 import { routes } from '@src/configs/routes'
-import { UserController } from '@src/modules/user/useCases/base.controller'
+import { UserController } from '@src/modules/user/useCases/user.base.controller'
 import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
 import { SlugRequestDto } from '@src/modules/forum/dtos/slug.request.dto'
 import { RequestDecoded } from '@src/shared/infra/http/models/base.controller'

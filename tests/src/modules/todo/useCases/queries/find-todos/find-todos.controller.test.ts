@@ -6,7 +6,7 @@ import { TYPES } from '@src/shared/di/types'
 import { IServer } from '@src/shared/infra/http/server'
 import request from 'supertest'
 import { routes } from '@src/configs/routes'
-import { mock, mockTodo } from '../../todos'
+import { mock, mockItems } from '../../todos'
 import { TODO_TYPES } from '@src/modules/todo/infra/di/types'
 import { TodoMapper } from '@src/modules/todo/domain/todo.mapper'
 
@@ -24,7 +24,7 @@ describe('Find Todos Controller', () => {
 
   test('Should return list items', async () => {
     //arrange
-    const responseData = { data: mockTodo.map(mapper.toDomain.bind(mapper)), count: 1, limit: 1, page: 1 }
+    const responseData = { data: mockItems.map(mapper.toDomain.bind(mapper)), count: 1, limit: 1, page: 1 }
     const expectedData = new TodoPaginatedResponseDto({
       ...responseData,
       data: responseData.data.map(mapper.toResponse.bind(mapper)),

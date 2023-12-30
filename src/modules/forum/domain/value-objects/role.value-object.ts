@@ -1,5 +1,6 @@
-import { MemberRole } from '@src/modules/forum/domain/entity/member/member.types'
+import { MemberRole, MemberRoleEnum } from '@src/modules/forum/domain/entity/member/member.types'
 import { ValueObject } from '@src/shared/domain/value-object.base'
+import { ArgumentInvalidException } from '@src/shared/exceptions/exceptions'
 
 export interface RoleCreationProps {
   value: MemberRole
@@ -26,6 +27,6 @@ export class Role extends ValueObject<RoleProps> {
   }
 
   protected validate(props: RoleProps): void {
-    // TODO: CHECK IF ADMIN OR MEMBER
+    if (!MemberRoleEnum.includes(props.value)) throw new ArgumentInvalidException(`Role must be one of the following values: ${MemberRoleEnum.join(', ')}`)
   }
 }

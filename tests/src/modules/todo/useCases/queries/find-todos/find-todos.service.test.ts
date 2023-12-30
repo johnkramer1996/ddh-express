@@ -1,7 +1,7 @@
 import '@src/shared/utils/dotenv' // load jest
 import { FindTodosService } from '@src/modules/todo/useCases/queries/find-todos/find-todos.service'
 import { container } from '@src/shared/di/container'
-import { mock, mockTodo } from '../../todos'
+import { mock, mockItems } from '../../todos'
 import { FindTodosQuery } from '@src/modules/todo/useCases/queries/find-todos/find-todos.query'
 import { TodoSequelizeRepository } from '@src/modules/todo/repository/repository'
 import { TODO_TYPES } from '@src/modules/todo/infra/di/types'
@@ -20,7 +20,7 @@ describe('Find Todos Service', () => {
 
   test('Should return pagination', async () => {
     //arrange
-    const expectedData: ExpectedData = { data: mockTodo as any, count: 1, limit: 1, page: 1 }
+    const expectedData: ExpectedData = { data: mockItems as any, count: 1, limit: 1, page: 1 }
     const query = new FindTodosQuery({ where: {} })
     mock.todoRepository.findAllPaginated.mockResolvedValue(expectedData)
 

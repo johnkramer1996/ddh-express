@@ -96,8 +96,8 @@ export class PostService {
       return
     }
 
-    const isUpvote = type === VoteType.upvote
-    const isDownvote = type === VoteType.downvote
+    const isUpvote = type === 'upvote'
+    const isDownvote = type === 'downvote'
     if ((isUpvote && currentVote.isDownvote()) || (isDownvote && currentVote.isUpvote())) {
       post.removeVote(currentVote)
       return
@@ -113,8 +113,8 @@ export class PostService {
       return
     }
 
-    const isUpvote = type === VoteType.upvote
-    const isDownvote = type === VoteType.downvote
+    const isUpvote = type === 'upvote'
+    const isDownvote = type === 'downvote'
     if ((isUpvote && currentVote.isDownvote()) || (isDownvote && currentVote.isUpvote())) {
       comment.removeVote(currentVote)
       return

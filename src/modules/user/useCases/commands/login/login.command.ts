@@ -1,0 +1,13 @@
+import { ICommand } from '@src/shared/core/cqs/command.interface'
+import { LoginServiceResponse } from './login.service'
+
+export class LoginCommand implements ICommand<LoginServiceResponse> {
+  declare response?: LoginServiceResponse
+  readonly login: string
+  readonly password: string
+
+  constructor(props: LoginCommand) {
+    this.login = props.login
+    this.password = props.password
+  }
+}

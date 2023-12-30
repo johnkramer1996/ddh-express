@@ -8,7 +8,7 @@ import { ControllerPost } from '@src/shared/infra/http/decorators/controller'
 import { routes } from '@src/configs/routes'
 import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
 import { RequestDecoded } from '@src/shared/infra/http/models/base.controller'
-import { PostControllerBase } from '../../base.controller'
+import { PostControllerBase } from '../../post.base.controller'
 import { ArgumentInvalidException } from '@src/shared/exceptions/exceptions'
 import { SlugResponse } from '@src/modules/forum/dtos/slug.response.dto'
 

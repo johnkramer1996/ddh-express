@@ -2,6 +2,6 @@ import { MemberRole, MemberRoleEnum } from '@src/modules/forum/domain/entity/mem
 import { IsEnum } from 'class-validator'
 
 export class AddRoleToMemberRequestDto {
-  @IsEnum(MemberRoleEnum, { message: `role must be one of the following values: ${MemberRoleEnum.join(', ')}` })
+  @IsEnum(MemberRoleEnum, { message: `Role must be one of the following values: ${MemberRoleEnum.join(', ')}` })
   readonly role!: MemberRole
 }

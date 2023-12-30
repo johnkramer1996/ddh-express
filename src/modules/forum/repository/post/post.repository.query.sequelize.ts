@@ -10,6 +10,7 @@ import { PostQuery } from '../../domain/entity/post/post.query'
 import { PostQueryMapper } from '../../mappers/post/post.mapper-query'
 import { ObjectLiteral } from '@src/shared/types/object-literal.type'
 import { Op } from 'sequelize'
+import { sequelize } from '@src/shared/infra/database/sequelize/config/connection'
 
 @injectable()
 export class PostSequelizeRepositoryQuery extends SequelizeRepositoryQueryBase<PostQuery> implements PostRepositoryQueryPort {
@@ -22,15 +23,12 @@ export class PostSequelizeRepositoryQuery extends SequelizeRepositoryQueryBase<P
 
     authMemberId && includeStrategies.push(new PostVotesByAuthMemberIdIncludeStrategy(authMemberId))
 
-    // TODO: DELETE
-    // typeof query.moderated === 'boolean' && (where['moderatedAt'] = { [query.moderated ? Op.not : Op.is]: null })
     return await this.findAllPaginated(params, { includeStrategies })
   }
 
   public async findAllPaginated(params: FindPostsParams, options: Options = {}): Promise<Paginated<PostQuery>> {
     const where: ObjectLiteral = {}
-    params.status && (where['status'] = params.status)
-    !params.status && (where['status'] = { [Op.ne]: 'trash' })
+    where['status'] = params.status ? params.status : { [Op.ne]: 'trash' }
     params.memberId && (where['memberId'] = params.memberId)
 
     const includeStrategies: IncludeStrategyPort[] = []
@@ -43,6 +41,11 @@ export class PostSequelizeRepositoryQuery extends SequelizeRepositoryQueryBase<P
       includeStrategies: [...includeStrategies, ...(options.includeStrategies ?? [])],
       order: params.order,
     })
+  }
+  public async countByStatus() {
+    const countByStatus = await sequelize.query('SELECT status, count(*) count FROM posts GROUP BY status')
+    console.log({ countByStatus })
+    return countByStatus
   }
 
   public async findBySlug(slug: string, authMemberId?: string): Promise<PostQuery | null> {

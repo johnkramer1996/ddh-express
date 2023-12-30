@@ -1,16 +1,15 @@
 import 'reflect-metadata'
 import './shared/utils/dotenv'
+import path from 'path'
 import { TYPES } from './shared/di/types'
 import { IServer } from './shared/infra/http/server'
 import { PORT, envCongig } from './configs/config'
 import { container } from './shared/di/container'
 import { USER_TYPES } from './modules/user/di/user.types'
 import { AuthServicePort } from './modules/user/services/auth.service.port'
-import associate from './shared/infra/database/sequelize/models/associate'
-import path from 'path'
-import './modules/forum'
+import { associate } from './shared/infra/database/sequelize/models/associate'
 import { ISocketServer } from './shared/infra/socket/server'
-import { PostModel } from './shared/infra/database/sequelize/models/post.model'
+import './modules/forum'
 
 const bootstrap = async () => {
   ;(global as any).__basedir = path.resolve(__dirname, '..')

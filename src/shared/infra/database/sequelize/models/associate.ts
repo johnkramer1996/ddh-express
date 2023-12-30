@@ -10,7 +10,7 @@ import { PostModel } from './post.model'
 import { MemberRoleModel } from './member-role.model'
 import { UserModel } from './user.model'
 
-export default function associate() {
+export const associate = () => {
   UserModel.hasOne(MemberModel, { as: 'member', sourceKey: 'id', foreignKey: 'userId' })
   UserModel.hasOne(AddressModel, { as: 'address', sourceKey: 'id', foreignKey: 'userId' })
 

@@ -5,7 +5,7 @@ import { UpdatePostCommand } from './update-post.command'
 import { NotFoundException } from '@src/shared/exceptions/exceptions'
 import { CommandHandler } from '@src/shared/core/cqs/command-handler'
 import { ResultWithError } from '@src/shared/core/result'
-import { PostServiceBase } from '../../base.service'
+import { PostServiceBase } from '../../post.base.service'
 import { loadImage } from '@src/shared/utils/load-image'
 
 type Return = void

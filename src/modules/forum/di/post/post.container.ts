@@ -1,15 +1,15 @@
 import { Container } from 'inversify'
 import { POST_TYPES } from './post.types'
 import { POST_VOTE_TYPES } from './post-vote.types'
-import { FindPostsController } from '../../useCases/post/queries/find-posts/controller'
-import { FindPostsService } from '../../useCases/post/queries/find-posts/service'
+import { FindPostsController } from '../../useCases/post/queries/find-posts/find-posts.controller'
+import { FindPostsService } from '../../useCases/post/queries/find-posts/find-posts.service'
 import { PostMapper } from '../../mappers/post/post.mapper'
 import { PostModel } from '@src/shared/infra/database/sequelize/models/post.model'
 import { PostRepositoryPort, PostRepositoryQueryPort } from '../../repository/post/post.repository.port'
 import { CreatePostController } from '../../useCases/post/commands/create-post/create-post.controller'
 import { CreatePostService as CreatePostService } from '../../useCases/post/commands/create-post/create-post.service'
-import { FindPostBySlugController } from '../../useCases/post/queries/find-post-by-slug/controller'
-import { FindPostBySlugService } from '../../useCases/post/queries/find-post-by-slug/service'
+import { FindPostBySlugController } from '../../useCases/post/queries/find-post-by-slug/find-post-by-slug.controller'
+import { FindPostBySlugService } from '../../useCases/post/queries/find-post-by-slug/find-post-by-slug.service'
 import { VotePostController } from '../../useCases/post/commands/vote-post/vote-post.controller'
 import { VotePostService } from '../../useCases/post/commands/vote-post/vote-post.service'
 import { PostVoteSequelizeRepository } from '../../repository/post-vote/post-vote.repository.sequelize'
@@ -19,17 +19,20 @@ import { PostService } from '../../domain/service/post.service'
 import { PostVoteRepositoryPort } from '../../repository/post-vote/post-vote.repository.port'
 import { PostSequelizeRepository } from '../../repository/post/post.repository.sequelize'
 import { PostSequelizeRepositoryQuery } from '../../repository/post/post.repository.query.sequelize'
-import { FindPostsByLoginController } from '../../useCases/post/queries/find-posts-by-user-login/controller'
-import { FindPostsByLoginService } from '../../useCases/post/queries/find-posts-by-user-login/service'
+import { FindPostsByLoginController } from '../../useCases/post/queries/find-posts-by-user-login/find-posts-by-user-login.controller'
+import { FindPostsByLoginService } from '../../useCases/post/queries/find-posts-by-user-login/find-posts-by-user-login.service'
 import { PostQueryMapper } from '../../mappers/post/post.mapper-query'
-import { FindPostsByAuthUserController } from '../../useCases/post/queries/find-posts-by-auth-user/controller'
-import { FindPostsByAuthUserService } from '../../useCases/post/queries/find-posts-by-auth-user/service'
+import { FindPostsByAuthUserController } from '../../useCases/post/queries/find-posts-by-auth-user/find-posts-by-auth-user.controller'
+import { FindPostsByAuthUserService } from '../../useCases/post/queries/find-posts-by-auth-user/find-posts-by-auth-user.service'
 import { UpdatePostController } from '../../useCases/post/commands/update-post/update-post.controller'
 import { UpdatePostService } from '../../useCases/post/commands/update-post/update-post.service'
 import { DeletePostController } from '../../useCases/post/commands/delete-post/delete-post.controller'
 import { DeletePostService } from '../../useCases/post/commands/delete-post/delete-post.service'
 import { ModeratePostService } from '../../useCases/post/commands/moderate-post/moderate-post.service'
 import { ModeratePostController } from '../../useCases/post/commands/moderate-post/moderate-post.controller'
+import { CountPostsByStatusQuery } from '../../useCases/post/queries/count-posts-by-auth-user/query'
+import { CountPostsByAuthUserController } from '../../useCases/post/queries/count-posts-by-auth-user/controller'
+import { CountPostsByAuthUserService } from '../../useCases/post/queries/count-posts-by-auth-user/service'
 
 export const postModule = (container: Container) => {
   container.bind(POST_TYPES.MAPPER).to(PostMapper)
@@ -70,4 +73,7 @@ export const postModule = (container: Container) => {
 
   container.bind(FindPostsByAuthUserController).toSelf()
   container.bind(FindPostsByAuthUserService).toSelf()
+
+  container.bind(CountPostsByAuthUserController).toSelf()
+  container.bind(CountPostsByAuthUserService).toSelf()
 }

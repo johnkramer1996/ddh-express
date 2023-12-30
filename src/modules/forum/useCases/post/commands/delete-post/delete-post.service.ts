@@ -2,7 +2,7 @@ import { injectable } from 'inversify'
 import { DeletePostCommand } from './delete-post.command'
 import { NotFoundException } from '@src/shared/exceptions/exceptions'
 import { CommandHandler } from '@src/shared/core/cqs/command-handler'
-import { PostServiceBase } from '../../base.service'
+import { PostServiceBase } from '../../post.base.service'
 import { ResultWithError } from '@src/shared/core/result'
 
 type Return = void

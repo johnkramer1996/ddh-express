@@ -34,7 +34,6 @@ export class PostMapper implements Mapper<PostEntity, PostModelAttributes> {
       createdAt: copy.createdAt,
       updatedAt: copy.updatedAt,
       deletedAt: copy.deletedAt,
-      moderatedAt: copy.moderatedAt,
     }
     return record
   }
@@ -56,7 +55,6 @@ export class PostMapper implements Mapper<PostEntity, PostModelAttributes> {
         points: record.points,
         totalNumComments: record.totalNumComments,
         votes: new PostVotes(votes),
-        moderatedAt: record.moderatedAt,
       },
     })
     return entity

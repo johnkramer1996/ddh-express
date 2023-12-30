@@ -3,7 +3,6 @@ import { PostStatus } from '../../domain/entity/post/post.types'
 import { MemberResponseDto } from '../member/member.response.dto'
 
 export class PostResponseDto extends ResponseBase {
-  public readonly moderatedAt: Date | null
   public readonly memberId: string
   public readonly status: PostStatus
   public readonly slug: string
@@ -18,7 +17,6 @@ export class PostResponseDto extends ResponseBase {
 
   constructor(props: ResponseBaseProps<PostResponseDto>) {
     super(props)
-    this.moderatedAt = props.moderatedAt
     this.memberId = props.memberId
     this.status = props.status
     this.slug = props.slug

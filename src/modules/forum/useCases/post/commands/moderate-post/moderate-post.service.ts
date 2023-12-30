@@ -3,7 +3,7 @@ import { ModeratePostCommand } from './moderate-post.command'
 import { NotFoundException } from '@src/shared/exceptions/exceptions'
 import { CommandHandler } from '@src/shared/core/cqs/command-handler'
 import { ResultWithError } from '@src/shared/core/result'
-import { PostServiceBase } from '../../base.service'
+import { PostServiceBase } from '../../post.base.service'
 
 type Return = void
 export type ModeratePostServiceResponse = ResultWithError<Return>

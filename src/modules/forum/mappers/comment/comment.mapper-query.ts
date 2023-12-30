@@ -5,7 +5,6 @@ import { COMMENT_VOTE_TYPES } from '../../di/comment/comment-vote.types'
 import { CommentVoteMapper } from '../comment-vote/comment-vote.mapper'
 import { MEMBER_TYPES } from '../../di/member/member.types'
 import { CommentQuery } from '../../domain/entity/comment/comment.query'
-import { VoteType } from '../../domain/entity/vote.base.entity'
 import { MemberQueryMapper } from '../member/mapper-query'
 import { QueryMapper } from '../../../../shared/domain/mapper-query.interface'
 
@@ -25,8 +24,8 @@ export class CommentQueryMapper implements QueryMapper<CommentQuery, CommentMode
       parentId: record.parentId,
       points: record.points,
       countChild: Number(record.countChild) ?? 0,
-      wasUpvotedByMe: Boolean(record.votes?.find((i) => i.type === VoteType.upvote)),
-      wasDownvotedByMe: Boolean(record.votes?.find((i) => i.type === VoteType.downvote)),
+      wasUpvotedByMe: Boolean(record.votes?.find((i) => i.type === 'upvote')),
+      wasDownvotedByMe: Boolean(record.votes?.find((i) => i.type === 'downvote')),
       member: record.member ? this.memberMapper.toQuery(record.member) : null,
     })
   }

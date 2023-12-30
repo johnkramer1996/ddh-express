@@ -1,0 +1,38 @@
+import { injectable } from 'inversify'
+import { FindPostsQuery } from './find-posts.query'
+import { Response } from 'express'
+import { plainToClass } from 'class-transformer'
+import { ValidateRequest } from '@src/shared/infra/http/decorators/validate-request'
+import { routes } from '@src/configs/routes'
+import { ControllerGet } from '@src/shared/infra/http/decorators/controller'
+import { PostControllerQueryBase } from '@src/modules/forum/useCases/post/post.base.controller'
+import { FindPostsPaginatedQueryRequestDto } from '@src/modules/forum/useCases/post/queries/find-posts/find-posts.request.dto'
+import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
+import { RequestDecodedIfExist } from '@src/shared/infra/http/models/base.controller'
+import { PostPaginatedResponseDto } from '@src/modules/forum/dtos/post/post.paginated.response.dto'
+
+@injectable()
+@ControllerGet(routes.post.findAll)
+export class FindPostsController extends PostControllerQueryBase {
+  @UseGuard(AuthGuard, false)
+  @ValidateRequest([['query', FindPostsPaginatedQueryRequestDto]])
+  async executeImpl(req: RequestDecodedIfExist, res: Response): Promise<any> {
+    const params = plainToClass(FindPostsPaginatedQueryRequestDto, req.query)
+    const decoded = req.decoded
+
+    const query = new FindPostsQuery({ ...params, userId: decoded?.id })
+    const result = await this.queryBus.execute(query)
+
+    if (!result.isSuccess) return this.handleError(res, result.getValue())
+
+    const paginated = result.getValue()
+
+    return this.ok(
+      res,
+      new PostPaginatedResponseDto({
+        ...paginated,
+        data: paginated.data.map(this.postMapper.toResponse.bind(this.postMapper)),
+      })
+    )
+  }
+}

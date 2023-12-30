@@ -9,7 +9,7 @@ import { routes } from '@src/configs/routes'
 import { SlugRequestDto } from '@src/modules/forum/dtos/slug.request.dto'
 import { RequestDecoded } from '@src/shared/infra/http/models/base.controller'
 import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
-import { PostControllerBase } from '../../base.controller'
+import { PostControllerBase } from '../../post.base.controller'
 
 @injectable()
 @ControllerPatch(routes.post.updateBySlug)

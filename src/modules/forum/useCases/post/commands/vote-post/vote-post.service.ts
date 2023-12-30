@@ -3,7 +3,7 @@ import { VoteCommand } from './vote-post.command'
 import { CommandHandler } from '@src/shared/core/cqs/command-handler'
 import { ResultWithError } from '@src/shared/core/result'
 import { NotFoundException } from '@src/shared/exceptions/exceptions'
-import { PostServiceBase } from '../../base.service'
+import { PostServiceBase } from '../../post.base.service'
 import { MemberIsBannedError } from '@src/modules/forum/domain/entity/member/member.errors'
 
 type Return = number

@@ -6,12 +6,12 @@ import { MessageModel } from '@src/shared/infra/database/sequelize/models/messag
 import { MessageRepositoryPort, MessageRepositoryQueryPort } from '../../repository/message/message.repository.port'
 import { MessageSequelizeRepository } from '../../repository/message/message.repository.sequelize'
 import { MessageSequelizeRepositoryQuery } from '../../repository/message/message.repository.query.sequelize'
-import { CreateMessageController } from '../../useCases/message/commands/create-message/controller'
-import { CreateMessageService } from '../../useCases/message/commands/create-message/service'
-import { FindMessagesByLoginController } from '../../useCases/message/queries/find-messages-by-member-login/controller'
-import { FindMessagesByLoginService } from '../../useCases/message/queries/find-messages-by-member-login/service'
-import { UpdateMessageController } from '../../useCases/message/commands/update-message/controller'
-import { UpdateMessageService } from '../../useCases/message/commands/update-message/service'
+import { CreateMessageController } from '../../useCases/message/commands/create-message/create-message.controller'
+import { CreateMessageService } from '../../useCases/message/commands/create-message/create-message.service'
+import { FindMessagesByLoginController } from '../../useCases/message/queries/find-messages-by-member-login/find-messages-by-member-login.controller'
+import { FindMessagesByLoginService } from '../../useCases/message/queries/find-messages-by-member-login/find-messages-by-member-login.service'
+import { UpdateMessageController } from '../../useCases/message/commands/update-message/update-message.controller'
+import { UpdateMessageService } from '../../useCases/message/commands/update-message/update-message.service'
 import { MessageService } from '../../domain/service/message.service'
 
 const messageModule = (container: Container) => {

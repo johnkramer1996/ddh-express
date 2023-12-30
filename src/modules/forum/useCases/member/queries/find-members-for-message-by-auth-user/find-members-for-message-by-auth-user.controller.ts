@@ -5,7 +5,7 @@ import { routes } from '@src/configs/routes'
 import { RequestDecoded } from '@src/shared/infra/http/models/base.controller'
 import { AuthGuard, UseGuard } from '@src/shared/infra/http/decorators/useGuard'
 import { FindMembersForMessageByAuthUserQuery } from './find-members-for-message-by-auth-user.query'
-import { MessageControllerQueryBase } from '../../../message/base.controller'
+import { MessageControllerQueryBase } from '../../../message/message.base.controller'
 
 @injectable()
 @ControllerGet(routes.cabinet.membersForMessage)
