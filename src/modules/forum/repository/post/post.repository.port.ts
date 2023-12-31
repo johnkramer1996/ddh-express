@@ -10,12 +10,19 @@ export interface FindPostsParams extends QueryParams {
   order?: OrderBy[]
 }
 
+export type CountPostsByAuthMemberId = {
+  all: number
+  byMember: number
+  byStatus: { status: PostStatus; count: number }[]
+}
+
 export interface PostRepositoryPort extends RepositoryPort<PostEntity> {
   countByPostIdMemberId(memberId: string): Promise<number>
   findBySlug(slug: string): Promise<PostEntity | null>
 }
 
 export interface PostRepositoryQueryPort extends RepositoryQueryPort<PostQuery> {
+  countByAuthMemberId(memberId: string): Promise<CountPostsByAuthMemberId>
   findAllPaginatedWithPostVotesByAuthMemberId(query: FindPostsParams, authMemberId?: string): Promise<Paginated<PostQuery>>
   findBySlug(slug: string, authMemberId?: string): Promise<PostQuery | null>
 }

@@ -13,8 +13,8 @@ export type FindUsersServiceResponse = ResultWithError<FindUsersServiceReturn>
 @QueryHandler(FindUsersQuery)
 export class FindUsersService extends UserServiceQueryBase<FindUsersQuery, FindUsersServiceReturn> {
   async executeImpl(query: FindUsersQuery): Promise<FindUsersServiceReturn> {
-    const entities = await this.userRepo.findAllPaginated(query, { distinct: false })
+    const users = await this.userRepo.findAllPaginated(query, { distinct: false })
 
-    return entities
+    return users
   }
 }

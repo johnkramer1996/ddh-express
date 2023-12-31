@@ -33,6 +33,7 @@ export const routes = {
     currentUser: `/${usersRoot}/currentUser`,
   },
   member: {
+    findAll: `/${membersRoot}`,
     findByLogin: `/${membersRoot}/:login`,
     findPostsByLogin: `/${membersRoot}/:login/posts`,
     attachRoleByLogin: `/${membersRoot}/:login/attachRole`,

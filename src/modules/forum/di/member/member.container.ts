@@ -2,7 +2,7 @@ import { Container } from 'inversify'
 import { MEMBER_TYPES } from './member.types'
 import { FindCurrentMemberController } from '../../useCases/member/queries/find-current-member/find-current-member.controller'
 import { FindMemberByLoginController } from '../../useCases/member/queries/find-member-by-login/find-member-by-login.controller'
-import { FindMemberLoginService } from '../../useCases/member/queries/find-member-by-login/find-member-by-login.service'
+import { FindMemberByLoginService } from '../../useCases/member/queries/find-member-by-login/find-member-by-login.service'
 import { MemberRepositoryPort, MemberRepositoryQueryPort } from '../../repository/member/member.repository.port'
 import { MemberModel } from '@src/shared/infra/database/sequelize/models/member.model'
 import { MemberSequelizeRepository } from '../../repository/member/member.repository.sequelize'
@@ -19,6 +19,8 @@ import { UpdateLastActiveMemberService } from '../../useCases/member/commands/up
 import { MemberRoleModel } from '@src/shared/infra/database/sequelize/models/member-role.model'
 import { AddRoleToMemberController } from '../../useCases/member/commands/attach-or-detach-role-to-member/attach-or-detach-role-to-member.controller'
 import { AddRoleToMemberService } from '../../useCases/member/commands/attach-or-detach-role-to-member/attach-or-detach-role-to-member.service'
+import { FindMembersController } from '../../useCases/member/queries/find-members/find-members.controller'
+import { FindMembersService } from '../../useCases/member/queries/find-members/find-members.service'
 
 const memberModule = (container: Container) => {
   container.bind(MEMBER_TYPES.MAPPER).to(MemberMapper)
@@ -39,10 +41,13 @@ const memberModule = (container: Container) => {
   container.bind(UpdateLastActiveMemberController).toSelf()
   container.bind(UpdateLastActiveMemberService).toSelf()
 
-  container.bind(FindCurrentMemberController).toSelf()
+  container.bind(FindMembersController).toSelf()
+  container.bind(FindMembersService).toSelf()
 
   container.bind(FindMemberByLoginController).toSelf()
-  container.bind(FindMemberLoginService).toSelf()
+  container.bind(FindMemberByLoginService).toSelf()
+
+  container.bind(FindCurrentMemberController).toSelf()
 
   container.bind(FindMembersForMessageByAuthUserController).toSelf()
   container.bind(FindMembersForMessageByAuthUserService).toSelf()
