@@ -18,7 +18,6 @@ services:
       - 8080:8080
 
   redis:
-    container_name: ddd_forum_redis
     image: redis:latest
     restart: always
     ports:

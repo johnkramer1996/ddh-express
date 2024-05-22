@@ -141,7 +141,7 @@ module.exports = {
     await queryInterface.bulkInsert('member_roles', [
       ...members.map((member, i) => ({
         member_id: member.id,
-        role: roles[Math.min(i, 3)].role,
+        role: roles[Math.min(i, 4)].role,
         created_at: new Date(),
       })),
     ])
@@ -188,7 +188,7 @@ module.exports = {
       },
     ])
 
-    const [statuses] = await queryInterface.sequelize.query(`SELECT status from statuses ORDER BY 'order';`)
+    const [statuses] = await queryInterface.sequelize.query(`SELECT status from statuses ORDER BY "order";`)
 
     await queryInterface.bulkInsert(
       'posts',
